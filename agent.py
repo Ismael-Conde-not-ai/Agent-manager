@@ -48,6 +48,9 @@ class AIagent:
         print(f"\n🤖 Agent: {self.name}\n 🎯 Goal: {self.goal}\n 🔋 Energy level: {self.energy}%\n 🏗️ Status: {self.status}")
 
     def showMemory(self):
+        '''
+        Print the events in the agent's memory
+        '''
         print(f"\n Memory of {self.name}:")
         for event in self.memory:
             print("- ",event)

@@ -3,7 +3,6 @@ class aIagentManager:
     from utils import showAndChoose
     def __init__(self):
         self.agentList=[]
-        #self.agentListDictionary=[]
     
     def createAgent(self):
         '''
@@ -14,30 +13,31 @@ class aIagentManager:
         goal = str(input("ingrese el objetivo del agente--->"))
         newAgent = agents(name,goal)
         self.agentList.append(newAgent)
-        #self.agentListDictionary.append(vars(newAgent))
     
     def agentThink(self):
+        '''
+        Shows lis of agents and then makes the choice think.
+        '''
         option =self.showAndChoose(self)
         self.agentList[option].think()
     
     def agentAction(self):
         '''
-        Show list of agents and then makes the choice act
+        Shows list of agents and then makes the choice act
         '''
         option =self.showAndChoose(self)
         self.agentList[option].act()
     
     def agentRecharge(self):
         '''
-        Show list of agents and then makes the choice recharge
+        Shows list of agents and then makes the choice recharge
         '''
         option =self.showAndChoose(self)
-        a=self.agentList[option]
-        a.recharge()
+        self.agentList[option].recharge()
 
     def agentInformation(self):
         '''
-        Show list of agents and then show the choice information
+        Shows list of agents and then show the choice information
         '''
         option = self.showAndChoose(self)
         self.agentList[option].info()
@@ -48,3 +48,5 @@ class aIagentManager:
         '''
         option =self.showAndChoose(self)
         self.agentList[option].showMemory()
+
+    

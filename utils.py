@@ -4,12 +4,10 @@ def energyCalculator(self,action,energy):
     '''
     match action:
         case "act":
-            energy-=30
+            energy-= 10
             return energy
         case "recharge":
-            energy +=30
-            if energy>100:
-                energy=100
+            energy = 100
             return energy
 
 def showAndChoose(self,AIList):
