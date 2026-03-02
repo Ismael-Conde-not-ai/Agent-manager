@@ -49,4 +49,16 @@ class aIagentManager:
         option =self.showAndChoose(self)
         self.agentList[option].showMemory()
 
-    
+    def runSimulation (self,cycles):
+        '''
+        Runs a simulation of the agents determined for the cycles input
+        '''
+        if not self.agentList :
+            print("No agents available")
+            return
+        for cycle in range(cycles):
+            for agent in self.agentList:
+                print(f"\n---Cycle {cycle + 1} ---")
+                agent.think()
+                agent.act()
+                print(f"{agent.name} | Energy: {agent.energy} | Status: {agent.status}")

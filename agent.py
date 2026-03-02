@@ -23,12 +23,16 @@ class AIagent:
         '''
         Spend energy to perform an action
         '''
-        calcEnergy = self.energyCalculator
-        energy = self.energy
-        self.energy = calcEnergy('act',energy)
-        self.status ='Working'
-        self.memory.append("Agent is working")
-        print(f"The agent {self.name} is performing: {self.goal}")
+        if self.energy >= 10:
+            calcEnergy = self.energyCalculator
+            energy = self.energy
+            self.energy = calcEnergy('act',energy)
+            self.status ='Working'
+            self.memory.append("Agent is working")
+            print(f"The agent {self.name} is performing: {self.goal}")
+        else:
+            self.status ='Out of energy'
+            self.memory.append("Agent out of energy")
 
     def recharge(self):
         '''

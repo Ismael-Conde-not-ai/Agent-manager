@@ -10,7 +10,8 @@ def main():
         print("4. Make Agent Act")
         print("5. Recharge Agent")
         print("6. Show Agent Memory")
-        print("7. Exit")
+        print("7. Run Simulation")
+        print("8. Exit")
 
         choice = input("Choose an option--->")
 
@@ -28,5 +29,8 @@ def main():
             case "6":
                 manager.showAgentMemory()
             case "7":
+                cycles =int(input("Number of simulation cycles--->"))
+                manager.runSimulation(cycles)
+            case "8":
                 break
 main()
