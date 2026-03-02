@@ -16,6 +16,10 @@ class aIagentManager:
         self.agentList.append(newAgent)
         #self.agentListDictionary.append(vars(newAgent))
     
+    def agentThink(self):
+        option =self.showAndChoose(self)
+        self.agentList[option].think()
+    
     def agentAction(self):
         '''
         Show list of agents and then makes the choice act
