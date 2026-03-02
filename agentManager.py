@@ -37,3 +37,10 @@ class aIagentManager:
         '''
         option = self.showAndChoose(self)
         self.agentList[option].info()
+
+    def showAgentMemory (self):
+        '''
+        Shows the events memory of the agent
+        '''
+        option =self.showAndChoose(self)
+        self.agentList[option].showMemory()
