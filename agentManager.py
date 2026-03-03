@@ -62,3 +62,10 @@ class aIagentManager:
                 agent.think()
                 agent.act()
                 print(f"{agent.name} | Energy: {agent.energy} | Status: {agent.status}")
+    
+    def agentThinkAi (self):
+        if not self.agentList :
+            print("No agents available")
+            return
+        option = self.showAndChoose(self)
+        self.agentList[option].thinkAi()

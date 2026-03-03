@@ -4,6 +4,7 @@ class AIagent:
     and basic actions such as think, act, and recharge.
     """
     from utils import energyCalculator
+    from apiClient import geminiAI
     def __init__(self,name,goal):
         self.name :str = name
         self.goal :str = goal
@@ -58,3 +59,14 @@ class AIagent:
         print(f"\n Memory of {self.name}:")
         for event in self.memory:
             print("- ",event)
+    
+    def thinkAi (self):
+        '''
+        Send a promt to gemimi 3 flash using name and goal of the agent
+        '''
+        gemini = self.geminiAI
+        prompt:str=f"You are an AI agent named {self.name}. Your goal is: {self.goal}. What should you do next?"
+        decision =gemini(prompt)
+        self.memory.append(decision)
+        print(f"\nAi decision for {self.name}:")
+        print(decision)

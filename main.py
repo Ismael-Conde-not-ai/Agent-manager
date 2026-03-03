@@ -11,7 +11,8 @@ def main():
         print("5. Recharge Agent")
         print("6. Show Agent Memory")
         print("7. Run Simulation")
-        print("8. Exit")
+        print("8. Make Agent Think With AI")
+        print("9. Exit")
 
         choice = input("Choose an option--->")
 
@@ -32,5 +33,7 @@ def main():
                 cycles =int(input("Number of simulation cycles--->"))
                 manager.runSimulation(cycles)
             case "8":
+                manager.agentThinkAi()
+            case "9":
                 break
 main()
