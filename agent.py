@@ -62,11 +62,25 @@ class AIagent:
     
     def thinkAi (self):
         '''
-        Send a promt to gemimi 3 flash using name and goal of the agent
+        Send a promt to gemimi 3 flash using name and goal of the agent, uses recent memory 5 entries
         '''
         gemini = self.geminiAI
-        prompt:str=f"You are an AI agent named {self.name}. Your goal is: {self.goal}. What should you do next?"
+        prevoiusActions= self.recentMemory()
+        
+        memory_text="\n".join(prevoiusActions) if prevoiusActions else "No previous actions."
+        prompt:str=f"""
+        You are an AI agent named {self.name}. 
+        Your goal is: {self.goal}. 
+        Previous actions: {memory_text}
+        Based in this context, what should you do next? respond bryefly.
+        """
         decision =gemini(prompt)
-        self.memory.append(decision)
+        self.memory.append("AI decision: ",decision)
         print(f"\nAi decision for {self.name}:")
         print(decision)
+    
+    def recentMemory(self,limit=5):
+        '''
+        Return only the last 5 memory entries
+        '''
+        return self.memory[-limit:]
