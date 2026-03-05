@@ -70,17 +70,37 @@ class AIagent:
         memory_text="\n".join(prevoiusActions) if prevoiusActions else "No previous actions."
         prompt:str=f"""
         You are an AI agent named {self.name}. 
-        Your goal is: {self.goal}. 
+        Your goal is: {self.goal}.
+        your current energy level is: {self.energy}. 
         Previous actions: {memory_text}
-        Based in this context, what should you do next? respond bryefly.
+        Choose only one of this actions:
+        -work
+        -recharge
+        -rest
+        respond with only the action word.
         """
         decision =gemini(prompt)
-        self.memory.append("AI decision: ",decision)
+        self.memory.append(f"AI decision: {decision}")
         print(f"\nAi decision for {self.name}:")
         print(decision)
+        return decision.lower()
     
     def recentMemory(self,limit=5):
         '''
         Return only the last 5 memory entries
         '''
         return self.memory[-limit:]
+    
+    def executeDecision (self, decision):
+        if decision == "work":
+            self.act()
+        elif decision == "recharge":
+            self.recharge()
+        elif decision == "rest":
+            self.memory.append("The agent is resting")
+        else:
+            self.memory.append(f"Invalid decision: {decision}")
+
+    def autonomousStep (self):
+        decision =self.thinkAi()
+        self.executeDecision(decision)

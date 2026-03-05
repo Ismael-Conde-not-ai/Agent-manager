@@ -59,8 +59,9 @@ class aIagentManager:
         for cycle in range(cycles):
             for agent in self.agentList:
                 print(f"\n---Cycle {cycle + 1} ---")
-                agent.think()
-                agent.act()
+                #agent.think()
+                #agent.act()
+                agent.autonomousStep()
                 print(f"{agent.name} | Energy: {agent.energy} | Status: {agent.status}")
     
     def agentThinkAi (self):
