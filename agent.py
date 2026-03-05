@@ -11,6 +11,11 @@ class AIagent:
         self.energy : int = 100
         self.status :str = 'Idle'
         self.memory = []
+        self.tools = {
+            "work":self.act,
+            "recharge":self.recharge,
+            "rest":self.rest
+        }
 
     def think(self):
         '''
@@ -46,6 +51,13 @@ class AIagent:
         self.memory.append("Agent recharged")
         print(f"Agent {self.name} is recharged")
 
+    def rest(self):
+        '''
+        The agent rests
+        '''
+        self.status = "Resting"
+        self.memory.append("The agent is resting")
+
     def info(self):
         '''
         Prints agent's informationthin
@@ -68,29 +80,29 @@ class AIagent:
         prevoiusActions= self.recentMemory()
         
         memory_text="\n".join(prevoiusActions) if prevoiusActions else "No previous actions."
+        tools_list = "\n".join(self.tools.keys())
         prompt:str=f"""
         You are an AI agent named {self.name}. 
         Your goal is: {self.goal}.
         your current energy level is: {self.energy}. 
         Previous actions: {memory_text}
-        Choose only one of this actions:
-        -work
-        -recharge
-        -rest
-        respond with only the action word.
+        Available tools:
+        {tools_list}
+        choose the best tool for the situation.
+        Respond only with the tool name.
         """
-        decision =gemini(prompt)
+        decision =gemini(prompt).strip().lower()
         self.memory.append(f"AI decision: {decision}")
         print(f"\nAi decision for {self.name}:")
         print(decision)
-        return decision.lower()
+        return decision
     
     def recentMemory(self,limit=5):
         '''
         Return only the last 5 memory entries
         '''
         return self.memory[-limit:]
-    
+    """
     def executeDecision (self, decision):
         if decision == "work":
             self.act()
@@ -100,7 +112,15 @@ class AIagent:
             self.memory.append("The agent is resting")
         else:
             self.memory.append(f"Invalid decision: {decision}")
+    """
+    def execute_tool (self,toolName):
+        if toolName in self.tools:
+            self.tools[toolName]()
+            self.memory.append(f"executed tool: {toolName}")
+        else:
+            self.memory.append(f"Invalid tool: {toolName}")
 
     def autonomousStep (self):
-        decision =self.thinkAi()
-        self.executeDecision(decision)
+        decision_tool =self.thinkAi()
+        #self.executeDecision(decision)
+        self.execute_tool(decision_tool)
