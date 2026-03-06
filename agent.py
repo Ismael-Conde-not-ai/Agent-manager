@@ -81,21 +81,46 @@ class AIagent:
         
         memory_text="\n".join(prevoiusActions) if prevoiusActions else "No previous actions."
         tools_list = "\n".join(self.tools.keys())
-        prompt:str=f"""
-        You are an AI agent named {self.name}. 
-        Your goal is: {self.goal}.
-        your current energy level is: {self.energy}. 
-        Previous actions: {memory_text}
-        Available tools:
-        {tools_list}
-        choose the best tool for the situation.
-        Respond only with the tool name.
-        """
+        prompt = self.build_prompt(memory_text,tools_list)
         decision =gemini(prompt).strip().lower()
         self.memory.append(f"AI decision: {decision}")
         print(f"\nAi decision for {self.name}:")
         print(decision)
         return decision
+    
+    def build_prompt (self,memory_text,tools_list):
+        prompt:str = f"""
+        ROLE:
+        You are an autonomous productivity agent.
+
+        AGENT NAME:
+        {self.name}
+
+        GOAL:
+        {self.goal}
+
+        CURRENT STATE:
+        Energy: {self.energy}
+        Status: {self.status}
+
+        MEMORY:
+        {memory_text}
+
+        AVAILABLE TOOLS:
+        {tools_list}
+
+        RULES:
+        - If energy is low, recharge.
+        - If energy is high, work toward the goal.
+        - Rest if no urgent action is required.
+        - If energy < 20 recharge
+
+        INSTRUCTIONS:
+        Choose the best tool for the situation.
+
+        Respond ONLY with the tool name.
+        """
+        return prompt
     
     def recentMemory(self,limit=5):
         '''
