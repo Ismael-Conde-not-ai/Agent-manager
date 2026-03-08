@@ -4,6 +4,12 @@ class aIagentManager:
     def __init__(self):
         self.agentList=[]
     
+    def add_agent(self, agent_x):
+        '''
+        adds agent created in main2
+        '''
+        self.agentList.append(agent_x)
+
     def createAgent(self):
         '''
         Defines name and goal of the agent then put it in the list, also creates a dictionary

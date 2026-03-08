@@ -132,7 +132,8 @@ class AIagent:
     def execute_tool (self,toolName):
         if toolName in self.tools:
             self.tools[toolName]()
-            self.memory.append(f"executed tool: {toolName}")
+            print(f"Tool executed: {toolName}")
+            self.memory.append(f"executed tool: {toolName}| Energy: {self.energy}")
         else:
             self.memory.append(f"Invalid tool: {toolName}")
 
