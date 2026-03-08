@@ -16,6 +16,7 @@ class AIagent:
             "recharge":self.recharge,
             "rest":self.rest
         }
+        self.plan = []
 
     def think(self):
         '''
@@ -127,17 +128,7 @@ class AIagent:
         Return only the last 5 memory entries
         '''
         return self.memory[-limit:]
-    """
-    def executeDecision (self, decision):
-        if decision == "work":
-            self.act()
-        elif decision == "recharge":
-            self.recharge()
-        elif decision == "rest":
-            self.memory.append("The agent is resting")
-        else:
-            self.memory.append(f"Invalid decision: {decision}")
-    """
+    
     def execute_tool (self,toolName):
         if toolName in self.tools:
             self.tools[toolName]()
@@ -145,7 +136,48 @@ class AIagent:
         else:
             self.memory.append(f"Invalid tool: {toolName}")
 
-    def autonomousStep (self):
+    '''def autonomousStep (self):
         decision_tool =self.thinkAi()
         #self.executeDecision(decision)
-        self.execute_tool(decision_tool)
+        self.execute_tool(decision_tool)'''
+
+    def create_plan (self):
+        prompt =f"""
+        You are an autonomous AI agent.
+
+        Agent name: {self.name}
+        Goal: {self.goal}
+
+        Available tools:
+        {", ".join(self.tools.keys())}
+
+        Create a short plan to achieve the goal.
+
+        Return 3 to 5 steps using only the tool names.
+        Example:
+
+        work
+        work
+        recharge
+        rest
+        """
+        gemini =self.geminiAI
+        plan_text =gemini(prompt).strip().lower()
+        self.plan = plan_text.split("\n")
+        print("\nGenerated Plan:")
+        for step in self.plan:
+            print("-", step)
+    
+    def execute_plan_step (self):
+        if not self.plan:
+            print("No plan available")
+            return
+        step = self.plan.pop(0)
+        print (f"\nExecuting step: {step}")
+        self.execute_tool(step)
+        self.memory.append(f"Plan step executed: {step}")
+
+    def autonomousStep (self):
+        if not self.plan:
+            self.create_plan()
+        self.execute_plan_step()
