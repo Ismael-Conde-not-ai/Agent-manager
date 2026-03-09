@@ -17,14 +17,6 @@ class AIagent:
             "rest":self.rest
         }
         self.plan = []
-
-    def think(self):
-        '''
-        prints the agent's thoughts and what is willing to do
-        '''
-        self.status='Thinking'
-        self.memory.append("Agent is thinking")
-        print(f"the agent {self.name} is thinking")
     
     def act(self):
         '''
@@ -59,12 +51,6 @@ class AIagent:
         self.status = "Resting"
         self.memory.append("The agent is resting")
 
-    def info(self):
-        '''
-        Prints agent's informationthin
-        '''
-        print(f"\n🤖 Agent: {self.name}\n 🎯 Goal: {self.goal}\n 🔋 Energy level: {self.energy}%\n 🏗️ Status: {self.status}")
-
     def showMemory(self):
         '''
         Print the events in the agent's memory
@@ -72,56 +58,6 @@ class AIagent:
         print(f"\n Memory of {self.name}:")
         for event in self.memory:
             print("- ",event)
-    
-    def thinkAi (self):
-        '''
-        Send a promt to gemimi 3 flash using name and goal of the agent, uses recent memory 5 entries
-        '''
-        gemini = self.geminiAI
-        prevoiusActions= self.recentMemory()
-        
-        memory_text="\n".join(prevoiusActions) if prevoiusActions else "No previous actions."
-        tools_list = "\n".join(self.tools.keys())
-        prompt = self.build_prompt(memory_text,tools_list)
-        decision =gemini(prompt).strip().lower()
-        self.memory.append(f"AI decision: {decision}")
-        print(f"\nAi decision for {self.name}:")
-        print(decision)
-        return decision
-    
-    def build_prompt (self,memory_text,tools_list):
-        prompt:str = f"""
-        ROLE:
-        You are an autonomous productivity agent.
-
-        AGENT NAME:
-        {self.name}
-
-        GOAL:
-        {self.goal}
-
-        CURRENT STATE:
-        Energy: {self.energy}
-        Status: {self.status}
-
-        MEMORY:
-        {memory_text}
-
-        AVAILABLE TOOLS:
-        {tools_list}
-
-        RULES:
-        - If energy is low, recharge.
-        - If energy is high, work toward the goal.
-        - Rest if no urgent action is required.
-        - If energy < 20 recharge
-
-        INSTRUCTIONS:
-        Choose the best tool for the situation.
-
-        Respond ONLY with the tool name.
-        """
-        return prompt
     
     def recentMemory(self,limit=5):
         '''
@@ -136,11 +72,6 @@ class AIagent:
             self.memory.append(f"executed tool: {toolName}| Energy: {self.energy}")
         else:
             self.memory.append(f"Invalid tool: {toolName}")
-
-    '''def autonomousStep (self):
-        decision_tool =self.thinkAi()
-        #self.executeDecision(decision)
-        self.execute_tool(decision_tool)'''
 
     def create_plan (self):
         prompt =f"""
