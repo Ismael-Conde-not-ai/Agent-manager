@@ -1,5 +1,5 @@
 class aIagentManager:
-    from agent import AIagent
+    from agents.agent import AIagent
     
     def __init__(self):
         self.agentList=[]

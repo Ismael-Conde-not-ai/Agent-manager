@@ -1,5 +1,5 @@
-from agent import AIagent
-from agentManager import aIagentManager
+from agents.agent import AIagent
+from core.agentManager import aIagentManager
 
 agent1 = AIagent(name="Alpha",goal="Work efficiently while maintaining energy")
 

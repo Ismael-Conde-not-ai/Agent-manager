@@ -3,8 +3,8 @@ class AIagent:
     Represents a simple AI agent with a goal, energy level,
     and basic actions such as think, act, and recharge.
     """
-    from utils import energyCalculator
-    from apiClient import geminiAI
+    from utils.utils import energyCalculator
+    from api.apiClient import geminiAI
     def __init__(self,name,goal):
         self.name :str = name
         self.goal :str = goal
