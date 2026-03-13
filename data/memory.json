@@ -1,0 +1,13 @@
+[
+  "Agent is working",
+  "executed tool: work| Energy: 90",
+  "Plan step executed: work",
+  "Agent recharged",
+  "executed tool: recharge| Energy: 100",
+  "Plan step executed: recharge",
+  "Agent is working",
+  "executed tool: work| Energy: 90",
+  "Plan step executed: work",
+  "The agent is resting",
+  "executed tool: rest| Energy: 90"
+]

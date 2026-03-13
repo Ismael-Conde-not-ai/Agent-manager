@@ -1,3 +1,4 @@
+import json
 class AIagent:
     """
     Represents a simple AI agent with a goal, energy level,
@@ -17,6 +18,8 @@ class AIagent:
             "rest":self.rest
         }
         self.plan = []
+
+        self.load_memory()
     
     def act(self):
         '''
@@ -70,6 +73,7 @@ class AIagent:
             self.tools[toolName]()
             print(f"Tool executed: {toolName}")
             self.memory.append(f"executed tool: {toolName}| Energy: {self.energy}")
+            self.save_memory()
         else:
             self.memory.append(f"Invalid tool: {toolName}")
 
@@ -113,3 +117,15 @@ class AIagent:
         if not self.plan:
             self.create_plan()
         self.execute_plan_step()
+
+    def load_memory(self):
+
+        try:
+            with open("data/memory.json","r") as file:
+                self.memory = json.load(file)
+        except:
+            self.memory=[]
+    
+    def save_memory(self):
+        with open("data/memory.json","w") as file:
+            json.dump(self.memory,file,indent=2)
