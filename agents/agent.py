@@ -3,6 +3,7 @@ from tools.registry import ToolRegistry
 from tools.work import work
 from tools.recharge import recharge
 from tools.rest import rest
+from core.logger import logger
 class AIagent:
     """
     Represents a simple AI agent with a goal, energy level,
@@ -49,6 +50,8 @@ class AIagent:
         Saves the memory in the memory.json using method save_memory()
         '''
         result = self.tool_registry.execute(toolName,self)
+        logger.info(f"{self.name} executed tool: {toolName}")
+        logger.info(f"{self.name} energy level: {self.energy}")
         self.memory.append(result)
         self.memory.append(f"Executed tool: {toolName} | Energy: {self.energy}")
         self.save_memory()
@@ -76,6 +79,7 @@ class AIagent:
         gemini =self.geminiAI
         plan_text =gemini(prompt).strip().lower()
         self.plan = plan_text.split("\n")
+        logger.info(f"{self.name} generated a new plan: {self.plan}")
         print("\nGenerated Plan:")
         for step in self.plan:
             print("-", step)
