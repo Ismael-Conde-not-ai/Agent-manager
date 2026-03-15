@@ -68,5 +68,10 @@
   "Executed tool: work | Energy: 80",
   "Plan step executed: work",
   "Agent rested",
-  "Executed tool: rest | Energy: 80"
+  "Executed tool: rest | Energy: 80",
+  "Agent worked",
+  "Executed tool: work | Energy: 80",
+  "Plan step executed: work",
+  "Agent worked",
+  "Executed tool: work | Energy: 60"
 ]
