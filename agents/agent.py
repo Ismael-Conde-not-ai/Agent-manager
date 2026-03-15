@@ -1,58 +1,32 @@
 import json
+from tools.registry import ToolRegistry
+from tools.work import work
+from tools.recharge import recharge
+from tools.rest import rest
 class AIagent:
     """
     Represents a simple AI agent with a goal, energy level,
-    and basic actions such as think, act, and recharge.
+    and functions asociated with his features.
     """
-    from utils.utils import energyCalculator
+    
     from api.apiClient import geminiAI
+    
     def __init__(self,name,goal):
         self.name :str = name
         self.goal :str = goal
         self.energy : int = 100
         self.status :str = 'Idle'
         self.memory = []
-        self.tools = {
-            "work":self.act,
-            "recharge":self.recharge,
-            "rest":self.rest
-        }
         self.plan = []
+
+        self.tool_registry = ToolRegistry()
+        self.tool_registry.register("work",work)
+        self.tool_registry.register("recharge",recharge)
+        self.tool_registry.register("rest",rest)
 
         self.load_memory()
     
-    def act(self):
-        '''
-        Spend energy to perform an action
-        '''
-        if self.energy >= 10:
-            calcEnergy = self.energyCalculator
-            energy = self.energy
-            self.energy = calcEnergy('act',energy)
-            self.status ='Working'
-            self.memory.append("Agent is working")
-            print(f"The agent {self.name} is performing: {self.goal}")
-        else:
-            self.status ='Out of energy'
-            self.memory.append("Agent out of energy")
-
-    def recharge(self):
-        '''
-        Recharges energy
-        '''
-        calcEnergy = self.energyCalculator
-        energy = self.energy
-        self.energy=calcEnergy("recharge",energy)
-        self.status = 'Recharged'
-        self.memory.append("Agent recharged")
-        print(f"Agent {self.name} is recharged")
-
-    def rest(self):
-        '''
-        The agent rests
-        '''
-        self.status = "Resting"
-        self.memory.append("The agent is resting")
+    
 
     def showMemory(self):
         '''
@@ -69,13 +43,15 @@ class AIagent:
         return self.memory[-limit:]
     
     def execute_tool (self,toolName):
-        if toolName in self.tools:
-            self.tools[toolName]()
-            print(f"Tool executed: {toolName}")
-            self.memory.append(f"executed tool: {toolName}| Energy: {self.energy}")
-            self.save_memory()
-        else:
-            self.memory.append(f"Invalid tool: {toolName}")
+        '''
+        Takes a tool as argument then executes the tool and takes the return in the variable result.
+        Saves the result and the executed tool and the enrgy in memory.
+        Saves the memory in the memory.json using method save_memory()
+        '''
+        result = self.tool_registry.execute(toolName,self)
+        self.memory.append(result)
+        self.memory.append(f"Executed tool: {toolName} | Energy: {self.energy}")
+        self.save_memory()
 
     def create_plan (self):
         prompt =f"""
@@ -85,7 +61,7 @@ class AIagent:
         Goal: {self.goal}
 
         Available tools:
-        {", ".join(self.tools.keys())}
+        {", ".join(self.tool_registry.list_tools())}
 
         Create a short plan to achieve the goal.
 
@@ -105,6 +81,10 @@ class AIagent:
             print("-", step)
     
     def execute_plan_step (self):
+        '''
+        Executes the plan created with AI, if not plan it returns none.
+        calls execute_tool to use the tool and saves a binnacle in memory
+        '''
         if not self.plan:
             print("No plan available")
             return
@@ -114,18 +94,26 @@ class AIagent:
         self.memory.append(f"Plan step executed: {step}")
 
     def autonomousStep (self):
+        '''
+        Calls methods to create a plan and then execute it. 
+        '''
         if not self.plan:
             self.create_plan()
         self.execute_plan_step()
 
     def load_memory(self):
-
+        '''
+        Loads memory fron memory.json to memory atribute.
+        '''
         try:
             with open("data/memory.json","r") as file:
                 self.memory = json.load(file)
-        except:
+        except (FileNotFoundError, json.JSONDecodeError):
             self.memory=[]
     
     def save_memory(self):
+        '''
+        Saves the memory[] atribute to a memory.json.
+        '''
         with open("data/memory.json","w") as file:
             json.dump(self.memory,file,indent=2)
