@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from agents.agent import AIagent
 from core.agentManager import aIagentManager
+from core.config_loader import load_agent_config
 
 app = FastAPI()
 
@@ -20,13 +21,16 @@ def create_agent():
 
     global agent
 
+    config = load_agent_config()
     agent = AIagent(
-        name="Alpha",
-        goal="Work efficiently while maintaining energy"
+        name=config["name"],
+        goal=config["goal"],
+        initial_energy=config["initial_energy"],
+        initial_status=config["initial_status"]
     )
     manager.add_agent(agent)
 
-    return {"message":"Agent created"}
+    return {"message":"Agent created from config"}
 
 @app.post("/agent/step")
 def run_agent_step():

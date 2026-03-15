@@ -12,11 +12,11 @@ class AIagent:
     
     from api.apiClient import geminiAI
     
-    def __init__(self,name,goal):
+    def __init__(self,name,goal,initial_energy,initial_status):
         self.name :str = name
         self.goal :str = goal
-        self.energy : int = 100
-        self.status :str = 'Idle'
+        self.energy : int = initial_energy
+        self.status :str = initial_status
         self.memory = []
         self.plan = []
 
