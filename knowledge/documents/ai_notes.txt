@@ -1,0 +1,7 @@
+Work efficiently while maintaining energy
+
+Artificial intelligence agents can use planning, tools, and memory to achieve goals.
+
+Retrieval-Augmented Generation (RAG) allows AI systems to retrieve relevant information from documents before generating answers.
+
+This technique improves accuracy and allows the system to work with external knowledge.

@@ -1,6 +1,6 @@
 {
     "name":"Alpha",
-    "goal": "Work efficiently whyle maintaining energy",
+    "goal": "Work efficiently while maintaining energy",
     "initial_energy": 100,
     "initial_status":"idle"
 }

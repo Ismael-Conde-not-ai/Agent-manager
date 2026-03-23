@@ -1,5 +1,3 @@
-from os import name
-
 from fastapi import FastAPI
 from agents.agent import AIagent
 from core.agentManager import aIagentManager

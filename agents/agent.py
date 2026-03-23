@@ -4,6 +4,9 @@ from tools.work import work
 from tools.recharge import recharge
 from tools.rest import rest
 from core.logger import logger
+from knowledge.knowledge_base import KnowledgeBase
+from tools.search_knowledge import search_knowledge
+
 class AIagent:
     """
     Represents a simple AI agent with a goal, energy level,
@@ -20,10 +23,13 @@ class AIagent:
         self.memory = []
         self.plan = []
 
+        self.knowledge =KnowledgeBase()
+
         self.tool_registry = ToolRegistry()
         self.tool_registry.register("work",work)
         self.tool_registry.register("recharge",recharge)
         self.tool_registry.register("rest",rest)
+        self.tool_registry.register("search_knowledge",search_knowledge)
 
         self.load_memory()
     
@@ -72,9 +78,9 @@ class AIagent:
         Example:
 
         work
-        work
         recharge
         rest
+        search_knowledge
         """
         gemini =self.geminiAI
         plan_text =gemini(prompt).strip().lower()
