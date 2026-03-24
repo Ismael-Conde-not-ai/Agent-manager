@@ -63,24 +63,28 @@ class AIagent:
         self.save_memory()
 
     def create_plan (self):
+
+        context = self.get_relevant_context()
+
         prompt =f"""
         You are an autonomous AI agent.
 
         Agent name: {self.name}
         Goal: {self.goal}
 
+        reelevant knowledge: {context}
+
+        recent memory: {self.memory[:-5]}
+
         Available tools:
         {", ".join(self.tool_registry.list_tools())}
 
-        Create a short plan to achieve the goal.
+        Instructions:
+        - Think step by step
+        - Use the knowledge if useful
+        - Create a short plan using tool names only
 
         Return 3 to 5 steps using only the tool names.
-        Example:
-
-        work
-        recharge
-        rest
-        search_knowledge
         """
         gemini =self.geminiAI
         plan_text =gemini(prompt).strip().lower()
@@ -89,6 +93,8 @@ class AIagent:
         print("\nGenerated Plan:")
         for step in self.plan:
             print("-", step)
+
+        logger.info(f"{self.name} used context: {context[:100]}")
     
     def execute_plan_step (self):
         '''
@@ -127,3 +133,14 @@ class AIagent:
         '''
         with open("data/memory.json","w") as file:
             json.dump(self.memory,file,indent=2)
+
+    def get_relevant_context(self):
+        '''
+        Searchs information inside knowledge instance atributes using search method
+        returns the context limited or a information if not reelevant information
+        '''
+        try:
+            context = self.knowledge.search(self.goal)
+            return context[:500] #limit size
+        except TypeError:
+            return "No reelevant knowledge found"
