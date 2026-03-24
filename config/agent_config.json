@@ -1,6 +1,6 @@
 {
     "name":"Alpha",
-    "goal": "Work efficiently while maintaining energy",
+    "goal": "How do AI agents use planning?",
     "initial_energy": 100,
     "initial_status":"idle"
 }

@@ -15,3 +15,12 @@ def geminiAI (self,prompt:str)->str:
         model="gemini-3-flash-preview", contents=prompt
     )
     return response.text
+
+def geminiEmbed (document):
+
+    client =genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    result = client.models.embed_content(
+        model="gemini-embedding-2-preview",
+        contents= document
+    )
+    return result.embeddings[0].values
