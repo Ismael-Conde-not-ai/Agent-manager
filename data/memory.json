@@ -104,5 +104,16 @@
   "Executed tool: work | Energy: 80",
   "Plan step executed: work",
   "Agent worked",
-  "Executed tool: work | Energy: 60"
+  "Executed tool: work | Energy: 60",
+  "Context used: No reelevant knowledge found",
+  "Executed tool: search_knowledge | Energy: 100",
+  "Plan step executed: search_knowledge",
+  "Agent worked",
+  "Executed tool: work | Energy: 80",
+  "Plan step executed: work",
+  "Agent worked",
+  "Executed tool: work | Energy: 60",
+  "Plan step executed: work",
+  "Agent recharged",
+  "Executed tool: recharge | Energy: 100"
 ]

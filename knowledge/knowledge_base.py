@@ -20,18 +20,23 @@ class KnowledgeBase:
         '''
         Opens the file using for for the list of directories in folder
         saves the path using the folder and file name
-        opens the file for read and saves the content in documents list
+        opens the file for read and saves the content.
         '''
         
         for file in os.listdir(self.folder):
             path = os.path.join(self.folder,file)
             with open(path,"r") as f:
                 content = f.read()
-            self.documents.append(content)
+            
+            chunks = self.split_into_chunks(content) #create a list of chunks from content
 
-            embedding = geminiEmbed(content)
+            for chunk in chunks: #Saves chunks in document, embbed chunk and save it in embeddings
 
-            self.embeddings.append(embedding)
+                self.documents.append(chunk)
+
+                embedding = geminiEmbed(chunk)
+
+                self.embeddings.append(embedding)
 
     def cosine_similarity(self,a,b):
 
@@ -41,28 +46,38 @@ class KnowledgeBase:
         return np.dot(vec_a, vec_b) / (np.linalg.norm(vec_a) * np.linalg.norm(vec_b))
         #return np.dot(a,b)/(np.linalg.norm(a)*np.linalg.norm(b))
 
-    def search (self,query):
+    def search (self, query, top_k=3):
         '''
-        Creates an empty list of results then searchs the query in the list of documents
-        if the query is in it, saves the content in results, then return results list
+        Gets a embedded query and create a scores list for cosine similarity
+        Saves the results in scores and then sort them in descending
+        saves the top k chunks and return them in a string separated by newlines
         '''
         query_embedding= geminiEmbed(query)
 
-        similarities = []
+        scores = []
 
         for emb in self.embeddings:
             score = self.cosine_similarity(query_embedding,emb)
-            similarities.append(score)
+            scores.append(score)
+        
+        scores.sort(reverse=True)
 
-        best_index = similarities.index(max(similarities))
+        top_chunks = [self.documents[idx] for _, idx in scores[:top_k]]
 
-        return self.documents[best_index]
+        return "\n".join(top_chunks)
+    
+    def split_into_chunks(self, text,chunk_size=200):
+        '''
+        Receives a text that is divided in parts by spaces using split method
+        a chunks list is created, then the words are counted by 200 and joined using space.
+        finally those chunks are stored in chunks list and returned
+        '''
+        words = text.split()
+        chunks = []
 
+        for i in range(0, len(words), chunk_size):
+            chunk = " ".join(words[i:i+chunk_size])
+            chunks.append(chunk)
+        
+        return chunks
 
-    '''
-        results = []
-        for doc in self.documents:
-            if query.lower() in doc.lower():
-                results.append(doc)
-        return
-    '''
