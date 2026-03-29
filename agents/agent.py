@@ -81,7 +81,7 @@ class AIagent:
 
         Instructions:
         - Think step by step
-        - Use the knowledge if useful
+        - Use the knowledge if relevant
         - Create a short plan using tool names only
 
         Return 3 to 5 steps using only the tool names.
@@ -137,10 +137,15 @@ class AIagent:
     def get_relevant_context(self):
         '''
         Searchs information inside knowledge instance atributes using search method
-        returns the context limited or a information if not reelevant information
+        saves the relevant information in context and return the information in a formatted string
         '''
         try:
             context = self.knowledge.search(self.goal)
-            return context[:500] #limit size
+            formatted = f"""
+            Relevant Knowledge:
+            -------------------
+            {context}
+            """
+            return formatted
         except TypeError:
-            return "No reelevant knowledge found"
+            return "No relevant knowledge found"

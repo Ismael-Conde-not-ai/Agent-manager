@@ -62,9 +62,24 @@ class KnowledgeBase:
         
         scores.sort(reverse=True)
 
+        #Get top chunks
         top_chunks = [self.documents[idx] for _, idx in scores[:top_k]]
 
-        return "\n".join(top_chunks)
+        #Remove duplicates
+        top_chunks = self.remove_duplicates(top_chunks)
+
+        #Limit size
+        final_chunks =[]
+        total_length = 0
+        max_length = 800 #control context size optional
+
+        for chunk in top_chunks:
+            if total_length + len(chunk) > max_length:
+                break
+            final_chunks.append(chunk)
+            total_length += len(chunk)
+
+        return "\n\n".join(final_chunks)
     
     def split_into_chunks(self, text,chunk_size=200):
         '''
@@ -80,4 +95,15 @@ class KnowledgeBase:
             chunks.append(chunk)
         
         return chunks
+    
+    def remove_duplicates(self,chunks):
+        '''
+        Creates a list of unique chunks, review a list of chunks and seves the not repeated 
+        ones, then return the unique list.
+        '''
+        unique =[]
+        for chunk in chunks:
+            if chunk not in unique:
+                unique.append(chunk)
+        return unique
 
