@@ -115,5 +115,7 @@
   "Executed tool: work | Energy: 60",
   "Plan step executed: work",
   "Agent recharged",
-  "Executed tool: recharge | Energy: 100"
+  "Executed tool: recharge | Energy: 100",
+  "Context used: No relevant knowledge found",
+  "Executed tool: search_knowledge | Energy: 100"
 ]

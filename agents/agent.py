@@ -105,8 +105,18 @@ class AIagent:
             print("No plan available")
             return
         step = self.plan.pop(0)
-        print (f"\nExecuting step: {step}")
-        self.execute_tool(step)
+        
+        decision = self.decide_next_action(step)
+
+        action = self.parse_action(decision)
+
+        if action not in self.tool_registry.list_tools():
+            action = step 
+        
+        logger.info(f"{self.name} decision: {decision}")
+        logger.info(f"{self.name} chose action: {action}")
+
+        self.execute_tool(action)
         self.memory.append(f"Plan step executed: {step}")
 
     def autonomousStep (self):
@@ -149,3 +159,49 @@ class AIagent:
             return formatted
         except TypeError:
             return "No relevant knowledge found"
+        
+    def decide_next_action(self,step):
+
+        context = self.get_relevant_context()
+
+        prompt = f"""
+        You are an intelligent AI agent.
+
+        Goal:
+        {self.goal}
+
+        Current step:
+        {step}
+
+        Relevant knowledge:
+        {context}
+
+        Recent memory:
+        {self.memory[-5:]}
+
+        Available tools:
+        {", ".join(self.tool_registry.list_tools())}
+
+        Instructions:
+        - Decide the best tool to use
+        - Explain your reasoning
+        - Be concise
+
+        Return in this format:
+        Action: <tool_name>
+        Reason: <short explanation>
+        
+        """
+        response = self.geminiAI(prompt)
+        output = response.strip().lower()
+        return output
+    
+    def parse_action(self,decision_text):
+
+        lines = decision_text.split("\n")
+        action = None
+
+        for line in lines:
+            if "action" in line:
+                action = line.split("action:")[-1].strip()
+        return action
