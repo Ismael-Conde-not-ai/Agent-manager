@@ -59,7 +59,9 @@ class AIagent:
         logger.info(f"{self.name} executed tool: {toolName}")
         logger.info(f"{self.name} energy level: {self.energy}")
         self.memory.append(result)
-        self.memory.append(f"Executed tool: {toolName} | Energy: {self.energy}")
+        self.memory.append({"action": toolName,
+                            "result": result,
+                            "energy": self.energy})
         self.save_memory()
 
     def create_plan (self):
@@ -163,6 +165,7 @@ class AIagent:
     def decide_next_action(self,step):
 
         context = self.get_relevant_context()
+        memory_context = self.get_memory_context()
 
         prompt = f"""
         You are an intelligent AI agent.
@@ -177,14 +180,15 @@ class AIagent:
         {context}
 
         Recent memory:
-        {self.memory[-5:]}
+        {memory_context}
 
         Available tools:
         {", ".join(self.tool_registry.list_tools())}
 
         Instructions:
-        - Decide the best tool to use
-        - Explain your reasoning
+        - Use BOTH knowledge and past experience
+        - Avoid repeating useless actions
+        - Choose the most effective tool
         - Be concise
 
         Return in this format:
@@ -205,3 +209,26 @@ class AIagent:
             if "action" in line:
                 action = line.split("action:")[-1].strip()
         return action
+    
+    def get_memory_context(self):
+
+        if not self.memory:
+            return "No past experience"
+        recent_memory = self.recentMemory()
+
+        
+        formatting = []
+
+        for m in recent_memory:
+            if isinstance(m,dict):
+                formatting.append(
+                    f"-action: {m['action']}, result: {m['result']}, energy: {m['energy']}"
+                    )
+            else:
+                formatting.append(m)
+        formatted = "\n".join(formatting)
+
+        return f"""
+                Recent Experience:
+                {formatted}
+                """
