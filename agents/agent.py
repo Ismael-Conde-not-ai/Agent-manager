@@ -6,6 +6,7 @@ from tools.rest import rest
 from core.logger import logger
 from knowledge.knowledge_base import KnowledgeBase
 from tools.search_knowledge import search_knowledge
+from pathlib import Path
 
 class AIagent:
     """
@@ -108,14 +109,15 @@ class AIagent:
             return
         step = self.plan.pop(0)
         
-        decision = self.decide_next_action(step)
+        decision_text = self.decide_next_action(step)
+        logger.info(f"RAW decision output: {decision_text}")
 
-        action = self.parse_action(decision)
+        action,decision_data = self.parse_action(decision_text)
 
         if action not in self.tool_registry.list_tools():
             action = step 
         
-        logger.info(f"{self.name} decision: {decision}")
+        logger.info(f"{self.name} decision: {decision_data}")
         logger.info(f"{self.name} chose action: {action}")
 
         self.execute_tool(action)
@@ -133,11 +135,13 @@ class AIagent:
         '''
         Loads memory fron memory.json to memory atribute.
         '''
+        memory_path = Path(__file__).resolve().parent.parent / "data" / "memory.json"
         try:
-            with open("data/memory.json","r") as file:
+            with memory_path.open("r", encoding="utf-8") as file:
                 self.memory = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            self.memory=[]
+        except Exception as e:
+            print("Memory load failed:", e)
+            self.memory = []
     
     def save_memory(self):
         '''
@@ -191,9 +195,15 @@ class AIagent:
         - Choose the most effective tool
         - Be concise
 
-        Return in this format:
-        Action: <tool_name>
-        Reason: <short explanation>
+        You must think and decide the best action.
+
+        Return ONLY valid JSON in this format:
+
+        {{
+        "thought": "your reasoning",
+        "action": "tool_name",
+        "reason": "why this action"
+        }}
         
         """
         response = self.geminiAI(prompt)
@@ -202,13 +212,11 @@ class AIagent:
     
     def parse_action(self,decision_text):
 
-        lines = decision_text.split("\n")
-        action = None
-
-        for line in lines:
-            if "action" in line:
-                action = line.split("action:")[-1].strip()
-        return action
+        try:
+            desicion = json.loads(decision_text)
+            return desicion.get("action"),desicion
+        except json.JSONDecodeError:
+            return "rest", {"error": "invalid json"}
     
     def get_memory_context(self):
 

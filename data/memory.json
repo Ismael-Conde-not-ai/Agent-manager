@@ -17,5 +17,50 @@
     "action": "work",
     "result": "Agent worked",
     "energy": 60
+  },
+  "Context used: No relevant knowledge found",
+  {
+    "action": "search_knowledge",
+    "result": "Context used: No relevant knowledge found",
+    "energy": 100
+  },
+  "Agent rested",
+  {
+    "action": "rest",
+    "result": "Agent rested",
+    "energy": 100
+  },
+  "Plan step executed: 1. search_knowledge",
+  "Agent rested",
+  {
+    "action": "rest",
+    "result": "Agent rested",
+    "energy": 100
+  },
+  "Agent rested",
+  {
+    "action": "rest",
+    "result": "Agent rested",
+    "energy": 100
+  },
+  "Plan step executed: 1. search_knowledge",
+  "Agent worked",
+  {
+    "action": "work",
+    "result": "Agent worked",
+    "energy": 80
+  },
+  "Plan step executed: 2. work",
+  "Agent worked",
+  {
+    "action": "work",
+    "result": "Agent worked",
+    "energy": 60
+  },
+  "Context used: No relevant knowledge found",
+  {
+    "action": "search_knowledge",
+    "result": "Context used: No relevant knowledge found",
+    "energy": 100
   }
 ]
