@@ -43,12 +43,14 @@ class AIagent:
         print(f"\n Memory of {self.name}:")
         for event in self.memory:
             print("- ",event)
+
     
     def recentMemory(self,limit=5):
         '''
         Return only the last 5 memory entries
         '''
         return self.memory[-limit:]
+    
     
     def execute_tool (self,toolName):
         '''
@@ -65,40 +67,63 @@ class AIagent:
                             "energy": self.energy})
         self.save_memory()
 
+
     def create_plan (self):
+        """
+        Creates a structured plan for the agent to follow.
+        """
 
         context = self.get_relevant_context()
+        memory_context = self.get_memory_context()
 
-        prompt =f"""
-        You are an autonomous AI agent.
+        prompt = f"""
+        You are an advanced AI agent.
 
-        Agent name: {self.name}
-        Goal: {self.goal}
+        Your goal:
+        {self.goal}
 
-        reelevant knowledge: {context}
+        {context}
 
-        recent memory: {self.memory[:-5]}
+        {memory_context}
 
         Available tools:
         {", ".join(self.tool_registry.list_tools())}
 
-        Instructions:
-        - Think step by step
-        - Use the knowledge if relevant
-        - Create a short plan using tool names only
+        Break the goal into a step-by-step plan.
 
-        Return 3 to 5 steps using only the tool names.
+        Return ONLY valid JSON in this format:
+
+        [
+        {{"step": 1, "action": "tool_name"}},
+        {{"step": 2, "action": "tool_name"}}
+        ]
+
+        Rules:
+        - Use only available tools
+        - 3 to 5 steps
+        - Logical order
         """
+
         gemini =self.geminiAI
         plan_text =gemini(prompt).strip().lower()
-        self.plan = plan_text.split("\n")
-        logger.info(f"{self.name} generated a new plan: {self.plan}")
-        print("\nGenerated Plan:")
-        for step in self.plan:
-            print("-", step)
+        self.plan = self.parse_plan(plan_text)
+        print(f"{self.name} generated structured plan: {self.plan}")
+        logger.info(f"{self.name} generated structured plan: {self.plan}")
 
         logger.info(f"{self.name} used context: {context[:100]}")
-    
+
+
+    def parse_plan(self,plan_text):
+        '''
+        Parses the plan text into a list of steps.
+        '''
+        try:
+            plan = json.loads(plan_text)
+            return [step["action"] for step in plan]
+        except json.JSONDecodeError:
+            return ["rest"]  # Default action if parsing fails
+        
+
     def execute_plan_step (self):
         '''
         Executes the plan created with AI, if not plan it returns none.
@@ -123,6 +148,7 @@ class AIagent:
         self.execute_tool(action)
         self.memory.append(f"Plan step executed: {step}")
 
+
     def autonomousStep (self):
         '''
         Calls methods to create a plan and then execute it. 
@@ -130,6 +156,7 @@ class AIagent:
         if not self.plan:
             self.create_plan()
         self.execute_plan_step()
+
 
     def load_memory(self):
         '''
@@ -142,6 +169,7 @@ class AIagent:
         except Exception as e:
             print("Memory load failed:", e)
             self.memory = []
+
     
     def save_memory(self):
         '''
@@ -149,6 +177,7 @@ class AIagent:
         '''
         with open("data/memory.json","w") as file:
             json.dump(self.memory,file,indent=2)
+            
 
     def get_relevant_context(self):
         '''
@@ -166,8 +195,11 @@ class AIagent:
         except TypeError:
             return "No relevant knowledge found"
         
+        
     def decide_next_action(self,step):
-
+        """
+        Decides the next action for the agent based on the current step.
+        """
         context = self.get_relevant_context()
         memory_context = self.get_memory_context()
 
@@ -210,20 +242,25 @@ class AIagent:
         output = response.strip().lower()
         return output
     
+    
     def parse_action(self,decision_text):
-
+        """
+        Parses the decision text into a structured action and reasoning.
+        """
         try:
             desicion = json.loads(decision_text)
             return desicion.get("action"),desicion
         except json.JSONDecodeError:
             return "rest", {"error": "invalid json"}
+        
     
     def get_memory_context(self):
-
+        """
+        Returns the recent memory context for the agent.
+        """
         if not self.memory:
             return "No past experience"
         recent_memory = self.recentMemory()
-
         
         formatting = []
 

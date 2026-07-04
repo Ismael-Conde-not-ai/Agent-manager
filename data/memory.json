@@ -62,5 +62,11 @@
     "action": "search_knowledge",
     "result": "Context used: No relevant knowledge found",
     "energy": 100
+  },
+  "Agent worked",
+  {
+    "action": "work",
+    "result": "Agent worked",
+    "energy": 80
   }
 ]
