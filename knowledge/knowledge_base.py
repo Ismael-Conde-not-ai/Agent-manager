@@ -2,6 +2,7 @@
 import os
 import numpy as np
 from api.apiClient import geminiEmbed
+from api.apiClient import ollamaEmbed
 
 
 class KnowledgeBase:
@@ -14,7 +15,10 @@ class KnowledgeBase:
         self.folder = folder
         self.documents = []
         self.embeddings = []
+        self.local_embeddings = False  # Flag to indicate whether to use local embeddings or not
+
         self.load_documents()
+        
 
     def load_documents(self):
         '''
@@ -34,7 +38,10 @@ class KnowledgeBase:
 
                 self.documents.append(chunk)
 
-                embedding = geminiEmbed(chunk)
+                if self.local_embeddings:
+                    embedding = ollamaEmbed(chunk)
+                else:
+                    embedding = geminiEmbed(chunk)
 
                 self.embeddings.append(embedding)
 
@@ -52,7 +59,10 @@ class KnowledgeBase:
         Saves the results in scores and then sort them in descending
         saves the top k chunks and return them in a string separated by newlines
         '''
-        query_embedding= geminiEmbed(query)
+        if self.local_embeddings:
+            query_embedding = ollamaEmbed(query)
+        else:
+            query_embedding= geminiEmbed(query)
 
         scores = []
 

@@ -15,6 +15,7 @@ class AIagent:
     """
     
     from api.apiClient import geminiAI
+    from api.apiClient import ollamaAI
     
     def __init__(self,name,goal,initial_energy,initial_status):
         self.name :str = name
@@ -23,6 +24,7 @@ class AIagent:
         self.status :str = initial_status
         self.memory = []
         self.plan = []
+        self.use_local_model = False #flag to indicate whether to use local model or not
 
         self.knowledge =KnowledgeBase()
 
@@ -95,17 +97,22 @@ class AIagent:
 
         [
         {{"step": 1, "action": "tool_name"}},
-        {{"step": 2, "action": "tool_name"}}
+        {{"step": 2, "action": "tool_name"}},
+        {{"step": 3, "action": "tool_name"}}
         ]
 
         Rules:
         - Use only available tools
         - 3 to 5 steps
         - Logical order
+        
         """
+        if getattr(self, 'use_local_model', False):
+            ai_function = self.ollamaAI
+        else:
+            ai_function = self.geminiAI
 
-        gemini =self.geminiAI
-        plan_text =gemini(prompt).strip().lower()
+        plan_text = ai_function(prompt).strip().lower()
         self.plan = self.parse_plan(plan_text)
         print(f"{self.name} generated structured plan: {self.plan}")
         logger.info(f"{self.name} generated structured plan: {self.plan}")
@@ -139,11 +146,16 @@ class AIagent:
 
         action,decision_data = self.parse_action(decision_text)
 
+        # Validate action against available tools
         if action not in self.tool_registry.list_tools():
-            action = step 
+            logger.info(f"{self.name} invalid action, using fallback")
+            if self.energy < 30:
+                action = "recharge"
+            else:
+                action = step 
         
-        logger.info(f"{self.name} decision: {decision_data}")
-        logger.info(f"{self.name} chose action: {action}")
+        logger.info(f"{self.name} planned step: {step}")
+        logger.info(f"{self.name} final action: {action}")
 
         self.execute_tool(action)
         self.memory.append(f"Plan step executed: {step}")
@@ -204,41 +216,45 @@ class AIagent:
         memory_context = self.get_memory_context()
 
         prompt = f"""
-        You are an intelligent AI agent.
+            You are an advanced AI agent.
 
-        Goal:
-        {self.goal}
+            Your goal:
+            {self.goal}
 
-        Current step:
-        {step}
+            Current planned step:
+            {step}
 
-        Relevant knowledge:
-        {context}
+            {context}
 
-        Recent memory:
-        {memory_context}
+            {memory_context}
 
-        Available tools:
-        {", ".join(self.tool_registry.list_tools())}
+            Available tools:
+            {", ".join(self.tool_registry.list_tools())}
 
-        Instructions:
-        - Use BOTH knowledge and past experience
-        - Avoid repeating useless actions
-        - Choose the most effective tool
-        - Be concise
+            Instructions:
+            - You are NOT forced to follow the planned step
+            - Choose the BEST action based on context
+            - If the step is not optimal, override it
+            - If energy is below 30, prioritize recharge or rest
+            - Prioritize:
+            1. Getting information (search_knowledge) if needed
+            2. Energy management (recharge/rest) if low energy
+            3. Execution (work) when ready
 
-        You must think and decide the best action.
+            Return ONLY valid JSON:
 
-        Return ONLY valid JSON in this format:
-
-        {{
-        "thought": "your reasoning",
-        "action": "tool_name",
-        "reason": "why this action"
-        }}
+            {{
+            "thought": "...",
+            "action": "tool_name",
+            "reason": "..."
+            }}
+            """
+        if getattr(self, 'use_local_model', False):
+            ai_function = self.ollamaAI
+        else:
+            ai_function = self.geminiAI
         
-        """
-        response = self.geminiAI(prompt)
+        response = ai_function(prompt)
         output = response.strip().lower()
         return output
     
