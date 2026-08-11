@@ -106,5 +106,25 @@
     "action": "search_knowledge",
     "result": "Context used: No relevant knowledge found",
     "energy": 100
+  },
+  "Agent worked",
+  {
+    "action": "work",
+    "result": "Agent worked",
+    "energy": 80
+  },
+  "Plan step executed: search_knowledge",
+  "Context used: No relevant knowledge found",
+  {
+    "action": "search_knowledge",
+    "result": "Context used: No relevant knowledge found",
+    "energy": 80
+  },
+  "Plan step executed: work",
+  "Context used: No relevant knowledge found",
+  {
+    "action": "search_knowledge",
+    "result": "Context used: No relevant knowledge found",
+    "energy": 80
   }
 ]

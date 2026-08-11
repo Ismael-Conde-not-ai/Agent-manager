@@ -1,8 +1,8 @@
 #from http import client
 import os
 import numpy as np
-from api.apiClient import geminiEmbed
-from api.apiClient import ollamaEmbed
+from api.api_client import geminiEmbed
+from api.api_client import ollamaEmbed
 
 
 class KnowledgeBase:

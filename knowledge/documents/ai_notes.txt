@@ -1,7 +1,29 @@
-Work efficiently while maintaining energy
+## Key Pillars of AI Agents
+AI agents in this project work best when they seamlessly combine four core capabilities:
+*   **Planning:** Creating a roadmap to achieve the goal.
+*   **Tools:** Executing specific actions in the environment.
+*   **Memory:** Remembering past interactions and states.
+*   **Retrieval:** Accessing external data to inform actions.
 
-Artificial intelligence agents can use planning, tools, and memory to achieve goals.
+### The Agent Workflow
+A high-performing agent follows a structured sequence to tackle any task:
+1.  **Understand:** Comprehend the ultimate goal.
+2.  **Search:** Look up relevant knowledge.
+3.  **Plan:** Create a short execution plan.
+4.  **Act:** Choose the best tool for the job.
 
-Retrieval-Augmented Generation (RAG) allows AI systems to retrieve relevant information from documents before generating answers.
+---
 
-This technique improves accuracy and allows the system to work with external knowledge.
+### Core System Tools
+The system provides a specific toolkit to help the agent complete tasks while balancing its internal state:
+
+| Tool | Primary Purpose |
+| :--- | :--- |
+| `work` | Executes the task and achieves objectives efficiently. |
+| `recharge` / `rest` | Restores the agent's energy when levels are low. |
+| `search_knowledge` | Retrieves context when the agent needs more information. |
+
+---
+
+> ### 💡 Maximizing Performance with RAG
+> **Retrieval-Augmented Generation (RAG)** works best when your knowledge base contains clear, factual, and self-contained information that aligns perfectly with the agent's current goal.

@@ -1,4 +1,4 @@
-from google import genai
+from google import genai  # noqa: I001
 import ollama
 import os
 from dotenv import load_dotenv
@@ -6,7 +6,7 @@ load_dotenv()
 
 local_model = 'gemma4:e2b'
 
-def geminiAI (self,prompt:str)->str:
+def geminiAI (prompt:str)->str:
     '''
     Gemini 3 flash preview receives a promt and return the answer in a string
     '''
@@ -27,7 +27,7 @@ def geminiEmbed (document):
     )
     return result.embeddings[0].values
 
-def ollamaAI (self,prompt:str)->str:
+def ollamaAI (prompt:str)->str:
     '''
     Ollama receives a promt and return the answer in a string
     '''

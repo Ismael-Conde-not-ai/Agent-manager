@@ -1,66 +1,65 @@
 import json
-from tools.registry import ToolRegistry
-from tools.work import work
-from tools.recharge import recharge
-from tools.rest import rest
+from pathlib import Path
+
+from api.api_client import geminiAI, ollamaAI
 from core.logger import logger
 from knowledge.knowledge_base import KnowledgeBase
+from tools.recharge import recharge
+from tools.registry import ToolRegistry
+from tools.rest import rest
 from tools.search_knowledge import search_knowledge
-from pathlib import Path
+from tools.work import work
+
 
 class AIagent:
     """
     Represents a simple AI agent with a goal, energy level,
-    and functions asociated with his features.
+    and functions associated with his features.
     """
-    
-    from api.apiClient import geminiAI
-    from api.apiClient import ollamaAI
-    
-    def __init__(self,name,goal,initial_energy,initial_status):
-        self.name :str = name
-        self.goal :str = goal
-        self.energy : int = initial_energy
-        self.status :str = initial_status
+
+    def __init__(self, name, goal, initial_energy, initial_status):
+        self.name: str = name
+        self.goal: str = goal
+        self.energy: int = initial_energy
+        self.status: str = initial_status
         self.memory = []
         self.plan = []
-        self.use_local_model = False #flag to indicate whether to use local model or not
+        self.use_local_model = False
 
-        self.knowledge =KnowledgeBase()
+        self.geminiAI = geminiAI
+        self.ollamaAI = ollamaAI
+
+        self.knowledge = KnowledgeBase()
 
         self.tool_registry = ToolRegistry()
-        self.tool_registry.register("work",work)
-        self.tool_registry.register("recharge",recharge)
-        self.tool_registry.register("rest",rest)
-        self.tool_registry.register("search_knowledge",search_knowledge)
+        self.tool_registry.register("work", work)
+        self.tool_registry.register("recharge", recharge)
+        self.tool_registry.register("rest", rest)
+        self.tool_registry.register("search_knowledge", search_knowledge)
 
         self.load_memory()
-    
-    
 
     def showMemory(self):
-        '''
+        """
         Print the events in the agent's memory
-        '''
+        """
         print(f"\n Memory of {self.name}:")
         for event in self.memory:
-            print("- ",event)
+            print("- ", event)
 
-    
-    def recentMemory(self,limit=5):
-        '''
+    def recentMemory(self, limit=5):
+        """
         Return only the last 5 memory entries
-        '''
+        """
         return self.memory[-limit:]
-    
-    
-    def execute_tool (self,toolName):
-        '''
+
+    def execute_tool(self, toolName):
+        """
         Takes a tool as argument then executes the tool and takes the return in the variable result.
-        Saves the result and the executed tool and the enrgy in memory.
+        Saves the result and the executed tool and the energy in memory.
         Saves the memory in the memory.json using method save_memory()
-        '''
-        result = self.tool_registry.execute(toolName,self)
+        """
+        result = self.tool_registry.execute(toolName, self)
         logger.info(f"{self.name} executed tool: {toolName}")
         logger.info(f"{self.name} energy level: {self.energy}")
         self.memory.append(result)
@@ -69,8 +68,7 @@ class AIagent:
                             "energy": self.energy})
         self.save_memory()
 
-
-    def create_plan (self):
+    def create_plan(self):
         """
         Creates a structured plan for the agent to follow.
         """
@@ -119,32 +117,30 @@ class AIagent:
 
         logger.info(f"{self.name} used context: {context[:100]}")
 
-
-    def parse_plan(self,plan_text):
-        '''
+    def parse_plan(self, plan_text):
+        """
         Parses the plan text into a list of steps.
-        '''
+        """
         try:
             plan = json.loads(plan_text)
             return [step["action"] for step in plan]
         except json.JSONDecodeError:
             return ["rest"]  # Default action if parsing fails
-        
 
-    def execute_plan_step (self):
-        '''
+    def execute_plan_step(self):
+        """
         Executes the plan created with AI, if not plan it returns none.
         calls execute_tool to use the tool and saves a binnacle in memory
-        '''
+        """
         if not self.plan:
             print("No plan available")
             return
         step = self.plan.pop(0)
-        
+
         decision_text = self.decide_next_action(step)
         logger.info(f"RAW decision output: {decision_text}")
 
-        action,decision_data = self.parse_action(decision_text)
+        action, _decision_data = self.parse_action(decision_text)
 
         # Validate action against available tools
         if action not in self.tool_registry.list_tools():
@@ -152,50 +148,46 @@ class AIagent:
             if self.energy < 30:
                 action = "recharge"
             else:
-                action = step 
-        
+                action = step
+
         logger.info(f"{self.name} planned step: {step}")
         logger.info(f"{self.name} final action: {action}")
 
         self.execute_tool(action)
         self.memory.append(f"Plan step executed: {step}")
 
-
-    def autonomousStep (self):
-        '''
-        Calls methods to create a plan and then execute it. 
-        '''
+    def autonomousStep(self):
+        """
+        Calls methods to create a plan and then execute it.
+        """
         if not self.plan:
             self.create_plan()
         self.execute_plan_step()
 
-
     def load_memory(self):
-        '''
-        Loads memory fron memory.json to memory atribute.
-        '''
+        """
+        Loads memory from memory.json to memory attribute.
+        """
         memory_path = Path(__file__).resolve().parent.parent / "data" / "memory.json"
         try:
             with memory_path.open("r", encoding="utf-8") as file:
                 self.memory = json.load(file)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print("Memory load failed:", e)
             self.memory = []
 
-    
     def save_memory(self):
-        '''
-        Saves the memory[] atribute to a memory.json.
-        '''
+        """
+        Saves the memory[] attribute to a memory.json.
+        """
         with open("data/memory.json","w") as file:
             json.dump(self.memory,file,indent=2)
-            
 
     def get_relevant_context(self):
-        '''
-        Searchs information inside knowledge instance atributes using search method
+        """
+        Searches information inside knowledge instance attributes using search method
         saves the relevant information in context and return the information in a formatted string
-        '''
+        """
         try:
             context = self.knowledge.search(self.goal)
             formatted = f"""
@@ -206,9 +198,8 @@ class AIagent:
             return formatted
         except TypeError:
             return "No relevant knowledge found"
-        
-        
-    def decide_next_action(self,step):
+
+    def decide_next_action(self, step):
         """
         Decides the next action for the agent based on the current step.
         """
@@ -253,23 +244,21 @@ class AIagent:
             ai_function = self.ollamaAI
         else:
             ai_function = self.geminiAI
-        
+
         response = ai_function(prompt)
         output = response.strip().lower()
         return output
-    
-    
-    def parse_action(self,decision_text):
+
+    def parse_action(self, decision_text):
         """
         Parses the decision text into a structured action and reasoning.
         """
         try:
             desicion = json.loads(decision_text)
-            return desicion.get("action"),desicion
+            return desicion.get("action"), desicion
         except json.JSONDecodeError:
             return "rest", {"error": "invalid json"}
-        
-    
+
     def get_memory_context(self):
         """
         Returns the recent memory context for the agent.
@@ -277,14 +266,14 @@ class AIagent:
         if not self.memory:
             return "No past experience"
         recent_memory = self.recentMemory()
-        
+
         formatting = []
 
         for m in recent_memory:
-            if isinstance(m,dict):
+            if isinstance(m, dict):
                 formatting.append(
                     f"-action: {m['action']}, result: {m['result']}, energy: {m['energy']}"
-                    )
+                )
             else:
                 formatting.append(m)
         formatted = "\n".join(formatting)
