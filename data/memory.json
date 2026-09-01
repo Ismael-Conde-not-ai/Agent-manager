@@ -1,145 +1,22 @@
-[
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 100
-  },
-  "Agent worked",
-  {
-    "action": "work",
-    "result": "Agent worked",
-    "energy": 80
-  },
-  "Plan step executed: search_knowledge",
-  "Agent worked",
-  {
-    "action": "work",
-    "result": "Agent worked",
-    "energy": 60
-  },
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 100
-  },
-  "Agent rested",
-  {
-    "action": "rest",
-    "result": "Agent rested",
-    "energy": 100
-  },
-  "Plan step executed: 1. search_knowledge",
-  "Agent rested",
-  {
-    "action": "rest",
-    "result": "Agent rested",
-    "energy": 100
-  },
-  "Agent rested",
-  {
-    "action": "rest",
-    "result": "Agent rested",
-    "energy": 100
-  },
-  "Plan step executed: 1. search_knowledge",
-  "Agent worked",
-  {
-    "action": "work",
-    "result": "Agent worked",
-    "energy": 80
-  },
-  "Plan step executed: 2. work",
-  "Agent worked",
-  {
-    "action": "work",
-    "result": "Agent worked",
-    "energy": 60
-  },
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 100
-  },
-  "Agent worked",
-  {
-    "action": "work",
-    "result": "Agent worked",
-    "energy": 80
-  },
-  "Agent rested",
-  {
-    "action": "rest",
-    "result": "Agent rested",
-    "energy": 100
-  },
-  "Plan step executed: search_knowledge",
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 100
-  },
-  "Agent rested",
-  {
-    "action": "rest",
-    "result": "Agent rested",
-    "energy": 100
-  },
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 100
-  },
-  "Agent rested",
-  {
-    "action": "rest",
-    "result": "Agent rested",
-    "energy": 100
-  },
-  "Plan step executed: search_knowledge",
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 100
-  },
-  "Agent worked",
-  {
-    "action": "work",
-    "result": "Agent worked",
-    "energy": 80
-  },
-  "Plan step executed: search_knowledge",
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 80
-  },
-  "Plan step executed: work",
-  "Context used: No relevant knowledge found",
-  {
-    "action": "search_knowledge",
-    "result": "Context used: No relevant knowledge found",
-    "energy": 80
-  },
-  "Agent rested",
-  {
-    "action": "rest",
-    "result": "Agent rested",
-    "success": true,
-    "energy": 100
-  },
-  "Plan step executed: search_knowledge",
-  "error: Test failure",
-  {
-    "action": "work",
-    "result": "error: Test failure",
-    "success": false,
-    "energy": 100
-  }
-]
+{
+  "long_term": [
+    {
+      "action": "rest",
+      "result": "Agent rested",
+      "success": true,
+      "energy": 100
+    },
+    {
+      "action": "search_knowledge",
+      "result": "Context used: No relevant knowledge found",
+      "success": true,
+      "energy": 100
+    },
+    {
+      "action": "work",
+      "result": "Agent worked",
+      "success": true,
+      "energy": 80
+    }
+  ]
+}

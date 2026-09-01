@@ -23,6 +23,8 @@ class AIagent:
         self.energy: int = initial_energy
         self.status: str = initial_status
         self.memory = []
+        self.short_term_memory = []
+        self.long_term_memory = []
         self.plan = []
         self.use_local_model = False
 
@@ -39,20 +41,6 @@ class AIagent:
 
         self.load_memory()
 
-    def showMemory(self):
-        """
-        Print the events in the agent's memory
-        """
-        print(f"\n Memory of {self.name}:")
-        for event in self.memory:
-            print("- ", event)
-
-    def recentMemory(self, limit=5):
-        """
-        Return only the last 5 memory entries
-        """
-        return self.memory[-limit:]
-
     def execute_tool(self, toolName):
         """
         Takes a tool as argument then executes the tool and takes the return in the variable result.
@@ -62,22 +50,27 @@ class AIagent:
         try:
             result = self.tool_registry.execute(toolName, self)
             success = True
-        except Exception as e:
-            result = f"error: {str(e)}"
+        except Exception as e: #noqa: BLE001
+            result = f"error: {str(e)}"  # noqa: RUF010
             success = False
 
             #logger.error(f"Error executing tool {toolName}: {e}")
         logger.info(f"{self.name} success: {success}")
         logger.info(f"{self.name} executed tool: {toolName}")
         logger.info(f"{self.name} energy level: {self.energy}")
-        self.memory.append(result)
 
-        self.memory.append({
+        memory_entry = {
             "action": toolName,
             "result": result,
             "success": success,
             "energy": self.energy
-        })
+        }
+        # Short term memory for reasoning
+        self.short_term_memory.append(memory_entry)
+        # Limit short term memory to last 5 entries
+        self.short_term_memory = self.short_term_memory[-5:]
+        # Long term memory for future reference
+        self.long_term_memory.append(memory_entry)
 
         self.save_memory()
         return success
@@ -92,6 +85,7 @@ class AIagent:
 
         prompt = f"""
         You are an advanced AI agent.
+        Use recent experience to guide your decision.
 
         Your goal:
         {self.goal}
@@ -174,7 +168,7 @@ class AIagent:
             self.plan = []
             self.create_plan()
 
-        self.memory.append(f"Plan step executed: {step}")
+        #self.short_term_memory.append(f"Plan step executed: {step}")
 
     def autonomousStep(self):
         """
@@ -186,22 +180,26 @@ class AIagent:
 
     def load_memory(self):
         """
-        Loads memory from memory.json to memory attribute.
+        Loads long term memory from memory.json to memory attribute.
         """
         memory_path = Path(__file__).resolve().parent.parent / "data" / "memory.json"
         try:
             with memory_path.open("r", encoding="utf-8") as file:
-                self.memory = json.load(file)
+                data = json.load(file)
+                self.long_term_memory = data.get("long_term", [])
         except Exception as e:  # noqa: BLE001
             print("Memory load failed:", e)
-            self.memory = []
+            self.long_term_memory = []
 
     def save_memory(self):
         """
-        Saves the memory[] attribute to a memory.json.
+        Saves the long term memory[] attribute to a memory.json.
+        Only long term memory is saved, short term memory is not saved.
         """
         with open("data/memory.json","w") as file:
-            json.dump(self.memory,file,indent=2)
+            json.dump({
+                "long_term": self.long_term_memory,
+            },file,indent=2)
 
     def get_relevant_context(self):
         """
@@ -244,6 +242,7 @@ class AIagent:
 
             Instructions:
             - You are NOT forced to follow the planned step
+            - Use recent experience and context to guide your decision.
             - Choose the BEST action based on context
             - If the step is not optimal, override it
             - If energy is below 30, prioritize recharge or rest
@@ -286,16 +285,16 @@ class AIagent:
         """
         Returns the recent memory context for the agent.
         """
-        if not self.memory:
-            return "No past experience"
-        recent_memory = self.recentMemory()
+        if not self.short_term_memory:
+            return "No recent experience"
+        #recent_memory = self.recentMemory()
 
         formatting = []
 
-        for m in recent_memory:
+        for m in self.short_term_memory:
             if isinstance(m, dict):
                 formatting.append(
-                    f"-action: {m['action']}, result: {m['result']}, energy: {m['energy']}"
+                    f"-Action: {m['action']}, Result: {m['result']}, Energy: {m['energy']}"
                 )
             else:
                 formatting.append(m)
@@ -303,5 +302,15 @@ class AIagent:
 
         return f"""
                 Recent Experience:
+                -------------------
                 {formatted}
                 """
+
+    def get_long_term_summary(self):
+        """
+        Returns a summary of the long term memory for the agent.
+        """
+        if not self.long_term_memory:
+            return "No long term memory yet."
+
+        return f"Total past actions: {len(self.long_term_memory)}"

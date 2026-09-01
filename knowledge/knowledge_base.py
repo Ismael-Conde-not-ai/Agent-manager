@@ -1,5 +1,5 @@
 #from http import client
-import os
+import os  # noqa: I001
 import numpy as np
 from api.api_client import geminiEmbed
 from api.api_client import ollamaEmbed
