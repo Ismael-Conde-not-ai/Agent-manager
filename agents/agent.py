@@ -59,14 +59,28 @@ class AIagent:
         Saves the result and the executed tool and the energy in memory.
         Saves the memory in the memory.json using method save_memory()
         """
-        result = self.tool_registry.execute(toolName, self)
+        try:
+            result = self.tool_registry.execute(toolName, self)
+            success = True
+        except Exception as e:
+            result = f"error: {str(e)}"
+            success = False
+
+            #logger.error(f"Error executing tool {toolName}: {e}")
+        logger.info(f"{self.name} success: {success}")
         logger.info(f"{self.name} executed tool: {toolName}")
         logger.info(f"{self.name} energy level: {self.energy}")
         self.memory.append(result)
-        self.memory.append({"action": toolName,
-                            "result": result,
-                            "energy": self.energy})
+
+        self.memory.append({
+            "action": toolName,
+            "result": result,
+            "success": success,
+            "energy": self.energy
+        })
+
         self.save_memory()
+        return success
 
     def create_plan(self):
         """
@@ -153,7 +167,13 @@ class AIagent:
         logger.info(f"{self.name} planned step: {step}")
         logger.info(f"{self.name} final action: {action}")
 
-        self.execute_tool(action)
+        success = self.execute_tool(action)
+        if not success:
+            logger.info(f"{self.name} detected failure, re-planning...")
+            #generate a new plan based on memory
+            self.plan = []
+            self.create_plan()
+
         self.memory.append(f"Plan step executed: {step}")
 
     def autonomousStep(self):
@@ -231,6 +251,9 @@ class AIagent:
             1. Getting information (search_knowledge) if needed
             2. Energy management (recharge/rest) if low energy
             3. Execution (work) when ready
+            - If the previous action failed:
+                -avoid repeating the same action
+                -choose an alternative strategy
 
             Return ONLY valid JSON:
 

@@ -5,5 +5,7 @@ def work(agent):
     '''
     agent.energy -= 20
     agent.status = "working"
+    #test failure
+    #raise Exception("Test failure")
 
     return "Agent worked"
