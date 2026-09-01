@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-local_model = 'gemma4:e2b'
+local_model = 'gemma4:e2b' # Local model to use for inference
 
 def geminiAI (prompt:str)->str:
     '''

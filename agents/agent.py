@@ -26,7 +26,7 @@ class AIagent:
         self.short_term_memory = []
         self.long_term_memory = []
         self.plan = []
-        self.use_local_model = False
+        self.use_local_model = False # Flag to indicate whether to use local model or not
 
         self.geminiAI = geminiAI
         self.ollamaAI = ollamaAI
@@ -71,6 +71,12 @@ class AIagent:
         self.short_term_memory = self.short_term_memory[-5:]
         # Long term memory for future reference
         self.long_term_memory.append(memory_entry)
+
+        # Reflection on the last action and update memory accordingly
+        reflection = self.reflect_on_action(memory_entry)
+        self.long_term_memory.append({"reflection": reflection})
+        self.short_term_memory.append({"reflection": reflection})
+        self.short_term_memory = self.short_term_memory[-5:]   
 
         self.save_memory()
         return success
@@ -242,7 +248,7 @@ class AIagent:
 
             Instructions:
             - You are NOT forced to follow the planned step
-            - Use recent experience and context to guide your decision.
+            - Use recent experience and reflections to guide your decision.
             - Choose the BEST action based on context
             - If the step is not optimal, override it
             - If energy is below 30, prioritize recharge or rest
@@ -287,23 +293,23 @@ class AIagent:
         """
         if not self.short_term_memory:
             return "No recent experience"
-        #recent_memory = self.recentMemory()
 
-        formatting = []
+        formatted = []
 
         for m in self.short_term_memory:
-            if isinstance(m, dict):
-                formatting.append(
-                    f"-Action: {m['action']}, Result: {m['result']}, Energy: {m['energy']}"
+
+            if "action" in m:
+                formatted.append(
+                    f"- Action: {m['action']}, Result: {m['result']}, Energy: {m['energy']}"
                 )
-            else:
-                formatting.append(m)
-        formatted = "\n".join(formatting)
+
+            if "reflection" in m:
+                formatted.append(f"- Reflection: {m['reflection']}")
 
         return f"""
                 Recent Experience:
                 -------------------
-                {formatted}
+                {chr(10).join(formatted)}
                 """
 
     def get_long_term_summary(self):
@@ -314,3 +320,34 @@ class AIagent:
             return "No long term memory yet."
 
         return f"Total past actions: {len(self.long_term_memory)}"
+
+    def reflect_on_action(self, last_memory):
+        """
+        Reflects on the last action taken by the agent and updates memory accordingly.
+        """
+        context = self.get_relevant_context()
+
+        prompt = f"""
+        You are an intelligent AI agent.
+
+        Your goal:
+        {self.goal}
+
+        Last action:
+        {last_memory}
+
+        Relevant knowledge:
+        {context}
+
+        Instructions:
+        - Analyze if the action was effective
+        - Suggest improvement if needed
+        - Be concise
+
+        Return in this format:
+        Reflection: <what happened>
+        Improvement: <what to do next time>
+        """
+        response = self.geminiAI(prompt)
+        return response.strip()
+
