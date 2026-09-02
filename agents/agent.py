@@ -71,6 +71,8 @@ class AIagent:
         self.short_term_memory = self.short_term_memory[-5:]
         # Long term memory for future reference
         self.long_term_memory.append(memory_entry)
+        # Limit long term memory to last 100 entries
+        self.long_term_memory = self.long_term_memory[-100:]
 
         # Reflection on the last action and update memory accordingly
         reflection = self.reflect_on_action(memory_entry)
@@ -126,9 +128,9 @@ class AIagent:
 
         plan_text = ai_function(prompt).strip().lower()
         self.plan = self.parse_plan(plan_text)
+        self.plan = self.plan[:5]  # Limit to 5 steps
         print(f"{self.name} generated structured plan: {self.plan}")
         logger.info(f"{self.name} generated structured plan: {self.plan}")
-
         logger.info(f"{self.name} used context: {context[:100]}")
 
     def parse_plan(self, plan_text):
@@ -141,22 +143,29 @@ class AIagent:
         except json.JSONDecodeError:
             return ["rest"]  # Default action if parsing fails
 
-    def execute_plan_step(self):
+    def autonomousStep(self):
         """
-        Executes the plan created with AI, if not plan it returns none.
-        calls execute_tool to use the tool and saves a binnacle in memory
+        Calls methods to create a plan and then executes the plan created with AI, 
+        if not plan it returns none, calls execute_tool to use the tool and saves a binnacle in memory.
         """
-        if not self.plan:
-            print("No plan available")
+        # ♦ Safety stop
+        if len(self.long_term_memory) > 100:
+            logger.info(f"{self.name} Memory limit reached, stopping agent.")
             return
+
+        # ♦ Step 1: Create plan if needed
+        if not self.plan:
+            self.create_plan()
+
+        # ♦ Step 2: Get next step
         step = self.plan.pop(0)
 
+        # ♦ Step 3: Decide action intelligent override
         decision_text = self.decide_next_action(step)
         logger.info(f"RAW decision output: {decision_text}")
-
         action, _decision_data = self.parse_action(decision_text)
 
-        # Validate action against available tools
+        # ♦ Step 4: Fallback handling if the action is not valid
         if action not in self.tool_registry.list_tools():
             logger.info(f"{self.name} invalid action, using fallback")
             if self.energy < 30:
@@ -164,25 +173,30 @@ class AIagent:
             else:
                 action = step
 
-        logger.info(f"{self.name} planned step: {step}")
-        logger.info(f"{self.name} final action: {action}")
-
-        success = self.execute_tool(action)
-        if not success:
+        # ♦ Step 5: Execute
+        sucess = self.execute_tool(action)
+        # ♦ Step 6: If the action failed, self correction
+        if not sucess:
             logger.info(f"{self.name} detected failure, re-planning...")
-            #generate a new plan based on memory
             self.plan = []
             self.create_plan()
 
-        #self.short_term_memory.append(f"Plan step executed: {step}")
+        # ♦ logging
+        logger.info(f"{self.name}")
+        logger.info(f"[PLAN] {self.plan}")
+        logger.info(f"[STEP] {step}")
+        logger.info(f"[ACTION] {action}")
+        logger.info(f"[ENERGY] {self.energy}")
 
-    def autonomousStep(self):
-        """
-        Calls methods to create a plan and then execute it.
-        """
-        if not self.plan:
-            self.create_plan()
-        self.execute_plan_step()
+        # ♦ Agent energy protection
+        if self.energy <= 0:
+            logger.info("Agent exausted, forcing recharge...")
+            self.execute_tool("recharge")
+            return
+
+        # ♦ Execution cooldown to prevent spam
+        import time
+        time.sleep(1)
 
     def load_memory(self):
         """
