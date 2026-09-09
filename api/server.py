@@ -1,12 +1,16 @@
 from fastapi import FastAPI
 from agents.agent import AIagent
-from core.agentManager import aIagentManager
+from agents.research_agent import ResearchAgent
+from core.manager import Manager
 from core.config_loader import load_agent_config
 
 app = FastAPI()
 
-manager = aIagentManager()
+manager = Manager()
 agent = None
+research_agent = ResearchAgent()
+
+manager.add_agent(research_agent)  # Add the research agent to the manager
 
 @app.get("/")
 def read_root():
@@ -57,7 +61,7 @@ def agent_status():
         "goal":agent.goal,
         "energy":agent.energy,
         "status":agent.status,
-        "memory":agent.memory
+        "memory":agent.short_term_memory
     }
 
 @app.get("/system/health")
@@ -78,7 +82,7 @@ def system_metrics ():
         "agent_name":agent.name,
         "energy": agent.energy,
         "status":agent.status,
-        "memory_entries":len(agent.memory),
+        "memory_entries":len(agent.long_term_memory),
         "remaining_plan_steps": len(agent.plan)
     }
 
@@ -93,3 +97,21 @@ def get_logs():
     
     except FileNotFoundError:
         return {"error","Log file not found"}
+
+@app.post("/research")
+def research(query: str):
+    '''Research agent performs research on a given query'''
+    result = research_agent.research(query)
+
+    return{
+        "agent": research_agent.name,
+        "query": query,
+        "result": result
+    }
+
+@app.get("/agents")
+def list_agents():
+    '''Returns a list of all agents managed by the system'''
+    return{
+        "agents":manager.list_agents()
+    }

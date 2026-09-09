@@ -66,9 +66,9 @@ class KnowledgeBase:
 
         scores = []
 
-        for emb in self.embeddings:
+        for index,emb in enumerate(self.embeddings):
             score = self.cosine_similarity(query_embedding,emb)
-            scores.append(score)
+            scores.append((score, index))
         
         scores.sort(reverse=True)
 

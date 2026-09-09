@@ -22,7 +22,6 @@ class AIagent:
         self.goal: str = goal
         self.energy: int = initial_energy
         self.status: str = initial_status
-        self.memory = []
         self.short_term_memory = []
         self.long_term_memory = []
         self.plan = []

@@ -1,8 +1,12 @@
 from agents.agent import AIagent
-from core.agentManager import aIagentManager
+from core.manager import Manager
 
-agent1 = AIagent(name="Alpha",goal="Work efficiently while maintaining energy")
+from agents.research_agent import ResearchAgent
 
-manager = aIagentManager()
-manager.add_agent(agent1)
-manager.runSimulation(8)
+research_agent = ResearchAgent()
+
+result = research_agent.research(
+    "How do AI agents use planning?"
+)
+
+print(result)
