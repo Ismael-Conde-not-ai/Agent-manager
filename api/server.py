@@ -1,6 +1,9 @@
 from fastapi import FastAPI
+
 from agents.agent import AIagent
 from agents.research_agent import ResearchAgent
+from agents.planner_agent import PlannerAgent
+
 from core.manager import Manager
 from core.config_loader import load_agent_config
 
@@ -9,8 +12,9 @@ app = FastAPI()
 manager = Manager()
 agent = None
 research_agent = ResearchAgent()
-
+planner_agent = PlannerAgent()
 manager.add_agent(research_agent)  # Add the research agent to the manager
+manager.add_agent(planner_agent)  # Add the planner agent to the manager
 
 @app.get("/")
 def read_root():
@@ -107,6 +111,18 @@ def research(query: str):
         "agent": research_agent.name,
         "query": query,
         "result": result
+    }
+
+@app.post("/plan")
+def create_plan(goal: str):
+    '''Planner agent creates a plan based on a given goal'''
+    plan_text = planner_agent.create_plan(goal)
+    plan = planner_agent.parse_plan(plan_text)
+
+    return{
+        "agent": planner_agent.name,
+        "goal": goal,
+        "plan": plan
     }
 
 @app.get("/agents")
