@@ -851,3 +851,40 @@ reason: since the initial search returned no specific context, i will proceed to
 2026-09-09 00:06:43,337 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
 2026-09-09 00:08:27,512 - AFC is enabled with max remote calls: 10.
 2026-09-09 00:08:32,714 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-10 21:05:40,353 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-10 21:07:07,077 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-10 21:07:08,181 - AFC is enabled with max remote calls: 10.
+2026-09-10 21:07:18,283 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-11 01:07:24,743 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:09:31,155 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:10:51,356 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:11:00,148 - [WORKFLOW] Starting research for: How do AI agents use planning?
+2026-09-11 01:11:02,230 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:11:03,180 - AFC is enabled with max remote calls: 10.
+2026-09-11 01:11:54,521 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-11 01:11:54,536 - [WORKFLOW] Research completed
+2026-09-11 01:11:55,396 - AFC is enabled with max remote calls: 10.
+2026-09-11 01:12:00,095 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-11 01:12:00,097 - [WORKFLOW] Planner received plan
+2026-09-11 01:12:00,097 - [WORKFLOW] Plan generated: [{'step': 1, 'action': 'work', 'description': 'Synthesize the research data to define the processes of task decomposition and reasoning within AI planning frameworks.'}, {'step': 2, 'action': 'work', 'description': 'Formulate a detailed explanation of how reflection and feedback loops allow agents to refine their execution strategies dynamically.'}]
+2026-09-11 01:15:30,504 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:15:39,656 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:15:44,580 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:15:49,897 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:15:56,372 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:16:04,657 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:16:10,177 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:16:23,920 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:16:42,841 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:17:41,600 - [WORKFLOW] Starting research for: What is Retrieval-Augmented Generation?
+2026-09-11 01:17:43,801 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:17:44,732 - AFC is enabled with max remote calls: 10.
+2026-09-11 01:17:57,828 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-11 01:17:57,835 - [WORKFLOW] Research completed
+2026-09-11 01:17:58,739 - AFC is enabled with max remote calls: 10.
+2026-09-11 01:18:12,103 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-11 01:21:06,896 - [WORKFLOW] Starting research for: What is Retrieval-Augmented Generation?
+2026-09-11 01:21:08,946 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-11 01:21:09,889 - AFC is enabled with max remote calls: 10.
+2026-09-11 01:22:06,191 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-11 01:23:07,607 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"

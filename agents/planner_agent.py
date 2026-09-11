@@ -1,5 +1,7 @@
-from api.api_client import geminiAI, geminiEmbed, ollamaAI, ollamaEmbed
 import json
+
+from api.api_client import geminiAI #, geminiEmbed, ollamaAI, ollamaEmbed
+
 
 class PlannerAgent:
     """

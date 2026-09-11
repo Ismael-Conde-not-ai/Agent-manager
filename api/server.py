@@ -125,6 +125,15 @@ def create_plan(goal: str):
         "plan": plan
     }
 
+@app.post("/workflow/research-plan")
+def research_and_plan(goal: str):
+    '''Orchestrates the research and planning process for a given goal'''
+    try:
+        result = manager.research_and_plan(goal)
+        return result
+    except ValueError as e:
+        return {"error": str(e)}
+
 @app.get("/agents")
 def list_agents():
     '''Returns a list of all agents managed by the system'''
