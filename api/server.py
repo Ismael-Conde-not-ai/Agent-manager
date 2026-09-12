@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 
 from agents.agent import AIagent
-from agents.research_agent import ResearchAgent
+from agents.executor_agent import ExecutorAgent
 from agents.planner_agent import PlannerAgent
-
-from core.manager import Manager
+from agents.research_agent import ResearchAgent
 from core.config_loader import load_agent_config
+from core.manager import Manager
 
 app = FastAPI()
 
@@ -13,8 +13,11 @@ manager = Manager()
 agent = None
 research_agent = ResearchAgent()
 planner_agent = PlannerAgent()
+executor_agent = ExecutorAgent()
+
 manager.add_agent(research_agent)  # Add the research agent to the manager
 manager.add_agent(planner_agent)  # Add the planner agent to the manager
+manager.add_agent(executor_agent) # Add ...
 
 @app.get("/")
 def read_root():
@@ -130,6 +133,17 @@ def research_and_plan(goal: str):
     '''Orchestrates the research and planning process for a given goal'''
     try:
         result = manager.research_and_plan(goal)
+        return result
+    except ValueError as e:
+        return {"error": str(e)}
+
+@app.post("/workflow/full")
+def full_workflow(goal: str):
+    '''Conducts research, creates a plan, and executes it for a given goal'''
+    if not agent:
+        return {"error": "No main agent created"}
+    try:
+        result = manager.research_plan_and_execute(goal, agent)
         return result
     except ValueError as e:
         return {"error": str(e)}

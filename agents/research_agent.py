@@ -1,4 +1,4 @@
-from api.api_client import geminiAI #, geminiEmbed, ollamaAI, ollamaEmbed
+from api.api_client import geminiAI  #, geminiEmbed, ollamaAI, ollamaEmbed
 from knowledge.knowledge_base import KnowledgeBase
 
 
