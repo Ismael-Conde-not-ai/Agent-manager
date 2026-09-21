@@ -64,7 +64,7 @@ class Manager:
             "plan": plan
         }
 
-    def research_plan_and_execute(self, goal, agent):
+    def research_plan_and_execute(self, goal, agent, max_retries=1):
         """
         Conducts research, creates a plan, and executes it.
         """
@@ -96,14 +96,46 @@ class Manager:
                 "goal": goal,
                 "research": research_result,
                 "plan": [],
+                "execution": {},
                 "error": "No valid plan generated"
             }
         logger.info(f"[WORKFLOW] Plan generated: {plan}")
 
         #Execution phase
         execution_results = executor_agent.execute_plan(plan, agent)
+        execution_success = execution_results["success"]
         logger.info("[WORKFLOW] Plan execution completed")
+        logger.info(f"[WORKFLOW] Execution success: {execution_success}")
 
+        #Execution failure handling and replanning
+        if not execution_success and max_retries > 0:
+            logger.info("[WORKFLOW] Execution failed. Replanning...")
+
+            retry_plan_text = planner_agent.create_plan(goal, research_result)
+            retry_plan = planner_agent.parse_plan(retry_plan_text)
+            if not retry_plan:
+                return {
+                    "goal": goal,
+                    "research": research_result,
+                    "plan": plan,
+                    "execution": execution_results,
+                    "retry_plan": [],
+                    "error": "Replanning failed."
+                }
+            logger.info(f"[WORKFLOW] Retry plan generated: {retry_plan}")
+            retry_execution = executor_agent.execute_plan(retry_plan, agent)
+            #Result of retry execution
+            logger.info("[WORKFLOW] Retry execution completed")
+            return{
+                "goal": goal,
+                "research": research_result,
+                "plan": plan,
+                "execution": execution_results,
+                "retry_plan": retry_plan,
+                "retry_execution": retry_execution
+            }
+        
+        # Return the results of the main execution
         return {
             "goal": goal,
             "research": research_result,

@@ -59,4 +59,20 @@ class ExecutorAgent:
             if not result["success"]:
                 break
 
-        return self.results
+        return {
+            "success": self.evaluate_results(),
+            "results": self.results
+        }
+
+    def evaluate_results(self):
+        """
+        Evaluates the results of the executed plan.
+        """
+        if not self.results:
+            return False # No results to evaluate
+
+        for result in self.results:
+            if not result.get("success", False):
+                return False # If any step failed, the overall result is a failure
+
+        return True # All steps succeeded
