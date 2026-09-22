@@ -925,3 +925,102 @@ reason: since the initial search returned no specific context, i will proceed to
 2026-09-21 11:39:44,339 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
 2026-09-21 11:39:44,347 - [WORKFLOW] Retry plan generated: [{'step': 1, 'action': 'work', 'description': 'Categorize the research findings into the three core stages of AI planning: task decomposition, plan generation, and iterative refinement.'}, {'step': 2, 'action': 'work', 'description': 'Draft a comprehensive explanation based on these categories to show how planning enables AI agents to transition from reactive to proactive problem-solving.'}]
 2026-09-21 11:39:44,347 - [WORKFLOW] Retry execution completed
+2026-09-21 14:53:56,651 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-21 14:54:15,128 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-21 14:54:37,347 - [WORKFLOW] Starting research for: Build a complete operating system.
+2026-09-21 14:54:37,938 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-21 14:54:38,038 - AFC is enabled with max remote calls: 10.
+2026-09-21 14:56:21,666 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-21 23:33:32,450 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-21 23:33:52,082 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-21 23:34:42,820 - [WORKFLOW] Starting research for: Explain how AI agents use planning.
+2026-09-21 23:34:43,377 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-21 23:34:43,444 - AFC is enabled with max remote calls: 10.
+2026-09-21 23:35:31,420 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-21 23:35:31,428 - [WORKFLOW] Research completed
+2026-09-21 23:35:31,456 - AFC is enabled with max remote calls: 10.
+2026-09-21 23:36:04,900 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-21 23:37:20,894 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:16:45,783 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:16:58,473 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:17:09,334 - [WORKFLOW] Starting research for: Explain how AI agents use planning.
+2026-09-22 00:17:10,005 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:17:10,086 - AFC is enabled with max remote calls: 10.
+2026-09-22 00:17:46,097 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-22 00:17:46,104 - [WORKFLOW] Research completed
+2026-09-22 00:17:46,127 - AFC is enabled with max remote calls: 10.
+2026-09-22 00:17:54,201 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-22 00:17:54,206 - [WORKFLOW] Planner received plan
+2026-09-22 00:17:54,206 - [WORKFLOW] Plan generated: [{'step': 1, 'action': 'work', 'description': 'Analyze the provided research to structure the explanation around core planning concepts: task decomposition and reasoning strategies like Chain-of-Thought.'}, {'step': 2, 'action': 'work', 'description': 'Draft a section on advanced and iterative planning, detailing how agents use reflection, Tree of Thoughts, and feedback loops to refine their actions.'}, {'step': 3, 'action': 'work', 'description': 'Explain the integration of external tools within the planning process and finalize the comprehensive guide on AI agent planning.'}]
+2026-09-22 00:31:15,144 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:32:20,549 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:40:05,891 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:40:35,640 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:40:40,988 - [WORKFLOW] Starting research for: Explain how AI agents use planning.
+2026-09-22 00:40:41,545 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:40:41,608 - AFC is enabled with max remote calls: 10.
+2026-09-22 00:40:59,030 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-22 00:40:59,043 - [WORKFLOW] Research completed
+2026-09-22 00:40:59,072 - AFC is enabled with max remote calls: 10.
+2026-09-22 00:41:04,617 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-22 00:41:04,625 - [WORKFLOW] Planner received plan
+2026-09-22 00:41:04,625 - [WORKFLOW] Plan generated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Review the research information regarding task decomposition, reasoning frameworks, and reflection mechanisms used in AI planning.'}, {'step': 2, 'action': 'work', 'description': 'Draft a structured explanation that highlights how agents break goals into sub-tasks and use reasoning to select appropriate tools.'}, {'step': 3, 'action': 'work', 'description': 'Finalize the explanation by detailing the role of memory and iterative refinement in adjusting plans based on environment feedback.'}]
+2026-09-22 00:41:05,136 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-22 00:41:05,206 - AFC is enabled with max remote calls: 10.
+2026-09-22 00:41:10,290 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-22 00:41:10,296 - [WORKFLOW] Plan execution completed
+2026-09-22 00:41:10,296 - [WORKFLOW] Execution success: True
+2026-09-22 00:41:10,296 - [WORKFLOW] Evaluation result: Based on the research and execution results, AI agents use planning as a strategic bridge between a high-level goal and the concrete actions needed to achieve it. This process is not a single step but a dynamic cycle involving decomposition, reasoning, and constant adjustment.
+
+Here is an explanation of how AI agents utilize planning:
+
+### 1. Task Decomposition
+The planning process begins by breaking down a complex, multifaceted goal into smaller, manageable sub-tasks. 
+*   **Techniques:** Agents often use frameworks like **Chain of Thought (CoT)** to create a linear sequence of steps or **Tree of Thoughts (ToT)** to explore multiple potential paths simultaneously.
+*   **Purpose:** This reduces the cognitive load on the model at any single moment, ensuring that each individual action is focused and achievable.
+
+### 2. Reasoning and Heuristics
+Once a goal is decomposed, the agent must determine the most logical order of operations and the best tools for the job.
+*   **Logical Sequencing:** The agent uses reasoning to identify dependencies (e.g., Step B cannot happen before Step A).
+*   **Tool Selection:** Agents evaluate which external tools (search engines, calculators, APIs) are necessary for each specific sub-task, ensuring the plan is grounded in practical capabilities.
+
+### 3. Reflection and Iterative Refinement
+Planning is rarely static. Agents employ "looping" mechanisms to evaluate the effectiveness of their plan in real-time.
+*   **Self-Criticism:** Through frameworks like **ReAct (Reason + Act)**, the agent observes the outcome of an action and reflects on whether it moved closer to the goal.
+*   **Dynamic Adjustment:** If a specific step fails or the environment provides new information, the agent can pivot, refining the remaining steps of the plan to account for the new context.
+
+### 4. Memory Utilization
+Memory acts as the foundation for both creating and updating a plan.
+*   **Short-term Memory:** The agent maintains the context of the current task to ensure consistency across sub-tasks.
+*   **Long-term Memory:** The agent draws on past experiences or external knowledge bases to inform its strategy, helping it avoid past mistakes and apply proven solutions to new problems.
+
+### Summary
+In essence, AI planning is an **iterative cycle**. The agent decomposes a goal, reasons through the necessary tools, executes a step, reflects on the result using its memory, and refines the plan until the high-level objective is met.
+2026-09-22 00:41:10,296 - [WORKFLOW] Goal not achieved. Replanning...
+2026-09-22 00:41:10,324 - AFC is enabled with max remote calls: 10.
+2026-09-22 00:41:14,388 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-22 00:41:14,397 - [WORKFLOW] Retry execution completed
+2026-09-22 00:41:14,430 - AFC is enabled with max remote calls: 10.
+2026-09-22 00:41:19,413 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-22 00:41:19,420 - [WORKFLOW] Retry evaluation result: Planning is a fundamental capability that allows AI agents to bridge the gap between a high-level user goal and the specific, executable actions required to achieve it. By organizing the planning process into four core pillars, agents can navigate complex environments and handle multi-step tasks effectively.
+
+### 1. Task Decomposition
+The first step in planning is breaking down a broad objective into smaller, manageable sub-tasks. AI agents use specific reasoning techniques to handle this complexity:
+*   **Chain of Thought (CoT):** Encourages the agent to think step-by-step, ensuring each part of the problem is addressed sequentially.
+*   **Tree of Thoughts (ToT):** Allows the agent to explore multiple potential paths at once, evaluating which branch is most likely to lead to a successful outcome.
+
+### 2. Reasoning and Heuristics
+Once a task is decomposed, the agent must determine the most efficient order of operations. Using logical sequences and heuristics, the agent selects the appropriate tools or functions for each specific step. This phase ensures that the agent isn't just acting randomly, but is following a strategic path designed to minimize errors and maximize efficiency.
+
+### 3. Reflection and Refinement
+Planning is rarely a linear, "one-and-done" process. Advanced agents utilize **Reflection** to evaluate their own progress. 
+*   **ReAct Framework:** This "Reason + Act" approach allows the agent to observe the results of an action and reason about what to do next. 
+*   **Dynamic Adjustment:** If an external environment changes or a specific step fails, the agent can engage in self-criticism to refine its plan in real-time, correcting course without needing human intervention.
+
+### 4. Memory Utilization
+Memory provides the necessary context for effective planning.
+*   **Short-term Memory:** The agent keeps track of the current conversation and immediate results of previous steps.
+*   **Long-term Memory:** The agent can reference past experiences or external knowledge bases to inform its current strategy, ensuring it learns from previous successes or failures.
+
+### Summary
+By integrating these pillars, an AI agent transforms from a simple text-generator into an autonomous problem-solver. **Task decomposition** provides the roadmap, **reasoning** selects the tools, **reflection** ensures quality control, and **memory** provides the context, together enabling the agent to execute complex workflows with precision.

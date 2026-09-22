@@ -71,6 +71,7 @@ class Manager:
         research_agent = self.get_agent("ResearchAgent")
         planner_agent = self.get_agent("PlannerAgent")
         executor_agent = self.get_agent("ExecutorAgent")
+        evaluator_agent = self.get_agent("EvaluatorAgent")
 
         if not research_agent:
             raise ValueError("ResearchAgent not found.")
@@ -78,6 +79,8 @@ class Manager:
             raise ValueError("PlannerAgent not found.")
         if not executor_agent:
             raise ValueError("ExecutorAgent not found")
+        if not evaluator_agent:
+            raise ValueError("EvaluatorAgent not found")
 
         # Research phase
         logger.info(f"[WORKFLOW] Starting research for: {goal}")
@@ -103,9 +106,11 @@ class Manager:
 
         #Execution phase
         execution_results = executor_agent.execute_plan(plan, agent)
+        evaluation = evaluator_agent.evaluate(goal, research_result, plan, execution_results)
         execution_success = execution_results["success"]
         logger.info("[WORKFLOW] Plan execution completed")
         logger.info(f"[WORKFLOW] Execution success: {execution_success}")
+        logger.info(f"[WORKFLOW] Evaluation result: {evaluation['evaluation']}")
 
         #Execution failure handling and replanning
         if not execution_success and max_retries > 0:
@@ -134,11 +139,31 @@ class Manager:
                 "retry_plan": retry_plan,
                 "retry_execution": retry_execution
             }
+
+        if not evaluation["success"]:
+            logger.info("[WORKFLOW] Goal not achieved. Replanning...")
+            retry_plan_text = planner_agent.create_plan(goal, research_result)
+            retry_plan = planner_agent.parse_plan(retry_plan_text)
+            retry_execution = executor_agent.execute_plan(retry_plan, agent)
+            logger.info("[WORKFLOW] Retry execution completed")
+            retry_evaluation = evaluator_agent.evaluate(goal, research_result, retry_plan, retry_execution)
+            logger.info(f"[WORKFLOW] Retry evaluation result: {retry_evaluation['evaluation']}")
+            return {
+                "goal": goal,
+                "research": research_result,
+                "plan": plan,
+                "execution": execution_results,
+                "evaluation": evaluation,
+                "retry_plan": retry_plan,
+                "retry_execution": retry_execution,
+                "retry_evaluation": retry_evaluation
+            }
         
         # Return the results of the main execution
         return {
             "goal": goal,
             "research": research_result,
             "plan": plan,
-            "execution": execution_results
+            "execution": execution_results,
+            "evaluation": evaluation
         }

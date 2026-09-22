@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from agents.agent import AIagent
+from agents.evaluator_agent import EvaluatorAgent
 from agents.executor_agent import ExecutorAgent
 from agents.planner_agent import PlannerAgent
 from agents.research_agent import ResearchAgent
@@ -14,10 +15,12 @@ agent = None
 research_agent = ResearchAgent()
 planner_agent = PlannerAgent()
 executor_agent = ExecutorAgent()
+evaluator_agent = EvaluatorAgent()
 
 manager.add_agent(research_agent)  # Add the research agent to the manager
 manager.add_agent(planner_agent)  # Add the planner agent to the manager
-manager.add_agent(executor_agent) # Add ...
+manager.add_agent(executor_agent) # Add the executor agent to the manager
+manager.add_agent(evaluator_agent) # Add the evaluator agent to the manager
 
 @app.get("/")
 def read_root():
