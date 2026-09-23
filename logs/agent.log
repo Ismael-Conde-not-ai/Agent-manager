@@ -1024,3 +1024,63 @@ Memory provides the necessary context for effective planning.
 
 ### Summary
 By integrating these pillars, an AI agent transforms from a simple text-generator into an autonomous problem-solver. **Task decomposition** provides the roadmap, **reasoning** selects the tools, **reflection** ensures quality control, and **memory** provides the context, together enabling the agent to execute complex workflows with precision.
+2026-09-22 16:35:44,212 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:31:51,053 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:32:24,099 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:33:48,069 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:34:02,293 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:34:13,054 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:34:45,247 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:35:37,792 - [ORCHESTRATOR] Starting task: Explain how AI agents use planning.
+2026-09-23 01:35:38,351 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:35:38,427 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:35:47,840 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-23 01:39:04,715 - [ORCHESTRATOR] Starting task: Explain how AI agents use planning.
+2026-09-23 01:39:05,362 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:39:05,423 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:39:15,750 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-23 01:39:15,756 - [ORCHESTRATOR] Research completed
+2026-09-23 01:39:15,797 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:39:26,293 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-23 01:42:37,476 - [ORCHESTRATOR] Starting task: Explain how AI agents use planning.
+2026-09-23 01:42:38,086 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:batchEmbedContents "HTTP/1.1 200 OK"
+2026-09-23 01:42:38,178 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:43:08,801 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-23 01:43:08,813 - [ORCHESTRATOR] Research completed
+2026-09-23 01:43:08,838 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:43:45,214 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-23 01:43:45,218 - [ORCHESTRATOR] Plan created: [{'step': 1, 'action': 'work', 'description': 'Synthesize the provided research data regarding task decomposition and reasoning strategies such as Chain-of-Thought and Tree-of-Thoughts.'}, {'step': 2, 'action': 'work', 'description': 'Structure the explanation of how agents use reflection, self-criticism, and dynamic adjustment frameworks like ReAct to refine plans in real-time.'}, {'step': 3, 'action': 'work', 'description': 'Compile the structured information into a comprehensive explanation detailing the workflow from high-level goal to actionable execution.'}]
+2026-09-23 01:43:45,218 - [ORCHESTRATOR] Execution success:True
+2026-09-23 01:43:45,245 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:43:58,698 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-23 01:43:58,704 - [ORCHESTRATOR] Evaluation:AI agents use planning as a fundamental architectural layer to bridge the gap between a high-level goal and actionable execution. This process allows an agent to move beyond simple pattern matching to intentional, multi-step problem-solving.
+
+The planning process typically follows these core stages:
+
+### 1. Task Decomposition
+The first step in any plan is breaking down a complex objective into smaller, manageable subgoals.
+*   **Sequential Planning:** The agent identifies a linear series of steps to reach a goal.
+*   **Hierarchical Structures:** For more complex tasks, the agent organizes goals into a tree-like structure where a main objective is supported by several sub-tasks, each with its own set of requirements.
+
+### 2. Reasoning Strategies
+Agents use specific cognitive frameworks to determine the best path forward:
+*   **Chain-of-Thought (CoT):** The agent generates a step-by-step internal monologue, ensuring that each part of the plan logically follows the previous one.
+*   **Tree-of-Thoughts (ToT):** The agent explores multiple potential paths simultaneously. By evaluating different "branches" of thought, the agent can look ahead, anticipate obstacles, and select the most efficient or successful route.
+
+### 3. Reflection and Refinement
+Before and during execution, modern agents engage in a "self-criticism" loop.
+*   **Self-Correction:** The agent reviews its proposed plan for logical inconsistencies or potential failures.
+*   **Optimization:** It evaluates if there is a faster or more resource-efficient way to achieve the same result based on internal logic checks.
+
+### 4. Dynamic Adjustment (Execution & Feedback)
+Planning is rarely a one-time event; it is an iterative process. Frameworks like **ReAct (Reason + Act)** allow agents to adjust to real-world variables:
+*   **Environmental Feedback:** As the agent interacts with tools or external environments, it receives new data.
+*   **Real-time Pivoting:** If a tool output returns an error or a result that contradicts the initial plan, the agent uses that feedback to update its strategy and generate a new set of subgoals.
+
+### Summary Workflow
+To reach a goal, an AI agent **decomposes** the task, **reasons** through the steps (via CoT or ToT), **reflects** on potential errors, and **dynamically adjusts** its plan based on the results of its actions. This loop ensures that the agent remains goal-oriented even when faced with complex or changing environments.
+2026-09-23 01:43:58,704 - [ORCHESTRATOR] Goal not achieved. Creating a new plan
+2026-09-23 01:43:58,729 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:44:17,261 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-09-23 01:44:17,295 - AFC is enabled with max remote calls: 10.
+2026-09-23 01:44:33,303 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"

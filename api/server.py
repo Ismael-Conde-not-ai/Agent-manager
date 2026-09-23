@@ -7,10 +7,12 @@ from agents.planner_agent import PlannerAgent
 from agents.research_agent import ResearchAgent
 from core.config_loader import load_agent_config
 from core.manager import Manager
+from core.orchestrator import Orchestrator
 
 app = FastAPI()
 
 manager = Manager()
+orchestrator = Orchestrator(manager)
 agent = None
 research_agent = ResearchAgent()
 planner_agent = PlannerAgent()
@@ -131,22 +133,13 @@ def create_plan(goal: str):
         "plan": plan
     }
 
-@app.post("/workflow/research-plan")
-def research_and_plan(goal: str):
-    '''Orchestrates the research and planning process for a given goal'''
-    try:
-        result = manager.research_and_plan(goal)
-        return result
-    except ValueError as e:
-        return {"error": str(e)}
-
 @app.post("/workflow/full")
 def full_workflow(goal: str):
     '''Conducts research, creates a plan, and executes it for a given goal'''
     if not agent:
         return {"error": "No main agent created"}
     try:
-        result = manager.research_plan_and_execute(goal, agent)
+        result = orchestrator.run(goal, agent)
         return result
     except ValueError as e:
         return {"error": str(e)}
@@ -155,5 +148,13 @@ def full_workflow(goal: str):
 def list_agents():
     '''Returns a list of all agents managed by the system'''
     return{
+        "agents":manager.list_agents()
+    }
+
+@app.get("/orchestrator/status")
+def orchestrator_status():
+    '''Returns the status of the orchestrator and its agents'''
+    return{
+        "status":"ready",
         "agents":manager.list_agents()
     }
