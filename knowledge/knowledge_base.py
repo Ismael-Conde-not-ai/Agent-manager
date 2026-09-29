@@ -34,15 +34,21 @@ class KnowledgeBase:
 
             chunks = self.chunk_text(content)
 
+            total_chunks = len(chunks)
+
             for index, chunk in enumerate(chunks):
                 document_id = (f"{file_name}_chunk_{index}")
+
+                metadata = {
+                    "source": file_name,
+                    "chunk_index": index,
+                    "total_chunks": total_chunks
+                }
+
                 self.vector_store.add_document(
                     document_id, 
-                    chunk, 
-                    {
-                        "source": file_name,
-                        "chunk": index
-                        }
+                    chunk,
+                    metadata
                     )
     
 
@@ -54,22 +60,38 @@ class KnowledgeBase:
         results = self.vector_store.search(query, limit)
 
         documents = results.get("documents", [[]])
+        metadatas = results.get("metadatas", [[]])
+        ids = results.get("ids", [[]])
 
         if not documents or not documents[0]:
             return []
 
-        return documents[0]
+        results_list = []
+        for index, document in enumerate(documents[0]):
+            results_list.append({
+                "id": ids[0][index],
+                "text": document,
+                "metadata": metadatas[0][index]
+            })
 
-    def chunk_text(self, text, chunk_size=250):
+        return results_list
+
+    def chunk_text(self, text, chunk_size=500, overlap=50):
         """
         Split the text into chunks of a specified size.
         """
+        if overlap >= chunk_size:
+            raise ValueError("Overlap must be smaller than chunk size.")
+        
         words = text.split()
         chunks = []
+        start = 0
 
-        for i in range(0, len(words), chunk_size):
-            chunk = " ".join(words[i:i + chunk_size])
+        while start < len(words):
+            end = start + chunk_size
+            chunk = " ".join(words[start:end])
             chunks.append(chunk)
 
+            start += chunk_size - overlap
         return chunks
 
