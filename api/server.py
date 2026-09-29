@@ -158,3 +158,15 @@ def orchestrator_status():
         "status":"ready",
         "agents":manager.list_agents()
     }
+
+@app.get("/knowledge/search")
+def knowledge_search(query: str):
+    '''Searches the knowledge base for relevant information based on a query'''
+    if not agent:
+        return {"error": "No main agent created"}
+    
+    results = agent.knowledge.search(query, limit=3)
+    return {
+        "query": query,
+        "results": results
+    }

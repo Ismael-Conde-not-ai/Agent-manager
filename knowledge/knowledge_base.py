@@ -1,5 +1,6 @@
 import os
 
+from knowledge.context_builder import ContextBuilder
 from knowledge.vector_store import VectorStore
 
 
@@ -12,6 +13,7 @@ class KnowledgeBase:
     
     def __init__(self, folder = "knowledge/documents"):
         self.folder = folder
+        self.context_builder = ContextBuilder()
         self.vector_store = VectorStore()
 
         self.load_documents()
@@ -95,3 +97,9 @@ class KnowledgeBase:
             start += chunk_size - overlap
         return chunks
 
+    def get_context(self, query, limit=3, max_characters=4000):
+        """
+        Get a context string based on the search results for the given query.
+        """
+        results = self.search(query, limit)
+        return self.context_builder.build_context(results, max_characters)

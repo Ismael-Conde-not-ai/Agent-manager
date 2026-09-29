@@ -15,7 +15,7 @@ class ResearchAgent:
         """
         Perform research based on the given query using AI models.
         """
-        context = self.knowledge.search(query)
+        context = self.knowledge.get_context(query, limit=3)
 
         promt = f"""
         You are a research AI agent.
@@ -30,6 +30,7 @@ class ResearchAgent:
         - Analyze the provided knowledge.
         - Extract the most relevant information.
         - Do not invent information.
+        - If the knowledge is insufficient, say so.
         - Give a concise research result.
 
         Return:
