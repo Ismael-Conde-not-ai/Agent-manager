@@ -1,0 +1,1 @@
+AI agent planning is the process of breaking a complex goal into smaller actions. A planner can determine which tools should be used and in what order those tools should be executed.
