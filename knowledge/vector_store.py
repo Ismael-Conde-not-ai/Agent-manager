@@ -17,13 +17,14 @@ class VectorStore:
             metadatas=[metadata or {}]
         )
 
-    def search(self, query, limit=3):
+    def search(self, query, limit=3, metadata_filter=None):
         """
         Search for documents in the vector store.
         """
         results = self.collection.query(
             query_texts=[query],
             n_results=limit,
+            where=metadata_filter,
             include=[
                 "documents",
                 "metadatas",

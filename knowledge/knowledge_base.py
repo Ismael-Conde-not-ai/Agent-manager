@@ -38,11 +38,19 @@ class KnowledgeBase:
 
             total_chunks = len(chunks)
 
+            if file_name == "planning.txt":
+                category = "planning"
+            elif file_name == "ai_notes.txt":
+                category = "ai"
+            else:
+                category = "general"
+
             for index, chunk in enumerate(chunks):
                 document_id = (f"{file_name}_chunk_{index}")
 
                 metadata = {
                     "source": file_name,
+                    "category": category,
                     "chunk_index": index,
                     "total_chunks": total_chunks
                 }
@@ -54,12 +62,26 @@ class KnowledgeBase:
                     )
     
 
-    def search (self, query, limit=3, max_distance=None):
+    def search (self, query, limit=3, max_distance=None,source=None,category=None):
         '''
         Search for relevant documents in the vector store based on the query.
         Returns a list of documents that match the query.
         '''
-        results = self.vector_store.search(query, limit)
+        metadata_filter = None
+        if source is not None:
+            metadata_filter = {"source": source}
+        if category is not None:
+            if metadata_filter is None:
+                metadata_filter = {"category": category}
+            else:
+                metadata_filter = {
+                    "$and": [
+                        metadata_filter,
+                        {"category": category}
+                    ]
+                }
+
+        results = self.vector_store.search(query, limit, metadata_filter)
 
         documents = results.get("documents", [[]])
         metadatas = results.get("metadatas", [[]])
