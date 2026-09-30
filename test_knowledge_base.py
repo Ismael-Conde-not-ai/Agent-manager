@@ -30,6 +30,11 @@ for index, result in enumerate(results):
     )
 
     print(
+        "DISTANCE:",
+        result["distance"]
+    )
+
+    print(
         "TEXT:",
         result["text"]
     )

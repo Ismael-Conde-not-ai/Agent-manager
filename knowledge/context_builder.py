@@ -16,9 +16,11 @@ class ContextBuilder:
             metadata = result.get("metadata", {})
             source = metadata.get("source", "unknown")
             chunk_index = metadata.get("chunk_index", "unknown")
+            distance = result.get("distance", "unknown")
             part = (
                 f"Source: {source}\n"
                 f"Chunk: {chunk_index}\n"
+                f"Distance: {distance}\n"
                 f"Content:\n{text}\n"
             )        
 

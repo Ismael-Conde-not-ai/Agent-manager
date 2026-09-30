@@ -54,7 +54,7 @@ class KnowledgeBase:
                     )
     
 
-    def search (self, query, limit=3):
+    def search (self, query, limit=3, max_distance=None):
         '''
         Search for relevant documents in the vector store based on the query.
         Returns a list of documents that match the query.
@@ -64,16 +64,23 @@ class KnowledgeBase:
         documents = results.get("documents", [[]])
         metadatas = results.get("metadatas", [[]])
         ids = results.get("ids", [[]])
+        distances = results.get("distances", [[]])
 
         if not documents or not documents[0]:
             return []
 
         results_list = []
         for index, document in enumerate(documents[0]):
+
+            distance = distances[0][index]
+            if max_distance is not None and distance > max_distance:
+                continue
+
             results_list.append({
                 "id": ids[0][index],
                 "text": document,
-                "metadata": metadatas[0][index]
+                "metadata": metadatas[0][index],
+                "distance": distances[0][index]
             })
 
         return results_list
@@ -97,9 +104,9 @@ class KnowledgeBase:
             start += chunk_size - overlap
         return chunks
 
-    def get_context(self, query, limit=3, max_characters=4000):
+    def get_context(self, query, limit=3, max_characters=4000, max_distance=None):
         """
         Get a context string based on the search results for the given query.
         """
-        results = self.search(query, limit)
+        results = self.search(query, limit, max_distance)
         return self.context_builder.build_context(results, max_characters)

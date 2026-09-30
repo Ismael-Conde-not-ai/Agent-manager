@@ -23,7 +23,12 @@ class VectorStore:
         """
         results = self.collection.query(
             query_texts=[query],
-            n_results=limit
+            n_results=limit,
+            include=[
+                "documents",
+                "metadatas",
+                "distances"
+            ]
         )
         return results
 
