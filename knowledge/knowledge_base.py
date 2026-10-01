@@ -1,6 +1,7 @@
-import os
+#import os
 
 from knowledge.context_builder import ContextBuilder
+from knowledge.document_loader import DocumentLoader
 from knowledge.vector_store import VectorStore
 
 
@@ -14,6 +15,7 @@ class KnowledgeBase:
     def __init__(self, folder = "knowledge/documents"):
         self.folder = folder
         self.context_builder = ContextBuilder()
+        self.document_loader = DocumentLoader(folder)
         self.vector_store = VectorStore()
 
         self.load_documents()
@@ -25,32 +27,22 @@ class KnowledgeBase:
         them to the vector store with metadata indicating the source file and chunk index.
         '''
         
-        for file_name in os.listdir(self.folder):
-            path = os.path.join(self.folder,file_name)
+        documents = self.document_loader.load_documents()
 
-            if not os.path.isfile(path):
-                continue
-
-            with open(path,"r",encoding="utf-8") as f:
-                content = f.read()
+        for document in documents:
+            file_name = document["file_name"]
+            content = document["content"]
+            base_metadata = document["metadata"]
 
             chunks = self.chunk_text(content)
 
             total_chunks = len(chunks)
 
-            if file_name == "planning.txt":
-                category = "planning"
-            elif file_name == "ai_notes.txt":
-                category = "ai"
-            else:
-                category = "general"
-
             for index, chunk in enumerate(chunks):
-                document_id = (f"{file_name}_chunk_{index}")
+                document_id = f"{file_name}_chunk_{index}"
 
                 metadata = {
-                    "source": file_name,
-                    "category": category,
+                    **base_metadata,
                     "chunk_index": index,
                     "total_chunks": total_chunks
                 }

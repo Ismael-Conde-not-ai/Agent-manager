@@ -1,0 +1,3 @@
+AI agents can use tools to interact with external systems.
+Tools allow agents to perform actions such as searching information,
+executing operations, and interacting with APIs.

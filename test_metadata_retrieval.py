@@ -10,8 +10,8 @@ print("=" * 70)
 results = knowledge.search(
     "How do AI agents use planning?",
     limit=5,
-    source="planning.txt",
-    max_distance=1.0
+    #source="planning.txt",
+    #max_distance=1.0
 )
 
 for result in results:
@@ -28,10 +28,10 @@ print("CATEGORY FILTER")
 print("=" * 70)
 
 results = knowledge.search(
-    "How do AI agents use planning?",
+    "How do AI agents use tools?",
     limit=5,
-    category="planning",
-    max_distance=1.0
+    #category="tool",
+    #max_distance=1.0
 )
 
 for result in results:
