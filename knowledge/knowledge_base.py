@@ -30,28 +30,7 @@ class KnowledgeBase:
         documents = self.document_loader.load_documents()
 
         for document in documents:
-            file_name = document["file_name"]
-            content = document["content"]
-            base_metadata = document["metadata"]
-
-            chunks = self.chunk_text(content)
-
-            total_chunks = len(chunks)
-
-            for index, chunk in enumerate(chunks):
-                document_id = f"{file_name}_chunk_{index}"
-
-                metadata = {
-                    **base_metadata,
-                    "chunk_index": index,
-                    "total_chunks": total_chunks
-                }
-
-                self.vector_store.add_document(
-                    document_id, 
-                    chunk,
-                    metadata
-                    )
+            self.index_document(document)
     
 
     def search (self, query, limit=3, max_distance=None,source=None,category=None):
@@ -124,3 +103,49 @@ class KnowledgeBase:
         """
         results = self.search(query, limit, max_distance)
         return self.context_builder.build_context(results, max_characters)
+
+    def delete_document(self, source):
+        """
+        Delete a document from the vector store by its source file name.
+        """
+        self.vector_store.delete_by_source(source)
+
+    def update_document(self, file_name):
+        """
+        Update a document in the vector store by reloading it from the file system.
+        """
+        document = self.document_loader.load_document(file_name)
+
+        if document is None:
+            return False
+
+        self.delete_document(file_name)
+
+        self.index_document(document)
+        return True
+
+    def index_document(self, document):
+        """
+        Index a single document in the vector store.
+        """
+        file_name = document["file_name"]
+        content = document["content"]
+        base_metadata = document["metadata"]
+
+        chunks = self.chunk_text(content)
+        total_chunks = len(chunks)
+
+        for index, chunk in enumerate(chunks):
+            document_id = f"{file_name}_chunk_{index}"
+
+            metadata = {
+                **base_metadata,
+                "chunk_index": index,
+                "total_chunks": total_chunks
+            }
+
+            self.vector_store.add_document(
+                document_id, 
+                chunk,
+                metadata
+            )

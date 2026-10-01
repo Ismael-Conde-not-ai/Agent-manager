@@ -38,3 +38,19 @@ class VectorStore:
         Count the number of documents in the vector store.
         """
         return self.collection.count()
+
+    def delete_document(self, document_id):
+        """
+        Delete a document from the vector store.
+        """
+        self.collection.delete(
+            ids=[document_id]
+        )
+
+    def delete_by_source(self, source):
+        """
+        Delete documents from the vector store by source.
+        """
+        self.collection.delete(
+            where={"source": source}
+        )

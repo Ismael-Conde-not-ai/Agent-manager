@@ -45,3 +45,28 @@ class DocumentLoader:
         if "tool" in file_name.lower():
             return "tool"
         return "general"
+
+    def load_document(self, file_name):
+        """
+        Load a single document by its file name and return its content and metadata.
+        """
+        path = os.path.join(self.folder, file_name)
+
+        if not os.path.isfile(path):
+            return None
+        if not file_name.endswith(".txt"):
+            return None
+
+        with open(path, "r", encoding="utf-8") as file:
+            content = file.read()
+
+        category = self.get_category(file_name)
+
+        return {
+            "file_name": file_name,
+            "content": content,
+            "metadata": {
+                "source": file_name,
+                "category": category
+            }
+        }
