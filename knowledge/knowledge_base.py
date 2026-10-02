@@ -168,3 +168,88 @@ class KnowledgeBase:
         This will add new documents, update modified documents, and delete removed documents.
         """
         return self.document_sync.sync()
+
+    def get_document_status(self, source):
+
+        registry_document = self.registry.get(source)
+
+        if registry_document is None:
+            return {
+                "exists_in_registry": False,
+                "exists_in_vector_store": False,
+                "consistent": False
+            }
+
+        expected_chunks = registry_document.get("chunk_count", 0)
+        actual_chunks = self.vector_store.get_chunk_count(source)
+
+        consistent = (
+            expected_chunks == actual_chunks 
+            and actual_chunks > 0
+            )
+
+        return {
+            "exists_in_registry": True,
+            "exists_in_vector_store": actual_chunks > 0,
+            "expected_chunks": expected_chunks,
+            "actual_chunks": actual_chunks,
+            "consistent": consistent
+        }
+
+    def check_consistency(self):
+        """
+        Check the consistency of all documents in the registry against the vector store.
+        Returns a list of documents that are inconsistent or missing.
+        """
+        inconsistencies = []
+
+        sources = self.registry.documents.keys()
+
+        for source in sources:
+            status = self.get_document_status(source)
+
+            if not status["consistent"]:
+                inconsistencies.append({
+                    "source": source,
+                    "status": status
+                })
+        return inconsistencies
+
+    def repair_document(self, source):
+        """
+        Repair a single document in the vector store by reloading it from the file system.
+        If the document does not exist in the file system, it will be deleted from the vector store.
+        """
+        document = self.document_loader.load_document(source)
+
+        if document is None:
+            self.delete_document(source)
+            return {
+                "source": source,
+                "action": "deleted",
+                "success": True
+            }
+
+        self.delete_document(source)
+        self.index_document(document)
+
+        return {
+            "source": source,
+            "action": "reindexed",
+            "success": True
+        }
+
+    def repair_inconsistencies(self):
+        """
+        Repair all inconsistent documents in the vector store.
+        """
+        inconsistencies = self.check_consistency()
+
+        repaired = []
+
+        for item in inconsistencies:
+            source = item["source"]
+            result = self.repair_document(source)
+            repaired.append(result)
+
+        return repaired

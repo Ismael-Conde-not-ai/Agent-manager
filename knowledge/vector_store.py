@@ -90,3 +90,15 @@ class VectorStore:
             return None
         
         return metadata.get("file_hash")
+
+    def get_chunk_count(self, source):
+        """
+        Get the number of chunks for a document by its source.
+        """
+        results = self.collection.get(
+            where={"source": source},
+            include=["metadatas"]
+        )
+        metadatas = results.get("metadatas", [])
+
+        return len(metadatas)

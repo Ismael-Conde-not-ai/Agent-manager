@@ -21,7 +21,7 @@ class DocumentRegistry:
         try:
             with open(self.path, "r", encoding="utf-8") as file:
                 self.documents = json.load(file)
-        except (json.JSONDecodeError, OSError) as e:
+        except (json.JSONDecodeError, OSError):
             self.documents = {}
 
     def save(self):

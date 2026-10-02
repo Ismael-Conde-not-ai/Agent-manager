@@ -1,6 +1,5 @@
+#from knowledge.document_sync import DocumentSync
 from knowledge.knowledge_base import KnowledgeBase
-from knowledge.document_sync import DocumentSync
-
 
 knowledge = KnowledgeBase()
 

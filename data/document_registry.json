@@ -7,8 +7,14 @@
     },
     "planning.txt": {
         "source": "planning.txt",
-        "file_hash": "3f56e0f12c1083988906d8f027b4e458",
+        "file_hash": "c5c8abb56dea74c22c6813b11138dbc9",
         "category": "planning",
+        "chunk_count": 1
+    },
+    "tools.txt": {
+        "source": "tools.txt",
+        "file_hash": "0cb3c206e57601f986cfb1a8aa9d47ef",
+        "category": "tool",
         "chunk_count": 1
     }
 }

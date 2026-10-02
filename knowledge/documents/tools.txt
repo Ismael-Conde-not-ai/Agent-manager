@@ -1,0 +1,3 @@
+Tools are functions that agents use to perform specific tasks.
+They can search for information, process data, or interact with systems.
+Tools help agents complete goals more efficiently and accurately.

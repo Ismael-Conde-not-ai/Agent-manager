@@ -39,8 +39,22 @@ class DocumentSync:
             self.knowledge_base.delete_document(source)
             deleted.append(source)
 
+        #REPAIR INCONSISTENCIES
+        inconsistencies = (self.knowledge_base.check_consistency())
+
+        repaired = []
+
+        for item in inconsistencies:
+            source = item["source"]
+            result = self.knowledge_base.repair_document(source)
+            repaired.append(result)
+
+        # Return a summary of the synchronization process
+
         return {
             "added": added,
             "updated": updated,
-            "deleted": deleted
+            "deleted": deleted,
+            "repaired": repaired
         }
+        
