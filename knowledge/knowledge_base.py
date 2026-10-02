@@ -2,6 +2,7 @@
 
 from knowledge.context_builder import ContextBuilder
 from knowledge.document_loader import DocumentLoader
+from knowledge.document_sync import DocumentSync
 from knowledge.vector_store import VectorStore
 
 
@@ -16,9 +17,10 @@ class KnowledgeBase:
         self.folder = folder
         self.context_builder = ContextBuilder()
         self.document_loader = DocumentLoader(folder)
+        self.document_sync = DocumentSync(self)
         self.vector_store = VectorStore()
 
-        self.load_documents()
+        #self.load_documents()
         
 
     def load_documents(self):
@@ -149,3 +151,10 @@ class KnowledgeBase:
                 chunk,
                 metadata
             )
+
+    def sync(self):
+        """
+        Synchronize the documents in the vector store with the documents in the folder.
+        This will add new documents, update modified documents, and delete removed documents.
+        """
+        return self.document_sync.sync()

@@ -2,6 +2,10 @@ import chromadb
 
 
 class VectorStore:
+    
+    """
+    A vector store for managing documents and their embeddings.
+    """
 
     def __init__(self, path = "data/vector_db", collection_name="agent_knowledge"):
         self.client = chromadb.PersistentClient(path=path)
@@ -54,3 +58,35 @@ class VectorStore:
         self.collection.delete(
             where={"source": source}
         )
+
+    def get_sources(self):
+        """
+        Get a set of all sources in the vector store.
+        """
+        results = self.collection.get(include=["metadatas"])
+        metadatas = results.get("metadatas", [])
+        sources = set()
+
+        for metadata in metadatas:
+            if metadata and "source" in metadata:
+                sources.add(metadata["source"])
+
+        return sources
+
+    def get_document_hash(self, source):
+        """
+        Get the hash of a document by its source.
+        """
+        results = self.collection.get(
+            where={"source": source},
+            include=["metadatas"]
+        )
+        metadatas = results.get("metadatas", [])
+
+        if not metadatas:
+            return None
+        metadata = metadatas[0]
+        if not metadata:
+            return None
+        
+        return metadata.get("file_hash")
