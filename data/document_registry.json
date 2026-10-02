@@ -1,0 +1,14 @@
+{
+    "ai_notes.txt": {
+        "source": "ai_notes.txt",
+        "file_hash": "8662d3f4fadc6792e5e5ea353d1e7139",
+        "category": "ai",
+        "chunk_count": 1
+    },
+    "planning.txt": {
+        "source": "planning.txt",
+        "file_hash": "3f56e0f12c1083988906d8f027b4e458",
+        "category": "planning",
+        "chunk_count": 1
+    }
+}

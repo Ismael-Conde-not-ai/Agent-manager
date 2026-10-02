@@ -2,6 +2,7 @@
 
 from knowledge.context_builder import ContextBuilder
 from knowledge.document_loader import DocumentLoader
+from knowledge.document_registry import DocumentRegistry
 from knowledge.document_sync import DocumentSync
 from knowledge.vector_store import VectorStore
 
@@ -17,6 +18,7 @@ class KnowledgeBase:
         self.folder = folder
         self.context_builder = ContextBuilder()
         self.document_loader = DocumentLoader(folder)
+        self.registry = DocumentRegistry()
         self.document_sync = DocumentSync(self)
         self.vector_store = VectorStore()
 
@@ -111,6 +113,7 @@ class KnowledgeBase:
         Delete a document from the vector store by its source file name.
         """
         self.vector_store.delete_by_source(source)
+        self.registry.delete(source)
 
     def update_document(self, file_name):
         """
@@ -151,6 +154,13 @@ class KnowledgeBase:
                 chunk,
                 metadata
             )
+
+            self.registry.set(file_name, {
+                "source": file_name,
+                "file_hash": base_metadata["file_hash"],
+                "category": base_metadata["category"],
+                "chunk_count": total_chunks
+            })
 
     def sync(self):
         """

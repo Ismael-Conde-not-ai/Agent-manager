@@ -11,9 +11,7 @@ class DocumentSync:
             document["file_name"] for document in documents
         }
 
-        indexed_sources = (
-            self.knowledge_base.vector_store.get_sources()
-        )
+        indexed_sources = set(self.knowledge_base.registry.documents.keys())
 
         added = []
         updated = []
@@ -24,12 +22,13 @@ class DocumentSync:
             source = document["file_name"]
 
             new_hash = document["metadata"]["file_hash"]
-            old_hash = self.knowledge_base.vector_store.get_document_hash(source)
-
-            if source not in indexed_sources:
+            existing = (self.knowledge_base.registry.get(source))
+            #new
+            if existing is None:
                 self.knowledge_base.index_document(document)
                 added.append(source)
-            elif new_hash != old_hash:
+            #modified
+            elif new_hash != existing.get("file_hash"):
                 self.knowledge_base.delete_document(source)
                 self.knowledge_base.index_document(document)
                 updated.append(source)
