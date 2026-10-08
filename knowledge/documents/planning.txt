@@ -6,4 +6,6 @@ Advanced agents can create multi-step plans and adapt them when execution result
 
 Planning allows an agent to organize multiple actions before execution.
 
-Agents can also adapt their plans when new information becomes available.ppp
+Agents can also adapt their plans when new information becomes available.
+
+Agents can revise their plans after evaluating execution results.
