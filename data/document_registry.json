@@ -5,16 +5,16 @@
         "category": "ai",
         "chunk_count": 1
     },
-    "planning.txt": {
-        "source": "planning.txt",
-        "file_hash": "c5c8abb56dea74c22c6813b11138dbc9",
-        "category": "planning",
-        "chunk_count": 1
-    },
     "tools.txt": {
         "source": "tools.txt",
         "file_hash": "0cb3c206e57601f986cfb1a8aa9d47ef",
         "category": "tool",
+        "chunk_count": 1
+    },
+    "planning.txt": {
+        "source": "planning.txt",
+        "file_hash": "0528898851730bb2efea18b4d10115cf",
+        "category": "planning",
         "chunk_count": 1
     }
 }

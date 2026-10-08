@@ -1,6 +1,7 @@
 #import os
 
 from knowledge.context_builder import ContextBuilder
+from knowledge.document_history import DocumentHistory
 from knowledge.document_loader import DocumentLoader
 from knowledge.document_registry import DocumentRegistry
 from knowledge.document_sync import DocumentSync
@@ -21,6 +22,7 @@ class KnowledgeBase:
         self.registry = DocumentRegistry()
         self.document_sync = DocumentSync(self)
         self.vector_store = VectorStore()
+        self.history = DocumentHistory()
 
         #self.load_documents()
         
@@ -161,6 +163,12 @@ class KnowledgeBase:
                 "category": base_metadata["category"],
                 "chunk_count": total_chunks
             })
+        # Add the document version to the history
+        self.history.add_version(
+            file_name, 
+            base_metadata["file_hash"], 
+            total_chunks
+        )
 
     def sync(self):
         """
