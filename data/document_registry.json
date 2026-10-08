@@ -1,10 +1,4 @@
 {
-    "ai_notes.txt": {
-        "source": "ai_notes.txt",
-        "file_hash": "8662d3f4fadc6792e5e5ea353d1e7139",
-        "category": "ai",
-        "chunk_count": 1
-    },
     "tools.txt": {
         "source": "tools.txt",
         "file_hash": "0cb3c206e57601f986cfb1a8aa9d47ef",
@@ -15,6 +9,12 @@
         "source": "planning.txt",
         "file_hash": "e10a1670e4d65543f905325ce54f328c",
         "category": "planning",
+        "chunk_count": 1
+    },
+    "ai_notes.txt": {
+        "source": "ai_notes.txt",
+        "file_hash": "a69e651ca0a1450c5fdbed1ba8f6f227",
+        "category": "ai",
         "chunk_count": 1
     }
 }

@@ -1,6 +1,7 @@
 #import os
 
 from knowledge.context_builder import ContextBuilder
+from knowledge.document_events import DocumentEvents
 from knowledge.document_history import DocumentHistory
 from knowledge.document_loader import DocumentLoader
 from knowledge.document_registry import DocumentRegistry
@@ -23,6 +24,7 @@ class KnowledgeBase:
         self.document_sync = DocumentSync(self)
         self.vector_store = VectorStore()
         self.history = DocumentHistory()
+        self.events = DocumentEvents()
 
         #self.load_documents()
         
@@ -116,6 +118,7 @@ class KnowledgeBase:
         """
         self.vector_store.delete_by_source(source)
         self.registry.delete(source)
+        self.events.add_event("DELETE", source)
 
     def update_document(self, file_name):
         """
@@ -163,6 +166,16 @@ class KnowledgeBase:
                 "category": base_metadata["category"],
                 "chunk_count": total_chunks
             })
+
+            self.events.add_event(
+                "INDEX",
+                file_name,
+                {
+                    "file_hash": base_metadata["file_hash"],
+                    "chunk_count": total_chunks,
+                }
+            )
+
         # Add the document version to the history
         self.history.add_version(
             file_name, 
@@ -240,6 +253,7 @@ class KnowledgeBase:
 
         self.delete_document(source)
         self.index_document(document)
+        self.events.add_event("REPAIR", source)
 
         return {
             "source": source,
