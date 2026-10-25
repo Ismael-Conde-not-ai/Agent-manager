@@ -82,3 +82,16 @@ class PersistentMemory:
         Returns a copy of all key-value pairs in the memory.
         """
         return self.memories.copy()
+
+    def contains(self, key):
+        """
+        Checks if a key exists in the memory.
+        Returns True if the key exists, False otherwise.
+        """
+        return key in self.memories
+
+    def count(self):
+        """
+        Returns the number of key-value pairs in the memory.
+        """
+        return len(self.memories)

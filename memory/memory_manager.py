@@ -28,4 +28,34 @@ class MemoryManager:
         """
         Clear all items from working memory...
         """
-        self.working.clear()   
+        self.working.clear()
+
+    def remember_persistently(self, key, value):
+        """
+        Store a key-value pair in persistent memory...
+        """
+        self.persistent.remember(key, value)
+
+    def recall_persistently(self, key):
+        """
+        Retrieve a value from persistent memory by key...
+        """
+        return self.persistent.recall(key)
+
+    def forget_persistently(self, key):
+        """
+        Remove a key-value pair from persistent memory...
+        """
+        return self.persistent.forget(key)
+
+    def get_persistent_memories(self):
+        """
+        Retrieve all items from persistent memory...
+        """
+        return self.persistent.get_all()
+
+    def persistent_memory_count(self):
+        """
+        Get the count of items in persistent memory...
+        """
+        return self.persistent.count()
