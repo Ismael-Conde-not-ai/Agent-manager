@@ -1,0 +1,26 @@
+[
+    {
+        "goal": "Research AI agent planning",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Relevant documents found",
+        "id": "08fba304-ee20-4253-abf5-fd92a2fa1aae",
+        "created_at": "2026-10-25T04:45:43.244021+00:00"
+    },
+    {
+        "goal": "Research AI agent planning",
+        "action": "execute_plan",
+        "success": false,
+        "result": "Tool unavailable",
+        "id": "af0b15a4-e377-4c1e-aeaf-8548ba514810",
+        "created_at": "2026-10-25T04:45:43.244889+00:00"
+    },
+    {
+        "goal": "Build a REST API",
+        "action": "work",
+        "success": true,
+        "result": "Endpoint created",
+        "id": "9bd472be-9a3c-4ead-87a4-eaf6f783ab12",
+        "created_at": "2026-10-25T04:45:43.245799+00:00"
+    }
+]

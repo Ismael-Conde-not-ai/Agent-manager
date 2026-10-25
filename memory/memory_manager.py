@@ -59,3 +59,21 @@ class MemoryManager:
         Get the count of items in persistent memory...
         """
         return self.persistent.count()
+
+    def record_experience(self, experience):
+        """
+        Store an experience in experience memory...
+        """
+        return self.experience.record(experience)
+
+    def search_experiences(self, query, limit=5):
+        """
+        Search for experiences in experience memory based on a query...
+        """
+        return self.experience.search(query, limit)
+
+    def get_experiences(self):
+        """
+        Retrieve all experiences from experience memory...
+        """
+        return self.experience.get_all()
