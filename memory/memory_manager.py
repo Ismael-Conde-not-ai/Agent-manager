@@ -66,11 +66,11 @@ class MemoryManager:
         """
         return self.experience.record(experience)
 
-    def search_experiences(self, query, limit=5):
+    def search_experiences(self, query="", limit=5, success=None, action=None):
         """
         Search for experiences in experience memory based on a query...
         """
-        return self.experience.search(query, limit)
+        return self.experience.search(query=query, limit=limit, success=success, action=action)
 
     def get_experiences(self):
         """

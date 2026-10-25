@@ -64,32 +64,80 @@ class ExperienceMemory:
         """
         return [experience.copy() for experience in self.experiences]
     
-    def search(self, query, limit=5):
+    def search(self, query="", limit=5, success=None, action=None):
         """
-        Searches for experiences that match the given query.
-        The search is case-insensitive and looks for the query terms in the JSON representation of each experience.
-        Returns a list of matching experiences, limited to the specified number.
+        Searches for experiences in the memory based on a query string.
         """
         if limit < 1:
             return []
 
-        query_terms = set(query.lower().split())
-
-        if not query_terms:
-            return []
+        query_terms = set(
+            query.lower().split()
+        )
 
         matches = []
 
-        for experience in reversed(self.experiences):
-            searchable_text = json.dumps(experience, ensure_ascii=False).lower()
+        for index, experience in enumerate(
+            self.experiences
+        ):
+            if (
+                success is not None
+                and experience.get("success") != success
+            ):
+                continue
 
-            if any(term in searchable_text for term in query_terms):
-                matches.append(experience.copy())
+            if (
+                action is not None
+                and experience.get("action") != action
+            ):
+                continue
 
-            if len(matches) >= limit:
-                break
+            searchable_fields = [
+                experience.get("goal", ""),
+                experience.get("action", ""),
+                experience.get("result", ""),
+                experience.get("error", ""),
+                experience.get("lesson", "")
+            ]
 
-        return matches
+            searchable_text = " ".join(
+                str(value)
+                for value in searchable_fields
+            ).lower()
+
+            matched_terms = sum(
+                1
+                for term in query_terms
+                if term in searchable_text
+            )
+
+            if query_terms and matched_terms == 0:
+                continue
+
+            score = (
+                matched_terms / len(query_terms)
+                if query_terms
+                else 0
+            )
+
+            matches.append({
+                "experience": experience,
+                "score": score,
+                "position": index
+            })
+
+        matches.sort(
+            key=lambda item: (
+                item["score"],
+                item["position"]
+            ),
+            reverse=True
+        )
+
+        return [
+            item["experience"].copy()
+            for item in matches[:limit]
+        ]
 
     def count(self):
         """
