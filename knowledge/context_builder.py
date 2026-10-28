@@ -2,7 +2,8 @@ class ContextBuilder:
 
     def build_context(self, results, max_characters=4000):
         """
-        Build a context string from the search results.
+        Build a readable context from search results,
+        respecting the maximum character limit.
         """
         if not results:
             return "No relevant knowledge found."
@@ -12,8 +13,10 @@ class ContextBuilder:
         current_length = 0
 
         for result in results:
-            text = result.get("text", "")
-            metadata = result.get("metadata", {})
+            text = result.get("text", "").strip()
+            if not text:
+                continue
+            metadata = result.get("metadata") or {}
             source = metadata.get("source", "unknown")
             chunk_index = metadata.get("chunk_index", "unknown")
             distance = result.get("distance", "unknown")
@@ -24,10 +27,17 @@ class ContextBuilder:
                 f"Content:\n{text}\n"
             )        
 
-            if current_length + len(part) > max_characters:
+            remaining = max_characters - current_length
+            if remaining <= 0:
                 break
-
+            if len(part) > remaining:
+                if not context_parts:
+                    context_parts.append(part[:remaining])
+                break
             context_parts.append(part)
             current_length += len(part)
+
+        if not context_parts:
+            return "No relevant knowledge found."
 
         return "\n".join(context_parts)

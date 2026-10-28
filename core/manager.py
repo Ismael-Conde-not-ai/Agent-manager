@@ -1,9 +1,12 @@
+from memory.memory_manager import MemoryManager
+
 
 class Manager:
     from agents.agent import AIagent
     
     def __init__(self):
         self.agents={}
+        self.memory_manager = MemoryManager()
     
     def add_agent(self, agent):
         '''

@@ -23,6 +23,12 @@ class ExperienceMemory:
             self.experiences = []
             return
 
+        # An empty file represents an empty experience history.
+        if os.path.getsize(self.path) == 0:
+            self.experiences = []
+            self.save()
+            return
+
         try:
             with open(self.path, "r", encoding="utf-8") as file:
                 data = json.load(file)

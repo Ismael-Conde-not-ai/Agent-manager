@@ -8,6 +8,7 @@ from agents.research_agent import ResearchAgent
 from core.config_loader import load_agent_config
 from core.manager import Manager
 from core.orchestrator import Orchestrator
+from memory.memory_context_builder import MemoryContextBuilder
 
 app = FastAPI()
 
@@ -15,7 +16,7 @@ manager = Manager()
 orchestrator = Orchestrator(manager)
 agent = None
 research_agent = ResearchAgent()
-planner_agent = PlannerAgent()
+planner_agent = PlannerAgent( memory_manager=manager.memory_manager)  # Pass the memory manager to the planner agent
 executor_agent = ExecutorAgent()
 evaluator_agent = EvaluatorAgent()
 
@@ -44,6 +45,9 @@ def create_agent():
         initial_energy=config["initial_energy"],
         initial_status=config["initial_status"]
     )
+    agent.memory_manager = manager.memory_manager  # Assign the shared memory manager to the agent
+    agent.memory_context_builder = MemoryContextBuilder(agent.memory_manager)  # Initialize the memory context builder for the agent
+    
     manager.add_agent(agent)
 
     return {"message":"Agent created from config"}

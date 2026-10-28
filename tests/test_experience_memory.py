@@ -43,9 +43,22 @@ results = memory.search_experiences(
 for result in results:
     print(result)"""
 
-from memory.memory_manager import MemoryManager
+"""from memory.memory_manager import MemoryManager
 
 memory = MemoryManager()
 
 for experience in memory.get_experiences():
-    print(experience)
+    print(experience)"""
+
+from agents.planner_agent import PlannerAgent
+from core.manager import Manager
+
+manager = Manager()
+planner_agent = PlannerAgent(memory_manager=manager.memory_manager)  # Pass the memory manager to the planner agent
+print(
+    "¿Comparten memoria?",
+    planner_agent.memory_manager is manager.memory_manager
+)
+
+assert planner_agent.memory_manager is manager.memory_manager
+print("Memoria compartida correctamente.")

@@ -1,5 +1,4 @@
+
 def search_knowledge(agent):
-    
-    context = agent.get_relevant_context()
-    
-    return f"Context used: {context[:200]}"
+    """Search the knowledge base for relevant information."""
+    return agent.get_relevant_context()

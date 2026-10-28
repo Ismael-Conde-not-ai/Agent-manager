@@ -22,6 +22,7 @@ class MemoryContextBuilder:
             action = experience.get("action", "Unknown action")
             success = experience.get("success", "Unknown")
             result = experience.get("result", "")
+            error = experience.get("error", "")
             lesson = experience.get("lesson", "")
 
             lines.append(
@@ -30,6 +31,9 @@ class MemoryContextBuilder:
                 f"Success: {success}; "
                 f"Result: {result}"
             )
+
+            if error:
+                lines.append(f"  Error: {error}")
 
             if lesson:
                 lines.append(f"  Lesson: {lesson}")

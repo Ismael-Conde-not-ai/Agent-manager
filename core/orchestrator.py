@@ -11,95 +11,131 @@ class Orchestrator:
         executor_agent = self.manager.get_agent("ExecutorAgent")
         evaluator_agent = self.manager.get_agent("EvaluatorAgent")
 
-        if not research_agent:
-            raise ValueError("ResearchAgent not found.")
+        agents = {
+            "ResearchAgent": research_agent,
+            "PlannerAgent": planner_agent,
+            "ExecutorAgent": executor_agent,
+            "EvaluatorAgent": evaluator_agent,
+        }
 
-        if not planner_agent:
-            raise ValueError("PlannerAgent not found.")
+        for name, registered_agent in agents.items():
+            if registered_agent is None:
+                raise ValueError(f"{name} not found.")
 
-        if not executor_agent:
-            raise ValueError("ExecutorAgent not found.")
+        if not isinstance(max_retries, int) or isinstance(max_retries, bool):
+            raise ValueError("max_retries must be a non-negative integer.")  # noqa: TRY004
 
-        if not evaluator_agent:
-            raise ValueError("EvaluatorAgent not found.")
+        if max_retries < 0:
+            raise ValueError("max_retries must be a non-negative integer.")
 
         logger.info(f"[ORCHESTRATOR] Starting task: {goal}")
 
-        # Research Phase
         research_result = research_agent.research(goal)
         logger.info("[ORCHESTRATOR] Research completed")
 
-        # Planning Phase
-        plan_text = planner_agent.create_plan(goal, research_result)
-        plan = planner_agent.parse_plan(plan_text)
-        if not plan:
-            return {
-                "success":False,
-                "goal":goal,
-                "error":"Failed to create a valid plan."
-            }
-        logger.info(f"[ORCHESTRATOR] Plan created: {plan}")
+        attempts = []
+        previous_plans = []
 
-        # Execution Phase
-        execution = executor_agent.execute_plan(plan,agent)
-        logger.info(
-            f"[ORCHESTRATOR] Execution success:"
-            f"{execution['success']}"
-        )
-        if not execution["success"]:
-            if max_retries <= 0:
-                return {
-                    "success":False,
-                    "goal":goal,
-                    "plan":plan,
-                    "execution":execution,
-                    "error":"Execution failed"
+        # One initial attempt plus the permitted retries.
+        for attempt_number in range(max_retries + 1):
+            logger.info(
+                f"[ORCHESTRATOR] Attempt "
+                f"{attempt_number + 1}/{max_retries + 1}"
+            )
+
+            plan_text = planner_agent.create_plan(
+                goal,
+                research_result
+            )
+            plan = planner_agent.parse_plan(plan_text)
+
+            if not plan:
+                attempt = {
+                    "attempt": attempt_number + 1,
+                    "success": False,
+                    "error": "Failed to create a valid plan.",
                 }
-            logger.info("[ORCHESTRATOR] Execution failed. Creating a new plan")
-            retry_plan_text = planner_agent.create_plan(goal, research_result)
-            plan = planner_agent.parse_plan(retry_plan_text)
-            execution = executor_agent.execute_plan(plan,agent)
+                attempts.append(attempt)
 
-        # Evaluation Phase
-        evaluation = evaluator_agent.evaluate(goal, research_result, plan, execution)
-        logger.info(
-            f"[ORCHESTRATOR] Evaluation:"
-            f"{evaluation['evaluation']}"
-        )
-        if evaluation['success']:
-            logger.info("[ORCHESTRATOR] Goal achieved")
-            return {
-                "success":True,
-                "goal":goal,
-                "research":research_result,
-                "plan":plan,
-                "execution":execution,
-                "evaluation":evaluation
-            }
-        if max_retries <= 0:
-            return {
-                "success":False,
-                "goal":goal,
-                "research":research_result,
-                "plan":plan,
-                "execution":execution,
-                "evaluation":evaluation,
-                "error":"Goal not achieved"
-            }
-        logger.info("[ORCHESTRATOR] Goal not achieved. Creating a new plan")
+                if attempt_number < max_retries:
+                    logger.warning(
+                        "[ORCHESTRATOR] Invalid plan. Retrying."
+                    )
+                    continue
 
-        retry_plan_text = planner_agent.create_plan(goal, research_result)
-        retry_plan = planner_agent.parse_plan(retry_plan_text)
-        retry_execution = executor_agent.execute_plan(retry_plan,agent)
-        retry_evaluation = evaluator_agent.evaluate(goal, research_result, retry_plan, retry_execution)
+                break
+
+            # Detect identical consecutive plans.
+            if plan in previous_plans:
+                logger.warning(
+                    "[ORCHESTRATOR] Planner repeated a previous plan."
+                )
+
+            previous_plans.append(plan.copy())
+
+            logger.info(f"[ORCHESTRATOR] Plan created: {plan}")
+
+            execution = executor_agent.execute_plan(plan, agent)
+            execution_success = execution.get("success") is True
+
+            evaluation = evaluator_agent.evaluate(
+                goal,
+                research_result,
+                plan,
+                execution
+            )
+
+            evaluation_success = (
+                evaluation.get("success") is True
+            )
+
+            # The workflow succeeds only if both execution and
+            # evaluation report success.
+            success = execution_success and evaluation_success
+
+            attempt = {
+                "attempt": attempt_number + 1,
+                "plan": plan,
+                "execution": execution,
+                "evaluation": evaluation,
+                "success": success,
+            }
+            attempts.append(attempt)
+
+            logger.info(
+                f"[ORCHESTRATOR] Execution success: "
+                f"{execution_success}"
+            )
+            logger.info(
+                f"[ORCHESTRATOR] Evaluation success: "
+                f"{evaluation_success}"
+            )
+
+            if success:
+                logger.info("[ORCHESTRATOR] Goal achieved")
+                break
+
+            if attempt_number < max_retries:
+                logger.warning(
+                    "[ORCHESTRATOR] Attempt unsuccessful. Retrying."
+                )
+
+        final_attempt = attempts[-1]
+
         return {
-            "success":retry_evaluation['success'],
-            "goal":goal,
-            "research":research_result,
-            "plan":plan,
-            "execution":execution,
-            "evaluation":evaluation,
-            "retry_plan":retry_plan,
-            "retry_execution":retry_execution,
-            "retry_evaluation":retry_evaluation
+            "success": final_attempt["success"],
+            "goal": goal,
+            "research": research_result,
+            "attempts": attempts,
+            "total_attempts": len(attempts),
+            "plan": final_attempt.get("plan"),
+            "execution": final_attempt.get("execution"),
+            "evaluation": final_attempt.get("evaluation"),
+            "error": (
+                None if final_attempt["success"]
+                else final_attempt.get(
+                    "error",
+                    "Goal not achieved after permitted attempts."
+                )
+            ),
         }

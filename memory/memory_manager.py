@@ -7,10 +7,18 @@ class MemoryManager:
     """
     A class that manages different types of memory: working, persistent, and experience.
     """
-    def __init__(self):
+    def __init__(self, persistent=None, experience=None):
         self.working = WorkingMemory()
-        self.persistent = PersistentMemory()
-        self.experience = ExperienceMemory()        
+        self.persistent =  (
+            persistent
+            if persistent is not None
+            else PersistentMemory(path="data/agent_persistent_memory.json")
+        )
+        self.experience = (
+            experience
+            if experience is not None
+            else ExperienceMemory(path="data/agent_experience_memory.json")
+        )      
 
     def remember(self, content):
         """

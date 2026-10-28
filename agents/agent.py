@@ -4,6 +4,8 @@ from pathlib import Path
 from api.api_client import geminiAI, ollamaAI
 from core.logger import logger
 from knowledge.knowledge_base import KnowledgeBase
+from memory.memory_context_builder import MemoryContextBuilder
+from memory.memory_manager import MemoryManager
 from tools.recharge import recharge
 from tools.registry import ToolRegistry
 from tools.rest import rest
@@ -31,6 +33,8 @@ class AIagent:
         self.ollamaAI = ollamaAI
 
         self.knowledge = KnowledgeBase()
+        self.memory_manager = MemoryManager()
+        self.memory_context_builder = MemoryContextBuilder(self.memory_manager)
 
         self.tool_registry = ToolRegistry()
         self.tool_registry.register("work", work)
@@ -39,45 +43,68 @@ class AIagent:
         self.tool_registry.register("search_knowledge", search_knowledge)
 
         self.load_memory()
-
+    
     def execute_tool(self, toolName):
         """
-        Takes a tool as argument then executes the tool and takes the return in the variable result.
-        Saves the result and the executed tool and the energy in memory.
-        Saves the memory in the memory.json using method save_memory()
+        Executes a tool, records its result, reflects on the action,
+        and saves the agent's memory.
         """
         try:
             result = self.tool_registry.execute(toolName, self)
             success = True
-        except Exception as e: #noqa: BLE001
+        except Exception as e:  # noqa: BLE001
             result = f"error: {str(e)}"  # noqa: RUF010
             success = False
 
-            #logger.error(f"Error executing tool {toolName}: {e}")
         logger.info(f"{self.name} success: {success}")
         logger.info(f"{self.name} executed tool: {toolName}")
         logger.info(f"{self.name} energy level: {self.energy}")
 
         memory_entry = {
             "action": toolName,
-            "result": result,
+            "result": str(result),
             "success": success,
-            "energy": self.energy
+            "energy": self.energy,
         }
-        # Short term memory for reasoning
+
+        # Update short-term and long-term memory.
         self.short_term_memory.append(memory_entry)
-        # Limit short term memory to last 5 entries
         self.short_term_memory = self.short_term_memory[-5:]
-        # Long term memory for future reference
+
         self.long_term_memory.append(memory_entry)
-        # Limit long term memory to last 100 entries
         self.long_term_memory = self.long_term_memory[-100:]
 
-        # Reflection on the last action and update memory accordingly
-        reflection = self.reflect_on_action(memory_entry)
+        # Reflect on the action.
+        reflection = ""
+        try:
+            reflection = self.reflect_on_action(memory_entry)
+        except Exception:  # noqa: BLE001
+            logger.exception("Failed to reflect on agent action")
+            reflection = "Reflection failed."
+
         self.long_term_memory.append({"reflection": reflection})
         self.short_term_memory.append({"reflection": reflection})
-        self.short_term_memory = self.short_term_memory[-5:]   
+
+        self.short_term_memory = self.short_term_memory[-5:]
+        self.long_term_memory = self.long_term_memory[-100:]
+
+        # Record the experience once, including the lesson.
+        experience = {
+            "goal": self.goal,
+            "action": toolName,
+            "result": str(result),
+            "success": success,
+            "energy": self.energy,
+            "lesson": reflection,
+        }
+
+        if not success:
+            experience["error"] = str(result)
+
+        try:
+            self.memory_manager.record_experience(experience)
+        except Exception:  # noqa: BLE001
+            logger.exception("Failed to save agent experience")
 
         self.save_memory()
         return success
@@ -88,7 +115,7 @@ class AIagent:
         """
 
         context = self.get_relevant_context()
-        memory_context = self.get_memory_context()
+        memory_context = self.get_extended_memory_context()
 
         prompt = f"""
         You are an advanced AI agent.
@@ -222,26 +249,29 @@ class AIagent:
 
     def get_relevant_context(self):
         """
-        Searches information inside knowledge instance attributes using search method
-        saves the relevant information in context and return the information in a formatted string
+        Retrieves relevant knowledge and formats it as readable context.
         """
         try:
-            context = self.knowledge.search(self.goal)
-            formatted = f"""
-            Relevant Knowledge:
-            -------------------
-            {context}
-            """
-            return formatted
-        except TypeError:
-            return "No relevant knowledge found"
+            context = self.knowledge.get_context(
+                query=self.goal, 
+                limit=3, 
+                max_characters=2000
+            )
+            if not context or context == "No relevant knowledge found.":
+                return "No relevant knowledge found."
+
+            return f"Relevant Knowledge:\n{context}"
+
+        except Exception:  # noqa: BLE001
+            logger.exception("Failed to retrieve relevant knowledge")
+            return "No relevant knowledge found."
 
     def decide_next_action(self, step):
         """
         Decides the next action for the agent based on the current step.
         """
         context = self.get_relevant_context()
-        memory_context = self.get_memory_context()
+        memory_context = self.get_extended_memory_context()
 
         prompt = f"""
             You are an advanced AI agent.
@@ -363,4 +393,15 @@ class AIagent:
         """
         response = self.geminiAI(prompt)
         return response.strip()
+
+    def get_extended_memory_context(self):
+        """
+        Combines recent memory with relevant stored experiences
+        """
+        recent_context = self.get_memory_context()
+        stored_context = self.memory_context_builder.build(self.goal)
+
+        return "\n".join(
+            part for part in [recent_context, stored_context] if part
+        )
 

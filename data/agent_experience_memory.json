@@ -1,0 +1,74 @@
+[
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "result": "Relevant Knowledge:\nSource: planning.txt\nChunk: 0\nDistance: 0.31737083196640015\nContent:\nAI agent planning is the process of breaking a complex goal into smaller actions. A planner can determine which tools should be used and in what order those tools should be executed. Advanced agents can create multi-step plans and adapt them when execution results change. Planning allows an agent to organize multiple actions before execution. Agents can also adapt their plans when new information becomes available. Agents can revise their plans after evaluating execution results.\n\nSource: ai_notes.txt\nChunk: 0\nDistance: 0.7681256532669067\nContent:\n## Key Pillars of AI Agents AI agents in this project work best when they seamlessly combine four core capabilities: * **Planning:** Creating a roadmap to achieve the goal. * **Tools:** Executing specific actions in the environment. * **Memory:** Remembering past interactions and states. * **Retrieval:** Accessing external data to inform actions. ### The Agent Workflow A high-performing agent follows a structured sequence to tackle any task: 1. **Understand:** Comprehend the ultimate goal. 2. **Search:** Look up relevant knowledge. 3. **Plan:** Create a short execution plan. 4. **Act:** Choose the best tool for the job. --- ### Core System Tools The system provides a specific toolkit to help the agent complete tasks while balancing its internal state: | Tool | Primary Purpose | | :--- | :--- | | `work` | Executes the task and achieves objectives efficiently. | | `recharge` / `rest` | Restores the agent's energy when levels are low. | | `search_knowledge` | Retrieves context when the agent needs more information. | --- > ### 💡 Maximizing Performance with RAG > **Retrieval-Augmented Generation (RAG)** works best when your knowledge base contains clear, factual, and self-contained information that aligns perfectly with the agent's current goal. momo\n",
+        "success": true,
+        "energy": 100,
+        "id": "c043a3b3-934b-4e1e-82ad-dbe2355e3ff3",
+        "created_at": "2026-10-27T21:03:58.217178+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "work",
+        "result": "Agent worked",
+        "success": true,
+        "energy": 80,
+        "id": "53acafdc-b3d2-4e20-9b11-adf868feb542",
+        "created_at": "2026-10-27T21:03:58.218387+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "recharge",
+        "result": "Agent recharged",
+        "success": true,
+        "energy": 100,
+        "id": "ba6956e0-9f3f-4ff8-b575-0c820eed102f",
+        "created_at": "2026-10-27T21:03:58.219493+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "result": "Relevant Knowledge:\nSource: planning.txt\nChunk: 0\nDistance: 0.31737083196640015\nContent:\nAI agent planning is the process of breaking a complex goal into smaller actions. A planner can determine which tools should be used and in what order those tools should be executed. Advanced agents can create multi-step plans and adapt them when execution results change. Planning allows an agent to organize multiple actions before execution. Agents can also adapt their plans when new information becomes available. Agents can revise their plans after evaluating execution results.\n\nSource: ai_notes.txt\nChunk: 0\nDistance: 0.7681256532669067\nContent:\n## Key Pillars of AI Agents AI agents in this project work best when they seamlessly combine four core capabilities: * **Planning:** Creating a roadmap to achieve the goal. * **Tools:** Executing specific actions in the environment. * **Memory:** Remembering past interactions and states. * **Retrieval:** Accessing external data to inform actions. ### The Agent Workflow A high-performing agent follows a structured sequence to tackle any task: 1. **Understand:** Comprehend the ultimate goal. 2. **Search:** Look up relevant knowledge. 3. **Plan:** Create a short execution plan. 4. **Act:** Choose the best tool for the job. --- ### Core System Tools The system provides a specific toolkit to help the agent complete tasks while balancing its internal state: | Tool | Primary Purpose | | :--- | :--- | | `work` | Executes the task and achieves objectives efficiently. | | `recharge` / `rest` | Restores the agent's energy when levels are low. | | `search_knowledge` | Retrieves context when the agent needs more information. | --- > ### 💡 Maximizing Performance with RAG > **Retrieval-Augmented Generation (RAG)** works best when your knowledge base contains clear, factual, and self-contained information that aligns perfectly with the agent's current goal. momo\n",
+        "success": true,
+        "energy": 100,
+        "id": "24cc802d-09d7-4f31-b81d-92334d1def92",
+        "created_at": "2026-10-27T21:44:49.184809+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "work",
+        "result": "Agent worked",
+        "success": true,
+        "energy": 80,
+        "id": "feb3d071-39f2-4187-916b-9244c149ff16",
+        "created_at": "2026-10-27T21:44:49.185931+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "recharge",
+        "result": "Agent recharged",
+        "success": true,
+        "energy": 100,
+        "id": "ea67a330-1e92-41f8-9db3-b8ba6a1e7fd0",
+        "created_at": "2026-10-27T21:44:49.186864+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "0bf86fff-6b11-4cbf-b1f9-bc3080e6eec1",
+        "created_at": "2026-10-28T15:05:47.869040+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "2ea885b1-f09e-4b1c-ab3f-eb644047bc5f",
+        "created_at": "2026-10-28T15:25:09.187856+00:00"
+    }
+]
