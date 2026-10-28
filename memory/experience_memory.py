@@ -1,6 +1,7 @@
+import datetime
 import json
 import os
-from datetime import datetime, timezone
+import re
 from uuid import uuid4
 
 
@@ -60,42 +61,50 @@ class ExperienceMemory:
 
         entry = experience.copy()
         entry["id"] = str(uuid4())
-        entry["created_at"] = datetime.now(timezone.utc).isoformat()
+        entry["created_at"] = datetime.datetime.now(datetime.UTC).isoformat()
         self.experiences.append(entry)
         self.save()
         return entry
+    
     def get_all(self):
         """
         Retrieves all recorded experiences.
         """
         return [experience.copy() for experience in self.experiences]
+
     
     def search(self, query="", limit=5, success=None, action=None):
         """
-        Searches for experiences in the memory based on a query string.
+        Searches for experiences that match the given query.
         """
         if limit < 1:
             return []
 
-        query_terms = set(
-            query.lower().split()
-        )
+        stopwords = {
+            "a", "an", "the", "about", "and", "or", "of",
+            "to", "in", "on", "for", "with", "by", "from",
+            "is", "are", "was", "were", "how", "what",
+            "when", "where", "why", "who", "do", "does",
+            "did", "can", "could", "should", "would",
+            "i", "you", "we", "they", "it", "this", "that",
+            "be", "as", "at", "before", "after"
+        }
 
+        def tokenize(text):
+            words = re.findall(r"\b[a-z0-9]+\b", str(text).lower())
+            return {
+                word for word in words
+                if word not in stopwords and len(word) > 1
+            }
+
+        query_terms = tokenize(query)
         matches = []
 
-        for index, experience in enumerate(
-            self.experiences
-        ):
-            if (
-                success is not None
-                and experience.get("success") != success
-            ):
+        for index, experience in enumerate(self.experiences):
+            if success is not None and experience.get("success") != success:
                 continue
 
-            if (
-                action is not None
-                and experience.get("action") != action
-            ):
+            if action is not None and experience.get("action") != action:
                 continue
 
             searchable_fields = [
@@ -106,25 +115,20 @@ class ExperienceMemory:
                 experience.get("lesson", "")
             ]
 
-            searchable_text = " ".join(
-                str(value)
-                for value in searchable_fields
-            ).lower()
-
-            matched_terms = sum(
-                1
-                for term in query_terms
-                if term in searchable_text
+            searchable_terms = tokenize(
+                " ".join(str(value) for value in searchable_fields)
             )
 
-            if query_terms and matched_terms == 0:
-                continue
+            if query_terms:
+                matched_terms = query_terms & searchable_terms
+                score = len(matched_terms) / len(query_terms)
 
-            score = (
-                matched_terms / len(query_terms)
-                if query_terms
-                else 0
-            )
+                # Exigir coincidencia suficiente para considerar
+                # una experiencia relevante.
+                if not matched_terms or score < 0.30:
+                    continue
+            else:
+                score = 0
 
             matches.append({
                 "experience": experience,
@@ -133,10 +137,7 @@ class ExperienceMemory:
             })
 
         matches.sort(
-            key=lambda item: (
-                item["score"],
-                item["position"]
-            ),
+            key=lambda item: (item["score"], item["position"]),
             reverse=True
         )
 
@@ -144,6 +145,8 @@ class ExperienceMemory:
             item["experience"].copy()
             for item in matches[:limit]
         ]
+
+    
 
     def count(self):
         """
