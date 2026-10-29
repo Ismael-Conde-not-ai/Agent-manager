@@ -72,6 +72,66 @@ class PlannerAgent:
         response = geminiAI(prompt).strip()
         return response
 
+    
+    def replan(self, goal, previous_plan, execution_results, research=None):
+        """
+        Create a revised plan based on previous execution results.
+        """
+        research_context = (
+            research if research else "No research available."
+        )
+
+        memory_context = self.memory_context_builder.build(goal)
+
+        if not memory_context:
+            memory_context = "No relevant past experiences found."
+
+        prompt = f"""
+        You are an adaptive planning AI agent.
+
+        Your task is to revise a plan after execution feedback.
+
+        Goal:
+        {goal}
+
+        Previous plan:
+        {previous_plan}
+
+        Execution results:
+        {execution_results}
+
+        Research information:
+        {research_context}
+
+        Relevant memory from previous experiences:
+        {memory_context}
+
+        Instructions:
+        - Analyze which actions succeeded and which failed.
+        - Do not assume failed actions succeeded.
+        - Avoid repeating a failed action without a justified reason.
+        - Apply relevant lessons from previous experiences.
+        - Create a revised plan that addresses the remaining goal.
+        - Use only these actions:
+        search_knowledge, work, recharge, rest.
+        - Return between 2 and 5 steps.
+        - Do not execute any action.
+        - Return ONLY valid JSON.
+
+        Required format:
+        [
+            {{
+                "step": 1,
+                "action": "action_name",
+                "description": "What this step should accomplish"
+            }}
+        ]
+        """
+
+        response = geminiAI(prompt).strip()
+        return response
+
+
     def parse_plan(self, plan_text):
         """
         Parse the plan text into a structured format.
@@ -84,3 +144,60 @@ class PlannerAgent:
         except json.JSONDecodeError as e:
             print("Plan parsing failed:", e)
             return []
+
+    
+    def validate_plan(self, plan):
+        """
+        Validate the structure and allowed actions of a plan.
+
+        Returns:
+            tuple[bool, str | None]: validation status and error message.
+        """
+        allowed_actions = {
+            "search_knowledge",
+            "work",
+            "recharge",
+            "rest",
+        }
+
+        if not isinstance(plan, list):
+            return False, "Plan must be a list."
+
+        if not 2 <= len(plan) <= 5:
+            return False, "Plan must contain between 2 and 5 steps."
+
+        required_fields = {"step", "action", "description"}
+
+        for index, item in enumerate(plan, start=1):
+            if not isinstance(item, dict):
+                return False, f"Step {index} must be an object."
+
+            if not required_fields.issubset(item.keys()):
+                return False, f"Step {index} is missing required fields."
+
+            step_number = item["step"]
+
+            if (
+                not isinstance(step_number, int)
+                or isinstance(step_number, bool)
+                or step_number != index
+            ):
+                return False, (
+                    f"Step number at position {index} must be {index}."
+                )
+
+            action = item["action"]
+
+            if not isinstance(action, str) or action not in allowed_actions:
+                return False, (
+                    f"Step {index} contains an unsupported action."
+                )
+
+            description = item["description"]
+
+            if not isinstance(description, str) or not description.strip():
+                return False, (
+                    f"Step {index} must have a non-empty description."
+                )
+
+        return True, None

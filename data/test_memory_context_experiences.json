@@ -1,0 +1,11 @@
+[
+    {
+        "goal": "Research RAG architecture",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found relevant documents",
+        "lesson": "Search the knowledge base before answering",
+        "id": "2cf4f7e4-49e2-4b21-8720-a424dec56cc4",
+        "created_at": "2026-10-29T16:24:00.694788+00:00"
+    }
+]

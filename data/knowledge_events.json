@@ -13,5 +13,50 @@
             "file_hash": "a69e651ca0a1450c5fdbed1ba8f6f227",
             "chunk_count": 1
         }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-10-29T12:13:56.015718-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-10-29T12:13:58.262925-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-10-29T12:32:58.421861-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-10-29T12:32:59.057656-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-10-29T12:33:29.627630-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-10-29T12:33:30.225058-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
     }
 ]
