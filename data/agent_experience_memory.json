@@ -124,5 +124,446 @@
         "lesson": "Research before creating a plan.",
         "id": "6e8d8017-c12c-4fc6-a0bb-6ecbd52c66a9",
         "created_at": "2026-10-29T16:33:32.883006+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "result": "Relevant Knowledge:\nSource: planning.txt\nChunk: 0\nDistance: 0.31737083196640015\nContent:\nAI agent planning is the process of breaking a complex goal into smaller actions. A planner can determine which tools should be used and in what order those tools should be executed. Advanced agents can create multi-step plans and adapt them when execution results change. Planning allows an agent to organize multiple actions before execution. Agents can also adapt their plans when new information becomes available. Agents can revise their plans after evaluating execution results.\n\nSource: ai_notes.txt\nChunk: 0\nDistance: 0.7681256532669067\nContent:\n## Key Pillars of AI Agents AI agents in this project work best when they seamlessly combine four core capabilities: * **Planning:** Creating a roadmap to achieve the goal. * **Tools:** Executing specific actions in the environment. * **Memory:** Remembering past interactions and states. * **Retrieval:** Accessing external data to inform actions. ### The Agent Workflow A high-performing agent follows a structured sequence to tackle any task: 1. **Understand:** Comprehend the ultimate goal. 2. **Search:** Look up relevant knowledge. 3. **Plan:** Create a short execution plan. 4. **Act:** Choose the best tool for the job. --- ### Core System Tools The system provides a specific toolkit to help the agent complete tasks while balancing its internal state: | Tool | Primary Purpose | | :--- | :--- | | `work` | Executes the task and achieves objectives efficiently. | | `recharge` / `rest` | Restores the agent's energy when levels are low. | | `search_knowledge` | Retrieves context when the agent needs more information. | --- > ### 💡 Maximizing Performance with RAG > **Retrieval-Augmented Generation (RAG)** works best when your knowledge base contains clear, factual, and self-contained information that aligns perfectly with the agent's current goal. momo\n",
+        "success": true,
+        "energy": 100,
+        "id": "aac808c1-8a58-4eb8-92cf-22f5a5338e28",
+        "created_at": "2026-11-03T04:17:47.198217+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "work",
+        "result": "Agent worked",
+        "success": true,
+        "energy": 80,
+        "id": "a3fafb2d-dbc6-4616-b04b-b8206a11e57a",
+        "created_at": "2026-11-03T04:17:47.202046+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "recharge",
+        "result": "Agent recharged",
+        "success": true,
+        "energy": 100,
+        "id": "4f59ed38-ab49-4c5c-a808-0a5ba1963bf0",
+        "created_at": "2026-11-03T04:17:47.203573+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "cab311f3-2017-41be-9d53-fcfa7b027023",
+        "created_at": "2026-11-03T04:33:13.647239+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "e34aa541-f5d7-4605-8ba5-1f337f95b472",
+        "created_at": "2026-11-03T04:33:13.661502+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "00feed8e-fde4-4ce6-a23d-9c132e82b065",
+        "created_at": "2026-11-03T04:35:58.255232+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "1e0a0453-0853-4de9-a158-c6f6e9bae398",
+        "created_at": "2026-11-03T04:35:58.268807+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "66467cb1-bc52-4e13-8241-3c472d64f13f",
+        "created_at": "2026-11-03T04:50:53.637478+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "c7c647d1-5ff8-4894-ba99-d79dc2af6b6f",
+        "created_at": "2026-11-03T04:50:53.650501+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "95242e24-592d-46e5-bf2f-c9dc9e4bcc94",
+        "created_at": "2026-11-03T14:53:01.459505+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "f24e5d17-f39c-4a2d-a759-6078cb726a5a",
+        "created_at": "2026-11-03T14:53:01.482063+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "521e27df-4340-44ab-b00c-20853d19a502",
+        "created_at": "2026-11-03T14:54:50.832574+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "efaf5e73-6c89-4fcc-914a-445a6d71e4e2",
+        "created_at": "2026-11-03T14:54:50.846151+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "4b36f1c7-850d-4a92-a63e-83e5220b8b11",
+        "created_at": "2026-11-03T15:14:13.946917+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "68ac4d30-3542-4122-8eae-b4f92e5250b6",
+        "created_at": "2026-11-03T15:14:13.960278+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "ea909dff-7cbe-491c-b32d-2a4b53aebb48",
+        "created_at": "2026-11-03T16:00:47.047145+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "4bd9f3dc-e107-4d8e-b02f-edc2baa92c91",
+        "created_at": "2026-11-03T16:00:47.061478+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "92468c53-6e76-49bf-8829-bd43dd9d1135",
+        "created_at": "2026-11-03T16:21:03.040309+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "04961302-2943-42a6-88c1-b5eb174dadce",
+        "created_at": "2026-11-03T16:21:03.054006+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "6eb9dfdc-20d6-4062-a78c-fdb513d5b785",
+        "created_at": "2026-11-03T17:53:46.054371+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "a1cd8efe-a1d6-4847-a93c-f4aa00c59642",
+        "created_at": "2026-11-03T17:53:46.074486+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "0d3242d7-dde3-4792-b104-e0eb35e7862c",
+        "created_at": "2026-11-03T17:58:48.798729+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "05b3bc92-18ad-432a-be75-613f847bcc7d",
+        "created_at": "2026-11-03T17:58:48.813458+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "e6809e74-6192-4640-82cc-1622c3c5f7db",
+        "created_at": "2026-11-03T18:10:48.239742+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "d4f346cd-decc-4161-acff-99ed1077337d",
+        "created_at": "2026-11-03T18:10:48.252296+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "329a0fca-1e01-4220-b6f1-28c0f56d5dfe",
+        "created_at": "2026-11-03T18:18:48.743527+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "da1341d5-04ae-480e-a471-4009251c8f23",
+        "created_at": "2026-11-03T18:18:48.755881+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "101ad5d5-9cfd-4665-b90f-a2fb1b25d0c9",
+        "created_at": "2026-11-03T19:05:02.372358+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "86489b0c-ef34-4c98-9d89-61ef57d909ee",
+        "created_at": "2026-11-03T19:05:02.391251+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "1aa06ba9-c3b4-46ba-bae6-f5e437785819",
+        "created_at": "2026-11-03T19:11:46.631207+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "cba21d2f-4fba-46a2-98a2-52bd351e274c",
+        "created_at": "2026-11-03T19:11:46.645724+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "b2d804e3-0658-47a8-98c3-7c91e6ed08e5",
+        "created_at": "2026-11-03T19:21:12.890658+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "9a8cd648-20f5-4a98-b0f5-dae9d73ee6d2",
+        "created_at": "2026-11-03T19:21:12.904056+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "72d4727c-e1a5-40ed-986b-69d2b55a93b8",
+        "created_at": "2026-11-03T19:28:51.617603+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "8a8ab1c0-f35d-47c3-83f7-cfbeb9c5a53a",
+        "created_at": "2026-11-03T19:28:51.630762+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "1fdc6a5b-a641-4654-a46e-e443b333b58b",
+        "created_at": "2026-11-03T19:44:02.372734+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "730f06da-244f-447b-bed0-e923e0c55d7c",
+        "created_at": "2026-11-03T19:44:02.386749+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "054370d2-fc0c-4ec0-a0c2-d86cc1b5db11",
+        "created_at": "2026-11-03T19:46:45.406300+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "42d84da1-f285-4cb7-a605-c17bf5b4726a",
+        "created_at": "2026-11-03T19:46:45.428568+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "57c9eccf-2db7-4e7a-a854-7f82ec0fff33",
+        "created_at": "2026-11-03T19:52:48.714329+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "eb2b690f-4e61-4c58-8de4-d6ca6593f194",
+        "created_at": "2026-11-03T19:52:48.732722+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "460e3b43-b160-4e18-b5a8-871d9d1e263a",
+        "created_at": "2026-11-03T20:02:38.786705+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "f5a9e14c-b383-49e9-a971-3b874b7d01f4",
+        "created_at": "2026-11-03T20:02:38.805501+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "9e6e4e1e-1a55-4b5e-8a02-478be9904bf9",
+        "created_at": "2026-11-03T20:14:45.652611+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "58796a21-f97a-4968-897d-bd1bf22a4f26",
+        "created_at": "2026-11-03T20:14:45.667968+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "eeb24cc3-48aa-484d-b930-a7995c1bbe03",
+        "created_at": "2026-11-03T20:17:23.685295+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "8469c5e3-2673-47b4-b437-1cdbe35fd753",
+        "created_at": "2026-11-03T20:17:23.699183+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning and decision-making.",
+        "lesson": "Research relevant information before creating a plan.",
+        "id": "746da14d-1644-4347-a8f6-18edf2847af3",
+        "created_at": "2026-11-03T20:27:12.602677+00:00"
+    },
+    {
+        "goal": "How do AI agents use planning?",
+        "action": "search_knowledge",
+        "success": true,
+        "result": "Found information about planning.",
+        "lesson": "Research before creating a plan.",
+        "id": "44d23d98-852c-41f3-819e-1eab71131d82",
+        "created_at": "2026-11-03T20:27:12.616612+00:00"
     }
 ]

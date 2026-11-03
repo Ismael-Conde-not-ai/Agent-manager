@@ -404,4 +404,3 @@ class AIagent:
         return "\n".join(
             part for part in [recent_context, stored_context] if part
         )
-

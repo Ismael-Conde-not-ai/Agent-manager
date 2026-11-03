@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .vscode/launch.json
 .env
+.env.*
+data/vector_db/
+.log

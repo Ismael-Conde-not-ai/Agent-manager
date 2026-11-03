@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from typing import Any
+
+from fastapi import FastAPI, HTTPException
 
 from agents.agent import AIagent
 from agents.evaluator_agent import EvaluatorAgent
@@ -8,22 +11,55 @@ from agents.research_agent import ResearchAgent
 from core.config_loader import load_agent_config
 from core.manager import Manager
 from core.orchestrator import Orchestrator
+from integrations.argument_validator import (
+    MCPArgumentValidationError,
+    MCPToolExecutionError,
+)
+from integrations.config_loader import MCPConfigLoader
 from memory.memory_context_builder import MemoryContextBuilder
-
-app = FastAPI()
 
 manager = Manager()
 orchestrator = Orchestrator(manager)
+
 agent = None
+
 research_agent = ResearchAgent()
 planner_agent = PlannerAgent( memory_manager=manager.memory_manager)  # Pass the memory manager to the planner agent
-executor_agent = ExecutorAgent()
+executor_agent = ExecutorAgent(tool_execution_service=manager.tool_execution_service)  # Pass the tool execution service to the executor agent
 evaluator_agent = EvaluatorAgent()
 
 manager.add_agent(research_agent)  # Add the research agent to the manager
 manager.add_agent(planner_agent)  # Add the planner agent to the manager
 manager.add_agent(executor_agent) # Add the executor agent to the manager
 manager.add_agent(evaluator_agent) # Add the evaluator agent to the manager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Loads MCP configuration, connects enabled servers,
+    and closes all connections on application shutdown.
+    """
+
+    try:
+        config_loader = MCPConfigLoader()
+        servers = config_loader.load_enabled_servers()
+
+        for server in servers:
+            await manager.mcp_manager.connect_server(
+                server_name=server["name"],
+                command=server["command"],
+                args=server.get("args", []),
+                env=server.get("env"),
+                cwd=server.get("cwd")
+            )
+
+        yield
+
+    finally:
+        await manager.mcp_manager.close_all()
+
+
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def read_root():
@@ -112,7 +148,7 @@ def get_logs():
         return {"logs":logs[-20:]}
     
     except FileNotFoundError:
-        return {"error","Log file not found"}
+        return {"error":"Log file not found"}
 
 @app.post("/research")
 def research(query: str):
@@ -138,12 +174,12 @@ def create_plan(goal: str):
     }
 
 @app.post("/workflow/full")
-def full_workflow(goal: str):
-    '''Conducts research, creates a plan, and executes it for a given goal'''
+async def full_workflow(goal: str):
+    '''Conducts research, creates a plan, and executes it.'''
     if not agent:
         return {"error": "No main agent created"}
     try:
-        result = orchestrator.run(goal, agent)
+        result = await orchestrator.run(goal, agent)
         return result
     except ValueError as e:
         return {"error": str(e)}
@@ -174,3 +210,87 @@ def knowledge_search(query: str):
         "query": query,
         "results": results
     }
+
+# ==========================================
+# MCP ENDPOINTS
+# ==========================================
+
+@app.get("/mcp/servers")
+async def list_mcp_servers():
+    """Returns all currently connected MCP servers."""
+
+    servers = await manager.mcp_manager.list_servers()
+
+    return {
+        "connected_servers": servers,
+        "total": len(servers)
+    }
+
+
+@app.get("/mcp/tools")
+def list_mcp_tools():
+    """Returns all dynamically registered MCP tools."""
+
+    tools = []
+
+    for tool_name in manager.tool_registry.list_tools():
+        tool = manager.tool_registry.get_tool(tool_name)
+
+        if tool and tool.get("type") == "mcp":
+            tools.append({
+                "name": tool_name,
+                "server_name": tool.get("server_name"),
+                "tool_name": tool.get("tool_name"),
+                "description": tool.get("description", ""),
+                "input_schema": tool.get("input_schema", {})
+            })
+
+    return {
+        "tools": tools,
+        "total": len(tools)
+    }
+
+
+@app.post("/mcp/tools/{tool_name}")
+async def execute_mcp_tool(
+    tool_name: str,
+    arguments: dict[str, Any]
+):
+    tool = manager.tool_registry.get_tool(tool_name)
+
+    if tool is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"MCP tool '{tool_name}' not found."
+        )
+
+    if tool.get("type") != "mcp":
+        raise HTTPException(
+            status_code=400,
+            detail=f"'{tool_name}' is not an MCP tool."
+        )
+
+    try:
+        result = await manager.tool_execution_service.execute(
+            tool_name=tool_name,
+            arguments=arguments
+        )
+        return result
+
+    except MCPArgumentValidationError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        ) from error
+
+    except MCPToolExecutionError as error:
+        raise HTTPException(
+            status_code=502,
+            detail=str(error)
+        ) from error
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail="Internal server error."
+        ) from error

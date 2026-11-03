@@ -58,5 +58,350 @@
             "file_hash": "e10a1670e4d65543f905325ce54f328c",
             "chunk_count": 1
         }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T00:33:07.134895-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T00:33:09.064465-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T00:35:54.062735-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T00:35:54.673163-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T00:50:49.423171-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T00:50:50.050704-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T10:52:44.348862-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T10:52:46.510693-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T10:54:45.139315-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T10:54:47.357493-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T11:14:09.698808-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T11:14:10.282010-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T12:00:42.510821-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T12:00:43.187398-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T12:20:58.795179-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T12:20:59.429623-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T13:53:39.780151-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T13:53:40.738664-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T13:58:44.575185-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T13:58:45.169749-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T14:10:44.037649-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T14:10:44.747963-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T14:18:47.000200-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T14:18:47.668636-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:05:00.555806-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:05:01.166651-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:11:44.857052-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:11:45.550070-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:21:11.195200-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:21:11.773636-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:28:49.902418-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:28:50.539414-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:44:00.652270-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:44:01.263452-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:46:43.734353-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:46:44.310309-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:52:47.028178-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T15:52:47.652566-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:02:36.752086-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:02:37.396088-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:14:43.522013-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:14:44.294335-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:17:21.795747-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:17:22.476471-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:27:10.846373-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-03T16:27:11.467064-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
     }
 ]

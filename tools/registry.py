@@ -1,38 +1,69 @@
+
 class ToolRegistry:
-    """
-    Manage a registry of tools (fuctions).
-    It allows registry, excute and list functions associated with a name.
-    """
     def __init__(self):
-        '''Initialize the empty tool registry'''
-        self.tools={}
+        self.tools = {}
 
-    def register(self, name,func):
-        ''' 
-        Registrires a new tool to the dictionary
-        Args: 
-        name:str is the name of the tool
-        func: function associated to the name
-        '''
-        self.tools[name]=func
-    
+    def register(self, name, func):
+        self.tools[name] = {
+            "type": "local",
+            "handler": func
+        }
+
+    def register_mcp(
+        self,
+        name,
+        server_name,
+        tool_name,
+        description="",
+        input_schema=None
+    ):
+        self.tools[name] = {
+            "type": "mcp",
+            "server_name": server_name,
+            "tool_name": tool_name,
+            "description": description,
+            "input_schema": input_schema or {}
+        }
+
+    def get_tool(self, name):
+        return self.tools.get(name)
+
     def execute(self, name, agent):
-        '''
-        Execute a tool asiciated to an agent object.
-        returns none if no tool registered or calls the function using the object
-        args
-        name:(str) the name of the tool
-        agent:(object) object passed as an argument to the tool
-        '''
+        tool = self.get_tool(name)
 
+        if tool is None:
+            raise ValueError(f"Tool '{name}' not registered")
+
+        if tool["type"] != "local":
+            raise ValueError(
+                f"Tool '{name}' is not a local tool"
+            )
+
+        return tool["handler"](agent)
+
+    def unregister(self, name):
+        """Remove a tool from the registry."""
         if name not in self.tools:
-            print (f"Tool {name} not found")
-            return
-        
-        return self.tools[name](agent)
-    
-    def list_tools (self):
-        '''
-        Returns a list of the names of tools
-        '''
+            return False
+
+        del self.tools[name]
+        return True
+
+    def unregister_mcp_server(self, server_name):
+        """Remove all MCP tools belonging to a server."""
+        tools_to_remove = [
+            name
+            for name, tool in self.tools.items()
+            if (
+                tool["type"] == "mcp"
+                and tool["server_name"] == server_name
+            )
+        ]
+
+        for name in tools_to_remove:
+            del self.tools[name]
+
+        return len(tools_to_remove)
+
+    def list_tools(self):
         return list(self.tools.keys())

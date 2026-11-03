@@ -1,3 +1,4 @@
+import unittest
 
 from tools.search_knowledge import search_knowledge
 
@@ -10,12 +11,35 @@ class FakeAgent:
         ]
 
 
-result = search_knowledge(FakeAgent())
+class TestSearchKnowledge(unittest.TestCase):
 
-print(result)
+    def test_search_knowledge_returns_context(self):
+        result = search_knowledge(FakeAgent())
 
-assert "RAG retrieves relevant documents." in result
-assert "The agent uses context to make decisions." in result
-assert "'text':" not in result
+        self.assertIsInstance(result, list)
 
-print("All tests passed.")
+        texts = [
+            item["text"]
+            for item in result
+        ]
+
+        self.assertIn(
+            "RAG retrieves relevant documents.",
+            texts
+        )
+
+        self.assertIn(
+            "The agent uses context to make decisions.",
+            texts
+        )
+
+    def test_search_knowledge_returns_text_items(self):
+        result = search_knowledge(FakeAgent())
+
+        for item in result:
+            self.assertIsInstance(item, dict)
+            self.assertIn("text", item)
+
+
+if __name__ == "__main__":
+    unittest.main()

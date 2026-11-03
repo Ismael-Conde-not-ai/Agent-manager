@@ -1,11 +1,11 @@
 
 import unittest
-from unittest.mock import Mock
+from unittest.mock import AsyncMock, Mock
 
 from core.orchestrator import Orchestrator
 
 
-class TestOrchestrator(unittest.TestCase):
+class TestOrchestrator(unittest.IsolatedAsyncioTestCase):
 
     def setUp(self):
         self.manager = Mock()
@@ -13,6 +13,7 @@ class TestOrchestrator(unittest.TestCase):
         self.research = Mock()
         self.planner = Mock()
         self.executor = Mock()
+        self.executor.execute_plan = AsyncMock()
         self.evaluator = Mock()
 
         self.manager.get_agent.side_effect = {
@@ -64,7 +65,7 @@ class TestOrchestrator(unittest.TestCase):
             "evaluation": "The goal was achieved.",
         }
 
-    def test_missing_agent(self):
+    async def test_missing_agent(self):
         self.manager.get_agent.side_effect = lambda name: (
             None if name == "PlannerAgent"
             else {
@@ -75,27 +76,27 @@ class TestOrchestrator(unittest.TestCase):
         )
 
         with self.assertRaises(ValueError):
-            self.orchestrator.run(self.goal, Mock())
+            await self.orchestrator.run(self.goal, Mock())
 
-    def test_invalid_max_retries(self):
+    async def test_invalid_max_retries(self):
         for invalid_value in (-1, 1.5, True, "2"):
-            with self.subTest(value=invalid_value):
+            with self.subTest(value=invalid_value):  # noqa: SIM117
                 with self.assertRaises(ValueError):
-                    self.orchestrator.run(
+                    await self.orchestrator.run(
                         self.goal,
                         Mock(),
                         max_retries=invalid_value,
                     )
 
-    def test_success_first_attempt(self):
-        result = self.orchestrator.run(self.goal, Mock())
+    async def test_success_first_attempt(self):
+        result = await self.orchestrator.run(self.goal, Mock())
 
         self.assertTrue(result["success"])
         self.assertEqual(result["total_attempts"], 1)
         self.planner.create_plan.assert_called_once()
         self.planner.replan.assert_not_called()
 
-    def test_replan_after_failure(self):
+    async def test_replan_after_failure(self):
         self.executor.execute_plan.side_effect = [
             {
                 "success": False,
@@ -130,7 +131,7 @@ class TestOrchestrator(unittest.TestCase):
             },
         ]
 
-        result = self.orchestrator.run(
+        result = await self.orchestrator.run(
             self.goal,
             Mock(),
             max_retries=1,
@@ -150,7 +151,7 @@ class TestOrchestrator(unittest.TestCase):
             str(replan_kwargs["execution_results"]),
         )
 
-    def test_stops_after_max_retries(self):
+    async def test_stops_after_max_retries(self):
         self.executor.execute_plan.return_value = {
             "success": False,
             "results": [
@@ -167,7 +168,7 @@ class TestOrchestrator(unittest.TestCase):
             "evaluation": "Evidence is insufficient.",
         }
 
-        result = self.orchestrator.run(
+        result = await self.orchestrator.run(
             self.goal,
             Mock(),
             max_retries=2,
@@ -178,7 +179,7 @@ class TestOrchestrator(unittest.TestCase):
         self.planner.create_plan.assert_called_once()
         self.assertEqual(self.planner.replan.call_count, 2)
 
-    def test_evaluation_failure_triggers_replan(self):
+    async def test_evaluation_failure_triggers_replan(self):
         self.evaluator.evaluate.side_effect = [
             {
                 "success": False,
@@ -190,7 +191,7 @@ class TestOrchestrator(unittest.TestCase):
             },
         ]
 
-        result = self.orchestrator.run(
+        result = await self.orchestrator.run(
             self.goal,
             Mock(),
             max_retries=1,
@@ -208,7 +209,7 @@ class TestOrchestrator(unittest.TestCase):
         self.assertIn("execution", feedback)
 
     
-    def test_invalid_plan_is_never_executed(self):
+    async def test_invalid_plan_is_never_executed(self):
         self.planner.parse_plan.return_value = [
             {
                 "step": 1,
@@ -227,7 +228,7 @@ class TestOrchestrator(unittest.TestCase):
             "Step 1 contains an unsupported action.",
         )
 
-        result = self.orchestrator.run(
+        result = await self.orchestrator.run(
             self.goal,
             Mock(),
             max_retries=0,
@@ -236,7 +237,7 @@ class TestOrchestrator(unittest.TestCase):
         self.executor.execute_plan.assert_not_called()
         self.assertFalse(result["success"])
 
-    def test_invalid_plan_is_never_executed(self):
+    async def test_invalid_plan_is_never_executed(self):
         self.planner.parse_plan.return_value = [
             {
                 "step": 1,
@@ -255,7 +256,7 @@ class TestOrchestrator(unittest.TestCase):
             "Step 1 contains an unsupported action.",
         )
 
-        result = self.orchestrator.run(
+        result = await self.orchestrator.run(
             self.goal,
             Mock(),
             max_retries=0,
@@ -266,7 +267,7 @@ class TestOrchestrator(unittest.TestCase):
         self.assertIn("unsupported action", result["error"].lower())
 
     
-    def test_invalid_plan_feedback_is_sent_to_replanner(self):
+    async def test_invalid_plan_feedback_is_sent_to_replanner(self):
         self.planner.parse_plan.side_effect = [
             [
                 {
@@ -291,7 +292,7 @@ class TestOrchestrator(unittest.TestCase):
         self.executor.execute_plan.return_value = {"success": True}
         self.evaluator.evaluate.return_value = {"success": True}
 
-        result = self.orchestrator.run(
+        result = await self.orchestrator.run(
             self.goal,
             Mock(),
             max_retries=1,

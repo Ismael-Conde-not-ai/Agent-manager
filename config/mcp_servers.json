@@ -1,0 +1,14 @@
+
+{
+    "servers": [
+        {
+            "name": "local_test_server",
+            "command": "python",
+            "args": [
+                "tests/mcp_test_server.py"
+            ],
+            "cwd": "D:\\Desktop\\Learn python\\workspace\\Agent_manager",
+            "enabled": true
+        }
+    ]
+}

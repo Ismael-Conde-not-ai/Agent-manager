@@ -15,11 +15,15 @@ class VectorStore:
         """
         Add a document to the vector store.
         """
-        self.collection.upsert(
-            ids=[document_id],
-            documents=[text],
-            metadatas=[metadata or {}]
-        )
+        data = {
+            "ids": [document_id],
+            "documents": [text],
+        }
+        # Chromadb doesn't support passing an empty list for metadatas.
+        if metadata:
+            data["metadatas"] = [metadata]
+
+        self.collection.upsert(**data)
 
     def search(self, query, limit=3, metadata_filter=None):
         """
@@ -102,3 +106,12 @@ class VectorStore:
         metadatas = results.get("metadatas", [])
 
         return len(metadatas)
+
+    def close(self):
+        """
+        Close the vector store client.
+        """
+        if self.client is not None:
+            self.client.close()
+            self.client = None
+            self.collection = None

@@ -1,12 +1,13 @@
-
 from core.logger import logger
 
 
 class Orchestrator:
+
     def __init__(self, manager):
         self.manager = manager
 
-    def run(self, goal, agent, max_retries=1):
+    async def run(self, goal, agent, max_retries=1):
+
         research_agent = self.manager.get_agent("ResearchAgent")
         planner_agent = self.manager.get_agent("PlannerAgent")
         executor_agent = self.manager.get_agent("ExecutorAgent")
@@ -34,6 +35,7 @@ class Orchestrator:
 
         logger.info("[ORCHESTRATOR] Starting task: %s", goal)
 
+        # These agents remain synchronous for now.
         research_result = research_agent.research(goal)
 
         attempts = []
@@ -50,7 +52,6 @@ class Orchestrator:
                 max_retries + 1,
             )
 
-            # Create the initial plan or revise a previous one.
             if previous_plan is not None and previous_feedback is not None:
                 logger.info("[ORCHESTRATOR] Revising previous plan")
 
@@ -70,13 +71,10 @@ class Orchestrator:
 
             plan = planner_agent.parse_plan(plan_text)
 
-            # Validate before execution. Invalid plans must never
-            # reach ExecutorAgent.
             is_valid, validation_error = planner_agent.validate_plan(
                 plan
             )
 
-            
             if not is_valid:
                 error_message = (
                     validation_error or "The generated plan is invalid."
@@ -94,8 +92,6 @@ class Orchestrator:
                     "error": error_message,
                 })
 
-                # Send the validation error to the planner
-                # during the next attempt.
                 previous_plan = plan
                 previous_feedback = {
                     "success": False,
@@ -109,7 +105,6 @@ class Orchestrator:
 
                 continue
 
-            # Warn if the planner repeats an earlier plan.
             if plan in previous_plans:
                 logger.warning(
                     "[ORCHESTRATOR] Planner repeated a previous plan."
@@ -122,17 +117,23 @@ class Orchestrator:
                 plan,
             )
 
-            execution = executor_agent.execute_plan(plan, agent)
+            # MCP execution is asynchronous.
+            execution = await executor_agent.execute_plan(
+                plan,
+                agent,
+            )
+
             execution_success = execution.get("success") is True
 
+            # Evaluator remains synchronous.
             evaluation = evaluator_agent.evaluate(
                 goal,
                 research_result,
                 plan,
                 execution,
             )
-            evaluation_success = evaluation.get("success") is True
 
+            evaluation_success = evaluation.get("success") is True
             success = execution_success and evaluation_success
 
             attempt = {
@@ -158,7 +159,6 @@ class Orchestrator:
                 logger.info("[ORCHESTRATOR] Goal achieved")
                 break
 
-            # Preserve execution and evaluation feedback for replanning.
             previous_plan = plan
             previous_feedback = {
                 "execution": execution,
