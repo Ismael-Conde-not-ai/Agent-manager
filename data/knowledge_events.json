@@ -403,5 +403,80 @@
             "file_hash": "e10a1670e4d65543f905325ce54f328c",
             "chunk_count": 1
         }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T15:39:10.035267-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T15:39:12.330548-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T16:24:36.601501-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T16:24:37.397028-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T16:29:32.890895-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T16:29:33.541657-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T18:51:12.887848-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T18:51:13.558949-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
+    },
+    {
+        "event": "DELETE",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T19:15:15.526479-04:00",
+        "details": {}
+    },
+    {
+        "event": "INDEX",
+        "source": "planning.txt",
+        "created_at": "2026-11-10T19:15:16.320033-04:00",
+        "details": {
+            "file_hash": "e10a1670e4d65543f905325ce54f328c",
+            "chunk_count": 1
+        }
     }
 ]

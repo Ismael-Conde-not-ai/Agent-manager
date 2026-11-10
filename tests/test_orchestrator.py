@@ -237,7 +237,7 @@ class TestOrchestrator(unittest.IsolatedAsyncioTestCase):
         self.executor.execute_plan.assert_not_called()
         self.assertFalse(result["success"])
 
-    async def test_invalid_plan_is_never_executed(self):
+    async def test_invalid_plan_is_never_executed(self):  # noqa: F811
         self.planner.parse_plan.return_value = [
             {
                 "step": 1,

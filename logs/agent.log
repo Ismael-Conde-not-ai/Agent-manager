@@ -3458,3 +3458,589 @@ ValueError: Tool 'unknown_tool' is not registered.
 2026-11-03 16:27:33,319 - [ORCHESTRATOR] Execution success: True
 2026-11-03 16:27:33,319 - [ORCHESTRATOR] Evaluation success: True
 2026-11-03 16:27:33,319 - [ORCHESTRATOR] Goal achieved
+2026-11-10 15:39:14,706 - AFC is enabled with max remote calls: 10.
+2026-11-10 15:39:18,505 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-11-10 15:39:19,727 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 15:39:19,740 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 15:39:19,871 - Tool execution failed: unknown_tool
+Traceback (most recent call last):
+  File "D:\Desktop\Learn python\workspace\Agent_manager\agents\executor_agent.py", line 53, in execute_step
+    result = await self.tool_execution_service.execute(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\Desktop\Learn python\workspace\Agent_manager\integrations\execution_service.py", line 43, in execute
+    raise ValueError(
+        f"Tool '{tool_name}' is not registered."
+    )
+ValueError: Tool 'unknown_tool' is not registered.
+2026-11-10 15:39:19,955 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 400 Bad Request"
+2026-11-10 15:39:19,960 - HTTP Request: POST http://testserver/mcp/tools/local_tool "HTTP/1.1 400 Bad Request"
+2026-11-10 15:39:19,967 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 502 Bad Gateway"
+2026-11-10 15:39:21,864 - HTTP Request: GET http://testserver/mcp/servers "HTTP/1.1 200 OK"
+2026-11-10 15:39:21,866 - HTTP Request: GET http://testserver/mcp/tools "HTTP/1.1 200 OK"
+2026-11-10 15:39:21,879 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 200 OK"
+2026-11-10 15:39:21,884 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.greet "HTTP/1.1 200 OK"
+2026-11-10 15:39:22,065 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 500 Internal Server Error"
+2026-11-10 15:39:22,070 - HTTP Request: POST http://testserver/mcp/tools/unknown_tool "HTTP/1.1 404 Not Found"
+2026-11-10 15:39:22,503 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=7140 running stdin=<_ProactorWritePipeTransport fd=1200 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1456 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 15:39:24,350 - <_WindowsSubprocessTransport pid=7140 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1456>> exited with return code 0
+2026-11-10 15:39:24,416 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=3960 running stdin=<_ProactorWritePipeTransport fd=1220 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1216 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 15:39:26,201 - <_WindowsSubprocessTransport pid=3960 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1216>> exited with return code 0
+2026-11-10 15:39:26,269 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=10736 running stdin=<_ProactorWritePipeTransport fd=1468 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1356 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 15:39:28,073 - <_WindowsSubprocessTransport pid=10736 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1356>> exited with return code 0
+2026-11-10 15:39:28,138 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=17880 running stdin=<_ProactorWritePipeTransport fd=1236 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1476 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 15:39:29,994 - <_WindowsSubprocessTransport pid=17880 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closed>> exited with return code 0
+2026-11-10 15:39:30,309 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=18368 running stdin=<_ProactorWritePipeTransport fd=1280 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1252 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 15:39:32,104 - <_WindowsSubprocessTransport pid=18368 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1252>> exited with return code 0
+2026-11-10 15:39:32,191 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=12580 running stdin=<_ProactorWritePipeTransport fd=1392 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1380 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 15:39:33,967 - <_WindowsSubprocessTransport pid=12580 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1380>> exited with return code 0
+2026-11-10 15:39:34,034 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=7136 running stdin=<_ProactorWritePipeTransport fd=1452 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1060 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 15:39:35,776 - <_WindowsSubprocessTransport pid=7136 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1060>> exited with return code 0
+2026-11-10 15:39:35,815 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Execution success: True
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Execution success: True
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 15:39:35,816 - [ORCHESTRATOR] Goal achieved
+2026-11-10 15:39:35,865 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 15:39:35,865 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 15:39:35,865 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 15:39:35,865 - [ORCHESTRATOR] Invalid plan rejected: Unsupported action.
+2026-11-10 15:39:35,865 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 15:39:35,865 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 15:39:35,865 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,866 - [ORCHESTRATOR] Execution success: True
+2026-11-10 15:39:35,866 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 15:39:35,866 - [ORCHESTRATOR] Goal achieved
+2026-11-10 15:39:35,890 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 15:39:35,890 - [ORCHESTRATOR] Attempt 1/1
+2026-11-10 15:39:35,890 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 15:39:35,891 - [ORCHESTRATOR] Invalid plan rejected: Step 1 contains an unsupported action.
+2026-11-10 15:39:35,940 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Execution success: False
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Execution success: True
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 15:39:35,941 - [ORCHESTRATOR] Goal achieved
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Attempt 1/3
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Execution success: False
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Attempt 2/3
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 15:39:35,966 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Execution success: False
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Attempt 3/3
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Execution success: False
+2026-11-10 15:39:35,967 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 15:39:35,991 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 15:39:35,992 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 15:39:35,992 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 15:39:35,992 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 15:39:35,992 - [ORCHESTRATOR] Execution success: True
+2026-11-10 15:39:35,992 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 15:39:35,992 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:24:39,264 - AFC is enabled with max remote calls: 10.
+2026-11-10 16:24:42,608 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-11-10 16:24:43,601 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 16:24:43,607 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 16:24:43,681 - Tool execution failed: unknown_tool
+Traceback (most recent call last):
+  File "D:\Desktop\Learn python\workspace\Agent_manager\agents\executor_agent.py", line 53, in execute_step
+    result = await self.tool_execution_service.execute(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\Desktop\Learn python\workspace\Agent_manager\integrations\execution_service.py", line 43, in execute
+    raise ValueError(
+        f"Tool '{tool_name}' is not registered."
+    )
+ValueError: Tool 'unknown_tool' is not registered.
+2026-11-10 16:24:43,768 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 400 Bad Request"
+2026-11-10 16:24:43,774 - HTTP Request: POST http://testserver/mcp/tools/local_tool "HTTP/1.1 400 Bad Request"
+2026-11-10 16:24:43,779 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 502 Bad Gateway"
+2026-11-10 16:24:45,576 - HTTP Request: GET http://testserver/mcp/servers "HTTP/1.1 200 OK"
+2026-11-10 16:24:45,578 - HTTP Request: GET http://testserver/mcp/tools "HTTP/1.1 200 OK"
+2026-11-10 16:24:45,586 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 200 OK"
+2026-11-10 16:24:45,592 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.greet "HTTP/1.1 200 OK"
+2026-11-10 16:24:45,773 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 500 Internal Server Error"
+2026-11-10 16:24:45,778 - HTTP Request: POST http://testserver/mcp/tools/unknown_tool "HTTP/1.1 404 Not Found"
+2026-11-10 16:24:46,128 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=1592 running stdin=<_ProactorWritePipeTransport fd=1388 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1312 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:24:48,153 - <_WindowsSubprocessTransport pid=1592 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1312>> exited with return code 0
+2026-11-10 16:24:48,220 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=20136 running stdin=<_ProactorWritePipeTransport fd=1428 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1432 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:24:50,211 - <_WindowsSubprocessTransport pid=20136 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1432>> exited with return code 0
+2026-11-10 16:24:50,284 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=16904 running stdin=<_ProactorWritePipeTransport fd=1228 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1188 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:24:52,360 - <_WindowsSubprocessTransport pid=16904 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1188>> exited with return code 0
+2026-11-10 16:24:52,440 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=9620 running stdin=<_ProactorWritePipeTransport fd=1328 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1364 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:24:54,418 - <_WindowsSubprocessTransport pid=9620 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1364>> exited with return code 0
+2026-11-10 16:24:54,773 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=7976 running stdin=<_ProactorWritePipeTransport fd=1372 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1316 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:24:56,715 - <_WindowsSubprocessTransport pid=7976 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1316>> exited with return code 0
+2026-11-10 16:24:56,790 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=19928 running stdin=<_ProactorWritePipeTransport fd=1472 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1476 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:24:58,799 - <_WindowsSubprocessTransport pid=19928 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1476>> exited with return code 0
+2026-11-10 16:24:58,868 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=8380 running stdin=<_ProactorWritePipeTransport fd=1520 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1524 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:25:00,878 - <_WindowsSubprocessTransport pid=8380 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1524>> exited with return code 0
+2026-11-10 16:25:00,919 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:25:00,919 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:25:00,919 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:25:00,919 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:00,919 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:25:00,920 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:25:00,974 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:25:00,974 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:25:00,974 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:25:00,974 - [ORCHESTRATOR] Invalid plan rejected: Unsupported action.
+2026-11-10 16:25:00,975 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 16:25:00,975 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:25:00,975 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:00,975 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:25:00,975 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:25:00,975 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:25:01,002 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:25:01,003 - [ORCHESTRATOR] Attempt 1/1
+2026-11-10 16:25:01,003 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:25:01,003 - [ORCHESTRATOR] Invalid plan rejected: Step 1 contains an unsupported action.
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:25:01,056 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:01,057 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:25:01,057 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:25:01,057 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Attempt 1/3
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:25:01,084 - [ORCHESTRATOR] Attempt 2/3
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Attempt 3/3
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:25:01,085 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:25:01,112 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:25:01,112 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:25:01,112 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:25:01,112 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:25:01,112 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:25:01,112 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:25:01,112 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:29:35,171 - AFC is enabled with max remote calls: 10.
+2026-11-10 16:29:38,455 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-11-10 16:29:39,332 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 16:29:39,338 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 16:29:39,409 - Tool execution failed: unknown_tool
+Traceback (most recent call last):
+  File "D:\Desktop\Learn python\workspace\Agent_manager\agents\executor_agent.py", line 53, in execute_step
+    result = await self.tool_execution_service.execute(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\Desktop\Learn python\workspace\Agent_manager\integrations\execution_service.py", line 43, in execute
+    raise ValueError(
+        f"Tool '{tool_name}' is not registered."
+    )
+ValueError: Tool 'unknown_tool' is not registered.
+2026-11-10 16:29:39,493 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 400 Bad Request"
+2026-11-10 16:29:39,498 - HTTP Request: POST http://testserver/mcp/tools/local_tool "HTTP/1.1 400 Bad Request"
+2026-11-10 16:29:39,504 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 502 Bad Gateway"
+2026-11-10 16:29:41,168 - HTTP Request: GET http://testserver/mcp/servers "HTTP/1.1 200 OK"
+2026-11-10 16:29:41,170 - HTTP Request: GET http://testserver/mcp/tools "HTTP/1.1 200 OK"
+2026-11-10 16:29:41,177 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 200 OK"
+2026-11-10 16:29:41,182 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.greet "HTTP/1.1 200 OK"
+2026-11-10 16:29:41,368 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 500 Internal Server Error"
+2026-11-10 16:29:41,373 - HTTP Request: POST http://testserver/mcp/tools/unknown_tool "HTTP/1.1 404 Not Found"
+2026-11-10 16:29:41,711 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=2812 running stdin=<_ProactorWritePipeTransport fd=1524 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1476 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:29:43,592 - <_WindowsSubprocessTransport pid=2812 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1476>> exited with return code 0
+2026-11-10 16:29:43,663 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=8128 running stdin=<_ProactorWritePipeTransport fd=1440 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1532 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:29:45,522 - <_WindowsSubprocessTransport pid=8128 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1532>> exited with return code 0
+2026-11-10 16:29:45,589 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=14712 running stdin=<_ProactorWritePipeTransport fd=1532 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1404 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:29:47,441 - <_WindowsSubprocessTransport pid=14712 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1404>> exited with return code 0
+2026-11-10 16:29:47,506 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=744 running stdin=<_ProactorWritePipeTransport fd=1404 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1504 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:29:49,362 - <_WindowsSubprocessTransport pid=744 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1504>> exited with return code 0
+2026-11-10 16:29:49,696 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=10416 running stdin=<_ProactorWritePipeTransport fd=1528 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1508 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:29:51,568 - <_WindowsSubprocessTransport pid=10416 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1508>> exited with return code 0
+2026-11-10 16:29:51,632 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=9424 running stdin=<_ProactorWritePipeTransport fd=1328 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1264 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:29:53,452 - <_WindowsSubprocessTransport pid=9424 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1264>> exited with return code 0
+2026-11-10 16:29:53,520 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=2012 running stdin=<_ProactorWritePipeTransport fd=1304 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1408 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 16:29:55,442 - <_WindowsSubprocessTransport pid=2012 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1408>> exited with return code 0
+2026-11-10 16:29:55,474 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:29:55,474 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:29:55,474 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:29:55,474 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:29:55,475 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:29:55,540 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:29:55,540 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:29:55,540 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:29:55,540 - [ORCHESTRATOR] Invalid plan rejected: Unsupported action.
+2026-11-10 16:29:55,540 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 16:29:55,540 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:29:55,541 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,541 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:29:55,541 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:29:55,541 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:29:55,580 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:29:55,580 - [ORCHESTRATOR] Attempt 1/1
+2026-11-10 16:29:55,580 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:29:55,580 - [ORCHESTRATOR] Invalid plan rejected: Step 1 contains an unsupported action.
+2026-11-10 16:29:55,636 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:29:55,637 - [ORCHESTRATOR] Goal achieved
+2026-11-10 16:29:55,662 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:29:55,662 - [ORCHESTRATOR] Attempt 1/3
+2026-11-10 16:29:55,662 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:29:55,662 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,662 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:29:55,662 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:29:55,662 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Attempt 2/3
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Attempt 3/3
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Execution success: False
+2026-11-10 16:29:55,663 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 16:29:55,688 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 16:29:55,688 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 16:29:55,688 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 16:29:55,688 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 16:29:55,688 - [ORCHESTRATOR] Execution success: True
+2026-11-10 16:29:55,688 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 16:29:55,688 - [ORCHESTRATOR] Goal achieved
+2026-11-10 18:50:34,397 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 18:50:34,405 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 18:51:15,257 - AFC is enabled with max remote calls: 10.
+2026-11-10 18:51:18,842 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-11-10 18:51:19,666 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 18:51:19,673 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 18:51:19,742 - Tool execution failed: unknown_tool
+Traceback (most recent call last):
+  File "D:\Desktop\Learn python\workspace\Agent_manager\agents\executor_agent.py", line 53, in execute_step
+    result = await self.tool_execution_service.execute(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\Desktop\Learn python\workspace\Agent_manager\integrations\execution_service.py", line 43, in execute
+    raise ValueError(
+        f"Tool '{tool_name}' is not registered."
+    )
+ValueError: Tool 'unknown_tool' is not registered.
+2026-11-10 18:51:19,825 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 400 Bad Request"
+2026-11-10 18:51:19,830 - HTTP Request: POST http://testserver/mcp/tools/local_tool "HTTP/1.1 400 Bad Request"
+2026-11-10 18:51:19,834 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 502 Bad Gateway"
+2026-11-10 18:51:21,466 - HTTP Request: GET http://testserver/mcp/servers "HTTP/1.1 200 OK"
+2026-11-10 18:51:21,467 - HTTP Request: GET http://testserver/mcp/tools "HTTP/1.1 200 OK"
+2026-11-10 18:51:21,474 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 200 OK"
+2026-11-10 18:51:21,478 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.greet "HTTP/1.1 200 OK"
+2026-11-10 18:51:21,649 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 500 Internal Server Error"
+2026-11-10 18:51:21,655 - HTTP Request: POST http://testserver/mcp/tools/unknown_tool "HTTP/1.1 404 Not Found"
+2026-11-10 18:51:21,995 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=21616 running stdin=<_ProactorWritePipeTransport fd=1520 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1524 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:51:23,782 - <_WindowsSubprocessTransport pid=21616 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1524>> exited with return code 0
+2026-11-10 18:51:23,855 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=22248 running stdin=<_ProactorWritePipeTransport fd=1208 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1368 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:51:25,660 - <_WindowsSubprocessTransport pid=22248 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1368>> exited with return code 0
+2026-11-10 18:51:25,725 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=4412 running stdin=<_ProactorWritePipeTransport fd=1504 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1500 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:51:27,517 - <_WindowsSubprocessTransport pid=4412 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1500>> exited with return code 0
+2026-11-10 18:51:27,582 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=19616 running stdin=<_ProactorWritePipeTransport fd=1568 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1564 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:51:29,355 - <_WindowsSubprocessTransport pid=19616 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1564>> exited with return code 0
+2026-11-10 18:51:29,787 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=23320 running stdin=<_ProactorWritePipeTransport fd=1412 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1380 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:51:31,594 - <_WindowsSubprocessTransport pid=23320 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1380>> exited with return code 0
+2026-11-10 18:51:31,667 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=6192 running stdin=<_ProactorWritePipeTransport fd=1468 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1432 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:51:33,430 - <_WindowsSubprocessTransport pid=6192 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1432>> exited with return code 0
+2026-11-10 18:51:33,512 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=2736 running stdin=<_ProactorWritePipeTransport fd=1396 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1384 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:51:35,295 - <_WindowsSubprocessTransport pid=2736 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1384>> exited with return code 0
+2026-11-10 18:51:35,326 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 18:51:35,326 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 18:51:35,326 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 18:51:35,326 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,326 - [ORCHESTRATOR] Execution success: True
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Execution success: True
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 18:51:35,327 - [ORCHESTRATOR] Goal achieved
+2026-11-10 18:51:35,376 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 18:51:35,376 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 18:51:35,376 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 18:51:35,376 - [ORCHESTRATOR] Invalid plan rejected: Unsupported action.
+2026-11-10 18:51:35,376 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 18:51:35,376 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 18:51:35,377 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,377 - [ORCHESTRATOR] Execution success: True
+2026-11-10 18:51:35,377 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 18:51:35,377 - [ORCHESTRATOR] Goal achieved
+2026-11-10 18:51:35,402 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 18:51:35,402 - [ORCHESTRATOR] Attempt 1/1
+2026-11-10 18:51:35,402 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 18:51:35,402 - [ORCHESTRATOR] Invalid plan rejected: Step 1 contains an unsupported action.
+2026-11-10 18:51:35,450 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 18:51:35,450 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 18:51:35,450 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Execution success: False
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Execution success: True
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 18:51:35,451 - [ORCHESTRATOR] Goal achieved
+2026-11-10 18:51:35,477 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Attempt 1/3
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Execution success: False
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Attempt 2/3
+2026-11-10 18:51:35,478 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Execution success: False
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Attempt 3/3
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 18:51:35,479 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,480 - [ORCHESTRATOR] Execution success: False
+2026-11-10 18:51:35,480 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 18:51:35,507 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 18:51:35,507 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 18:51:35,507 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 18:51:35,507 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 18:51:35,507 - [ORCHESTRATOR] Execution success: True
+2026-11-10 18:51:35,507 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 18:51:35,507 - [ORCHESTRATOR] Goal achieved
+2026-11-10 18:56:49,889 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=2652 running stdin=<_ProactorWritePipeTransport fd=708 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=712 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:56:51,719 - <_WindowsSubprocessTransport pid=2652 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=712>> exited with return code 0
+2026-11-10 18:56:51,793 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=2096 running stdin=<_ProactorWritePipeTransport fd=740 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=716 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:56:53,610 - <_WindowsSubprocessTransport pid=2096 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=716>> exited with return code 0
+2026-11-10 18:56:53,698 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=21312 running stdin=<_ProactorWritePipeTransport fd=712 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=652 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:56:55,517 - <_WindowsSubprocessTransport pid=21312 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=652>> exited with return code 0
+2026-11-10 18:56:55,581 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=17036 running stdin=<_ProactorWritePipeTransport fd=784 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=736 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:56:57,357 - <_WindowsSubprocessTransport pid=17036 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=736>> exited with return code 0
+2026-11-10 18:56:57,421 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=10424 running stdin=<_ProactorWritePipeTransport fd=808 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=772 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 18:56:59,240 - <_WindowsSubprocessTransport pid=10424 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=772>> exited with return code 0
+2026-11-10 19:05:09,645 - Executing <Task pending name='Task-2' coro=<TestMCPEndToEnd.test_executor_executes_real_http_mcp_tool() running at D:\Desktop\Learn python\workspace\Agent_manager\tests\test_mcp_end_to_end.py:206> wait_for=<Future pending cb=[Task.task_wakeup()] created at D:\Desktop\Learn python\workspace\Agent_manager\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:909> cb=[_run_until_complete_cb() at D:\Programs\Python\Lib\asyncio\base_events.py:181] created at D:\Programs\Python\Lib\asyncio\runners.py:110> took 0.717 seconds
+2026-11-10 19:05:09,841 - Executing <Task pending name='mcp.client.streamable_http.StreamableHTTPTransport._run_request_post' coro=<StreamableHTTPTransport._run_request_post() running at D:\Desktop\Learn python\workspace\Agent_manager\.venv\Lib\site-packages\mcp\client\streamable_http.py:355> wait_for=<Future pending cb=[Task.task_wakeup()] created at D:\Programs\Python\Lib\asyncio\base_events.py:460> cb=[TaskGroup._spawn.<locals>.task_done() at D:\Desktop\Learn python\workspace\Agent_manager\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:805] created at D:\Programs\Python\Lib\asyncio\tasks.py:395> took 0.148 seconds
+2026-11-10 19:05:09,885 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:05:09,885 - Received session ID: 3464ca52aaf741a78fa515c37fc536b0
+2026-11-10 19:05:09,985 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 202 Accepted"
+2026-11-10 19:05:09,987 - HTTP Request: GET http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:05:10,041 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:05:10,117 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:05:10,188 - HTTP Request: DELETE http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:05:10,191 - GET stream disconnected, reconnecting in 1000ms...
+2026-11-10 19:15:18,113 - AFC is enabled with max remote calls: 10.
+2026-11-10 19:15:21,605 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-11-10 19:15:22,482 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 19:15:22,488 - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2026-11-10 19:15:22,561 - Tool execution failed: unknown_tool
+Traceback (most recent call last):
+  File "D:\Desktop\Learn python\workspace\Agent_manager\agents\executor_agent.py", line 53, in execute_step
+    result = await self.tool_execution_service.execute(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\Desktop\Learn python\workspace\Agent_manager\integrations\execution_service.py", line 43, in execute
+    raise ValueError(
+        f"Tool '{tool_name}' is not registered."
+    )
+ValueError: Tool 'unknown_tool' is not registered.
+2026-11-10 19:15:22,653 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 400 Bad Request"
+2026-11-10 19:15:22,660 - HTTP Request: POST http://testserver/mcp/tools/local_tool "HTTP/1.1 400 Bad Request"
+2026-11-10 19:15:22,667 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 502 Bad Gateway"
+2026-11-10 19:15:24,417 - HTTP Request: GET http://testserver/mcp/servers "HTTP/1.1 200 OK"
+2026-11-10 19:15:24,419 - HTTP Request: GET http://testserver/mcp/tools "HTTP/1.1 200 OK"
+2026-11-10 19:15:24,424 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 200 OK"
+2026-11-10 19:15:24,429 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.greet "HTTP/1.1 200 OK"
+2026-11-10 19:15:24,604 - HTTP Request: POST http://testserver/mcp/tools/local_test_server.add_numbers "HTTP/1.1 500 Internal Server Error"
+2026-11-10 19:15:24,612 - HTTP Request: POST http://testserver/mcp/tools/unknown_tool "HTTP/1.1 404 Not Found"
+2026-11-10 19:15:24,980 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.EXE': <_WindowsSubprocessTransport pid=22308 running stdin=<_ProactorWritePipeTransport fd=1388 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1148 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:26,845 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:26,845 - Received session ID: e957f50627cd4b52a67eb501f426353f
+2026-11-10 19:15:26,942 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 202 Accepted"
+2026-11-10 19:15:26,944 - HTTP Request: GET http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:26,998 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:27,066 - HTTP Request: DELETE http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:27,069 - GET stream disconnected, reconnecting in 1000ms...
+2026-11-10 19:15:27,300 - <_WindowsSubprocessTransport pid=22308 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1148>> exited with return code 0
+2026-11-10 19:15:27,384 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=11116 running stdin=<_ProactorWritePipeTransport fd=1404 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1412 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:29,267 - <_WindowsSubprocessTransport pid=11116 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1412>> exited with return code 0
+2026-11-10 19:15:29,338 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=21320 running stdin=<_ProactorWritePipeTransport fd=1424 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1472 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:31,144 - <_WindowsSubprocessTransport pid=21320 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1472>> exited with return code 0
+2026-11-10 19:15:31,211 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=11996 running stdin=<_ProactorWritePipeTransport fd=1448 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1400 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:33,005 - <_WindowsSubprocessTransport pid=11996 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1400>> exited with return code 0
+2026-11-10 19:15:33,103 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:33,104 - Received session ID: 9748dc2424b64d758630816a6f82ecc6
+2026-11-10 19:15:33,199 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 202 Accepted"
+2026-11-10 19:15:33,201 - HTTP Request: GET http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:33,251 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:33,324 - HTTP Request: POST http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:33,393 - HTTP Request: DELETE http://127.0.0.1:8080/mcp "HTTP/1.1 200 OK"
+2026-11-10 19:15:33,397 - GET stream disconnected, reconnecting in 1000ms...
+2026-11-10 19:15:33,469 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=19036 running stdin=<_ProactorWritePipeTransport fd=1376 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1444 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:35,311 - <_WindowsSubprocessTransport pid=19036 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1444>> exited with return code 0
+2026-11-10 19:15:35,385 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=11252 running stdin=<_ProactorWritePipeTransport fd=1492 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1376 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:37,216 - <_WindowsSubprocessTransport pid=11252 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1376>> exited with return code 0
+2026-11-10 19:15:37,716 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=16904 running stdin=<_ProactorWritePipeTransport fd=1548 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1552 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:39,536 - <_WindowsSubprocessTransport pid=16904 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1552>> exited with return code 0
+2026-11-10 19:15:39,603 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=18636 running stdin=<_ProactorWritePipeTransport fd=1376 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1544 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:41,456 - <_WindowsSubprocessTransport pid=18636 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1544>> exited with return code 0
+2026-11-10 19:15:41,532 - execute program 'D:\\Desktop\\Learn python\\workspace\\Agent_manager\\.venv\\Scripts\\python.exe': <_WindowsSubprocessTransport pid=17884 running stdin=<_ProactorWritePipeTransport fd=1644 read=<_OverlappedFuture pending cb=[_ProactorWritePipeTransport._pipe_closed()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:494>> stdout=<_ProactorReadPipeTransport fd=1648 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()] created at D:\Programs\Python\Lib\asyncio\windows_events.py:507>>>
+2026-11-10 19:15:43,328 - <_WindowsSubprocessTransport pid=17884 running stdin=<_ProactorWritePipeTransport closed> stdout=<_ProactorReadPipeTransport closing fd=1648>> exited with return code 0
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Execution success: True
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 19:15:43,365 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 19:15:43,366 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,366 - [ORCHESTRATOR] Execution success: True
+2026-11-10 19:15:43,366 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 19:15:43,366 - [ORCHESTRATOR] Goal achieved
+2026-11-10 19:15:43,419 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 19:15:43,419 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 19:15:43,419 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 19:15:43,419 - [ORCHESTRATOR] Invalid plan rejected: Unsupported action.
+2026-11-10 19:15:43,419 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 19:15:43,419 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 19:15:43,420 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,420 - [ORCHESTRATOR] Execution success: True
+2026-11-10 19:15:43,420 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 19:15:43,420 - [ORCHESTRATOR] Goal achieved
+2026-11-10 19:15:43,450 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 19:15:43,450 - [ORCHESTRATOR] Attempt 1/1
+2026-11-10 19:15:43,450 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 19:15:43,450 - [ORCHESTRATOR] Invalid plan rejected: Step 1 contains an unsupported action.
+2026-11-10 19:15:43,505 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Execution success: False
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Attempt 2/2
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Execution success: True
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 19:15:43,506 - [ORCHESTRATOR] Goal achieved
+2026-11-10 19:15:43,532 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Attempt 1/3
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Execution success: False
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Attempt 2/3
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Execution success: False
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Attempt unsuccessful. The next attempt will replan.
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Attempt 3/3
+2026-11-10 19:15:43,533 - [ORCHESTRATOR] Revising previous plan
+2026-11-10 19:15:43,534 - [ORCHESTRATOR] Planner repeated a previous plan.
+2026-11-10 19:15:43,534 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,534 - [ORCHESTRATOR] Execution success: False
+2026-11-10 19:15:43,534 - [ORCHESTRATOR] Evaluation success: False
+2026-11-10 19:15:43,560 - [ORCHESTRATOR] Starting task: Prepare a factual summary about AI planning.
+2026-11-10 19:15:43,560 - [ORCHESTRATOR] Attempt 1/2
+2026-11-10 19:15:43,560 - [ORCHESTRATOR] Creating initial plan
+2026-11-10 19:15:43,560 - [ORCHESTRATOR] Plan validated: [{'step': 1, 'action': 'search_knowledge', 'description': 'Gather evidence.'}, {'step': 2, 'action': 'work', 'description': 'Write the summary.'}]
+2026-11-10 19:15:43,560 - [ORCHESTRATOR] Execution success: True
+2026-11-10 19:15:43,560 - [ORCHESTRATOR] Evaluation success: True
+2026-11-10 19:15:43,560 - [ORCHESTRATOR] Goal achieved

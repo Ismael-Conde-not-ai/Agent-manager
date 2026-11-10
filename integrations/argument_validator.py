@@ -1,5 +1,5 @@
 from jsonschema import Draft202012Validator
-from jsonschema.exceptions import SchemaError, ValidationError
+from jsonschema.exceptions import SchemaError, ValidationError  # noqa: F401
 
 
 class MCPArgumentValidationError(ValueError):

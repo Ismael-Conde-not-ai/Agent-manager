@@ -12,14 +12,14 @@ class TestAPILifespan(unittest.TestCase):
 
     def test_mcp_connections_closed_on_shutdown(self):
         with patch.object(
-            MCPConfigLoader,
-            "load_enabled_servers",
-            return_value=[],
-        ), patch.object(
+            manager.mcp_manager,
+            "connect_configured_servers",
+            new_callable=AsyncMock,
+        ) as mock_connect, patch.object(
             manager.mcp_manager,
             "close_all",
             new_callable=AsyncMock,
-        ) as mock_close_all:
+        ) as mock_close:
 
             with TestClient(app) as client:
                 response = client.get("/")
@@ -30,33 +30,22 @@ class TestAPILifespan(unittest.TestCase):
                     {"message": "AI Agent API is running"},
                 )
 
-            mock_close_all.assert_awaited_once()
+            mock_connect.assert_awaited_once()
+            self.assertIsInstance(
+                mock_connect.await_args.args[0],
+                MCPConfigLoader,
+            )
+            mock_close.assert_awaited_once()
 
-    
-    def test_enabled_mcp_servers_connect_on_startup(self):
-
-        servers = [
-            {
-                "name": "server_a",
-                "command": "python",
-                "args": ["server.py"],
-                "env": {},
-                "cwd": None
-            }
-        ]
-
+    def test_mcp_servers_connect_on_startup(self):
         with patch.object(
-            MCPConfigLoader,
-            "load_enabled_servers",
-            return_value=servers
-        ), patch.object(
             manager.mcp_manager,
-            "connect_server",
-            new_callable=AsyncMock
+            "connect_configured_servers",
+            new_callable=AsyncMock,
         ) as mock_connect, patch.object(
             manager.mcp_manager,
             "close_all",
-            new_callable=AsyncMock
+            new_callable=AsyncMock,
         ) as mock_close:
 
             with TestClient(app) as client:
@@ -64,50 +53,30 @@ class TestAPILifespan(unittest.TestCase):
 
                 self.assertEqual(response.status_code, 200)
 
-            mock_connect.assert_awaited_once_with(
-                server_name="server_a",
-                command="python",
-                args=["server.py"],
-                env={},
-                cwd=None
-            )
-
+            mock_connect.assert_awaited_once()
             mock_close.assert_awaited_once()
 
     def test_startup_failure_closes_connections(self):
-
-        servers = [
-            {
-                "name": "server_a",
-                "command": "python",
-                "args": [],
-                "env": {},
-                "cwd": None
-            }
-        ]
-
         with patch.object(
-            MCPConfigLoader,
-            "load_enabled_servers",
-            return_value=servers
-        ), patch.object(
             manager.mcp_manager,
-            "connect_server",
+            "connect_configured_servers",
             new_callable=AsyncMock,
-            side_effect=RuntimeError("MCP connection failed")
+            side_effect=RuntimeError("MCP connection failed"),
         ) as mock_connect, patch.object(
             manager.mcp_manager,
             "close_all",
-            new_callable=AsyncMock
+            new_callable=AsyncMock,
         ) as mock_close:
 
-            with self.assertRaises(RuntimeError):  # noqa: SIM117
+            with self.assertRaisesRegex(  # noqa: SIM117
+                RuntimeError,
+                "MCP connection failed",
+            ):
                 with TestClient(app):
                     pass
 
             mock_connect.assert_awaited_once()
             mock_close.assert_awaited_once()
-
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
 
-from typing import Any
+from typing import Any  # noqa: F401
 
 from integrations.client import MCPClient
+from integrations.transport_factory import MCPTransportFactory
 
 
 class MCPManager:
@@ -12,10 +13,11 @@ class MCPManager:
     async def connect_server(
         self,
         server_name,
-        command,
+        command=None,
         args=None,
         env=None,
-        cwd=None
+        cwd=None,
+        transport=None,
     ):
         if server_name in self.clients:
             raise ValueError(
@@ -23,12 +25,16 @@ class MCPManager:
             )
 
         client = MCPClient(server_name)
-        await client.connect(
-            command=command,
-            args=args,
-            env=env,
-            cwd=cwd
-        )
+
+        if transport is not None:
+            await client.connect(transport=transport)
+        else:
+            await client.connect(
+                command=command,
+                args=args,
+                env=env,
+                cwd=cwd,
+            )
 
         self.clients[server_name] = client
 
@@ -44,6 +50,50 @@ class MCPManager:
                 self.clients.pop(server_name, None)
                 self._unregister_tools(server_name)
             raise
+
+    
+    async def connect_configured_servers(self, config_loader):
+        servers = config_loader.load_enabled_servers()
+
+        connected_servers = []
+        results = {}
+
+        try:
+            for server_config in servers:
+                server_name = server_config["name"]
+
+                transport = MCPTransportFactory.create(
+                    server_config
+                )
+
+                tools = await self.connect_server(
+                    server_name=server_name,
+                    transport=transport,
+                )
+
+                connected_servers.append(server_name)
+                results[server_name] = tools
+
+        except Exception as connection_error:
+            cleanup_errors = []
+
+            for server_name in reversed(connected_servers):
+                try:
+                    await self.disconnect_server(server_name)
+                except Exception as cleanup_error:  # noqa: BLE001
+                    cleanup_errors.append(cleanup_error)
+
+            if cleanup_errors:
+                raise ExceptionGroup(
+                    "MCP startup failed and some connections "
+                    "could not be cleaned up",
+                    [connection_error, *cleanup_errors],
+                ) from connection_error
+
+            raise
+
+        return results
+
 
     def _register_tools(self, server_name, tools):
         if self.tool_registry is None:
@@ -96,10 +146,10 @@ class MCPManager:
     async def close_all(self):
         errors = []
 
-        for server_name, client in list(self.clients.items()):
+        for server_name, client in reversed(list(self.clients.items())):
             try:
                 await client.close()
-            except Exception as error:
+            except Exception as error:  # noqa: BLE001
                 errors.append(error)
             finally:
                 self.clients.pop(server_name, None)

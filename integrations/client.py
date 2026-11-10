@@ -2,44 +2,68 @@
 from contextlib import AsyncExitStack
 from typing import Any
 
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
+from mcp import ClientSession
+
+from integrations.transports.base import MCPTransport
+from integrations.transports.stdio_transport import StdioTransport
 
 
 class MCPClient:
     """Generic asynchronous client for a single MCP server."""
 
-    def __init__(self, server_name: str):
+    def __init__(
+        self,
+        server_name: str,
+        transport: MCPTransport | None = None,
+    ):
         if not server_name or not server_name.strip():
             raise ValueError("Server name cannot be empty.")
 
         self.server_name = server_name
+        self.transport = transport
         self.session: ClientSession | None = None
         self.exit_stack = AsyncExitStack()
         self._connected = False
 
     async def connect(
         self,
-        command: str,
+        command: str | None = None,
         args: list[str] | None = None,
         env: dict[str, str] | None = None,
         cwd: str | None = None,
+        transport: MCPTransport | None = None,
     ) -> None:
         if self._connected:
             raise RuntimeError(
                 f"Server '{self.server_name}' is already connected."
             )
 
-        server_params = StdioServerParameters(
-            command=command,
-            args=args or [],
-            env=env,
-            cwd=cwd,
-        )
+        selected_transport = transport or self.transport
+
+        # Backward compatibility with the previous STDIO connection.
+        if selected_transport is None and command is not None:
+            selected_transport = StdioTransport(
+                command=command,
+                args=args,
+                env=env,
+                cwd=cwd,
+            )
+
+        if selected_transport is None:
+            raise ValueError(
+                "An MCP transport or STDIO command must be provided."
+            )
+
+        if not callable(getattr(selected_transport, "open", None)):
+            raise TypeError("Invalid MCP transport.")
+
+        self.transport = selected_transport
 
         try:
-            read_stream, write_stream = await self.exit_stack.enter_async_context(
-                stdio_client(server_params)
+            read_stream, write_stream = (
+                await self.exit_stack.enter_async_context(
+                    selected_transport.open()
+                )
             )
 
             self.session = await self.exit_stack.enter_async_context(
@@ -53,6 +77,7 @@ class MCPClient:
             await self.exit_stack.aclose()
             self.exit_stack = AsyncExitStack()
             self.session = None
+            self._connected = False
             raise
 
     async def list_tools(self) -> list[dict[str, Any]]:

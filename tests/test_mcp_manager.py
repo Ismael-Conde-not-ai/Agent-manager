@@ -226,6 +226,163 @@ class TestMCPManager(unittest.IsolatedAsyncioTestCase):
             2
         )
 
+    
+    async def test_connect_configured_servers(self):
+        from integrations.manager import MCPManager
+
+        config_loader = Mock()
+        config_loader.load_enabled_servers.return_value = [
+            {"name": "server_stdio"},
+            {"name": "server_http"},
+        ]
+
+        stdio_transport = Mock()
+        http_transport = Mock()
+
+        with unittest.mock.patch(
+            "integrations.manager.MCPClient",
+            FakeMCPClient,
+        ), unittest.mock.patch(
+            "integrations.manager.MCPTransportFactory.create",
+            side_effect=[stdio_transport, http_transport],
+        ) as factory:
+
+            results = await self.manager.connect_configured_servers(
+                config_loader
+            )
+
+        self.assertEqual(
+            set(results.keys()),
+            {"server_stdio", "server_http"}
+        )
+
+        self.assertEqual(
+            set(await self.manager.list_servers()),
+            {"server_stdio", "server_http"}
+        )
+
+        self.assertEqual(factory.call_count, 2)
+
+        self.manager.clients["server_stdio"].connect.assert_awaited_once_with(
+            transport=stdio_transport
+        )
+
+        self.manager.clients["server_http"].connect.assert_awaited_once_with(
+            transport=http_transport
+        )
+
+
+    async def test_disabled_servers_are_not_connected(self):
+        config_loader = Mock()
+        config_loader.load_enabled_servers.return_value = [
+            {"name": "enabled_server"}
+        ]
+
+        with unittest.mock.patch(
+            "integrations.manager.MCPClient",
+            FakeMCPClient,
+        ), unittest.mock.patch(
+            "integrations.manager.MCPTransportFactory.create",
+            return_value=Mock(),
+        ) as factory:
+
+            await self.manager.connect_configured_servers(
+                config_loader
+            )
+
+        self.assertEqual(
+            await self.manager.list_servers(),
+            ["enabled_server"]
+        )
+
+        factory.assert_called_once()
+
+
+    async def test_configured_connection_failure_rolls_back(self):
+        config_loader = Mock()
+        config_loader.load_enabled_servers.return_value = [
+            {"name": "server_a"},
+            {"name": "server_b"},
+        ]
+
+        clients = {}
+
+        def create_client(server_name):
+            client = FakeMCPClient(server_name)
+            clients[server_name] = client
+
+            if server_name == "server_b":
+                client.connect.side_effect = RuntimeError(
+                    "Connection failed"
+                )
+
+            return client
+
+        with unittest.mock.patch(  # noqa: SIM117
+            "integrations.manager.MCPClient",
+            side_effect=create_client,
+        ), unittest.mock.patch(
+            "integrations.manager.MCPTransportFactory.create",
+            return_value=Mock(),
+        ):
+
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "Connection failed"
+            ):
+                await self.manager.connect_configured_servers(
+                    config_loader
+                )
+
+        clients["server_a"].close.assert_awaited_once()
+
+        self.assertEqual(
+            await self.manager.list_servers(),
+            []
+        )
+
+
+    async def test_rollback_preserves_previously_connected_servers(self):
+        existing_client = FakeMCPClient("existing_server")
+
+        self.manager.clients["existing_server"] = existing_client
+
+        config_loader = Mock()
+        config_loader.load_enabled_servers.return_value = [
+            {"name": "new_server"},
+            {"name": "existing_server"},
+        ]
+
+        clients = {}
+
+        def create_client(server_name):
+            client = FakeMCPClient(server_name)
+            clients[server_name] = client
+            return client
+
+        with unittest.mock.patch(  # noqa: SIM117
+            "integrations.manager.MCPClient",
+            side_effect=create_client,
+        ), unittest.mock.patch(
+            "integrations.manager.MCPTransportFactory.create",
+            return_value=Mock(),
+        ):
+
+            with self.assertRaisesRegex(ValueError, "already connected"):
+                await self.manager.connect_configured_servers(
+                    config_loader
+                )
+
+        clients["new_server"].close.assert_awaited_once()
+
+        existing_client.close.assert_not_awaited()
+
+        self.assertEqual(
+            await self.manager.list_servers(),
+            ["existing_server"]
+        )
+
+
 
 
 if __name__ == "__main__":

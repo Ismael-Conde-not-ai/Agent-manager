@@ -9,6 +9,14 @@
             ],
             "cwd": "D:\\Desktop\\Learn python\\workspace\\Agent_manager",
             "enabled": true
+        },
+        {
+            "name": "http_test_server",
+            "transport": {
+                "type": "streamable-http",
+                "url": "http://127.0.0.1:8080/mcp"
+            },
+            "enabled": true
         }
     ]
 }

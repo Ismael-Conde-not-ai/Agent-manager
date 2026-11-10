@@ -36,22 +36,16 @@ manager.add_agent(evaluator_agent) # Add the evaluator agent to the manager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Loads MCP configuration, connects enabled servers,
-    and closes all connections on application shutdown.
+    Connects configured MCP servers on startup
+    and closes all connections on shutdown.
     """
 
     try:
         config_loader = MCPConfigLoader()
-        servers = config_loader.load_enabled_servers()
 
-        for server in servers:
-            await manager.mcp_manager.connect_server(
-                server_name=server["name"],
-                command=server["command"],
-                args=server.get("args", []),
-                env=server.get("env"),
-                cwd=server.get("cwd")
-            )
+        await manager.mcp_manager.connect_configured_servers(
+            config_loader
+        )
 
         yield
 

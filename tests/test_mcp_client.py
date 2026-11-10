@@ -11,12 +11,15 @@ class TestMCPClient(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         self.client = MCPClient("test_server")
 
-        # Simulate the STDIO transport.
+        # Simulate the STDIO transport adapter.
         self.stdio_context = MagicMock()
         self.stdio_context.__aenter__ = AsyncMock(
             return_value=("read_stream", "write_stream")
         )
         self.stdio_context.__aexit__ = AsyncMock(return_value=False)
+
+        self.stdio_transport = MagicMock(spec=["open"])
+        self.stdio_transport.open.return_value = self.stdio_context
 
         # Simulate the MCP session.
         self.session = MagicMock()
@@ -30,20 +33,21 @@ class TestMCPClient(unittest.IsolatedAsyncioTestCase):
         )
         self.session_context.__aexit__ = AsyncMock(return_value=False)
 
-        self.stdio_patch = patch(
-            "integrations.client.stdio_client",
-            return_value=self.stdio_context,
+        self.transport_patch = patch(
+            "integrations.client.StdioTransport",
+            return_value=self.stdio_transport,
         )
+
         self.session_patch = patch(
             "integrations.client.ClientSession",
             return_value=self.session_context,
         )
 
-        self.mock_stdio = self.stdio_patch.start()
+        self.mock_transport = self.transport_patch.start()
         self.mock_session = self.session_patch.start()
 
     def tearDown(self):
-        self.stdio_patch.stop()
+        self.transport_patch.stop()
         self.session_patch.stop()
 
     async def test_client_initialization(self):
@@ -60,6 +64,13 @@ class TestMCPClient(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(self.client._connected)
         self.assertIs(self.client.session, self.session)
         self.session.initialize.assert_awaited_once()
+
+        self.mock_transport.assert_called_once_with(
+            command="python",
+            args=["server.py"],
+            env=None,
+            cwd=None,
+        )
 
     async def test_discover_tools(self):
         self.session.list_tools.return_value = SimpleNamespace(

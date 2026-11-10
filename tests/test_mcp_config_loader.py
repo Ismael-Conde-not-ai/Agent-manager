@@ -104,6 +104,107 @@ class TestMCPConfigLoader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "enabled"):
             loader.load()
 
+    
+    def test_load_streamable_http_server(self):
+        self.write_config({
+            "servers": [
+                {
+                    "name": "http_server",
+                    "enabled": True,
+                    "transport": {
+                        "type": "streamable-http",
+                        "url": "http://127.0.0.1:8080/mcp"
+                    }
+                }
+            ]
+        })
+
+        loader = MCPConfigLoader(self.config_path)
+        servers = loader.load_enabled_servers()
+
+        self.assertEqual(len(servers), 1)
+        self.assertEqual(
+            servers[0]["transport"]["type"],
+            "streamable-http"
+        )
+
+    def test_load_nested_stdio_server(self):
+        self.write_config({
+            "servers": [
+                {
+                    "name": "stdio_server",
+                    "transport": {
+                        "type": "stdio",
+                        "command": "python",
+                        "args": ["tests/mcp_test_server.py"]
+                    }
+                }
+            ]
+        })
+
+        loader = MCPConfigLoader(self.config_path)
+
+        servers = loader.load_enabled_servers()
+
+        self.assertEqual(len(servers), 1)
+        self.assertEqual(
+            servers[0]["transport"]["type"],
+            "stdio"
+        )
+
+    def test_http_server_requires_url(self):
+        self.write_config({
+            "servers": [
+                {
+                    "name": "http_server",
+                    "transport": {
+                        "type": "streamable-http"
+                    }
+                }
+            ]
+        })
+
+        loader = MCPConfigLoader(self.config_path)
+
+        with self.assertRaisesRegex(ValueError, "URL"):
+            loader.load()
+
+    def test_unsupported_transport(self):
+        self.write_config({
+            "servers": [
+                {
+                    "name": "invalid_server",
+                    "transport": {
+                        "type": "websocket"
+                    }
+                }
+            ]
+        })
+
+        loader = MCPConfigLoader(self.config_path)
+
+        with self.assertRaisesRegex(ValueError, "unsupported"):
+            loader.load()
+
+    def test_nested_stdio_requires_command(self):
+        self.write_config({
+            "servers": [
+                {
+                    "name": "stdio_server",
+                    "transport": {
+                        "type": "stdio",
+                        "args": []
+                    }
+                }
+            ]
+        })
+
+        loader = MCPConfigLoader(self.config_path)
+
+        with self.assertRaisesRegex(ValueError, "command"):
+            loader.load()
+
+
 
 if __name__ == "__main__":
     unittest.main()

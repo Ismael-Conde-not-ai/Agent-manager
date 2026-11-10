@@ -1,14 +1,16 @@
 
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import Mock
 
 from agents.executor_agent import ExecutorAgent
+from integrations.config_loader import MCPConfigLoader
 from integrations.execution_service import ToolExecutionService
 from integrations.manager import MCPManager
 from tools.registry import ToolRegistry
-
 
 SERVER_PATH = Path(__file__).with_name("mcp_test_server.py")
 
@@ -128,6 +130,105 @@ class TestMCPEndToEnd(unittest.IsolatedAsyncioTestCase):
             "local_test_server.greet",
             self.registry.list_tools()
         )
+
+    
+    async def test_configured_server_executes_real_mcp_tool(self):
+        config = {
+            "servers": [
+                {
+                    "name": "configured_server",
+                    "command": sys.executable,
+                    "args": [str(SERVER_PATH)],
+                    "enabled": True
+                }
+            ]
+        }
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config_path = Path(temp_dir) / "mcp_servers.json"
+
+            with config_path.open("w", encoding="utf-8") as file:
+                json.dump(config, file)
+
+            config_loader = MCPConfigLoader(config_path)
+
+            try:
+                await self.mcp_manager.connect_configured_servers(
+                    config_loader
+                )
+
+                self.assertIn(
+                    "configured_server.add_numbers",
+                    self.registry.list_tools()
+                )
+
+                result = await self.executor.execute_step(
+                    {
+                        "action": "configured_server.add_numbers",
+                        "arguments": {
+                            "a": 10,
+                            "b": 20
+                        }
+                    },
+                    self.agent
+                )
+
+                self.assertTrue(result["success"])
+                self.assertEqual(result["result"], "30")
+                self.assertEqual(result["source"], "mcp")
+
+            finally:
+                await self.close_server()
+
+
+    async def test_executor_executes_real_http_mcp_tool(self):
+        #from integrations.config_loader import MCPConfigLoader
+
+        config = {
+            "servers": [
+                {
+                    "name": "http_test_server",
+                    "transport": {
+                        "type": "streamable-http",
+                        "url": "http://127.0.0.1:8080/mcp"
+                    },
+                    "enabled": True
+                }
+            ]
+        }
+
+        config_loader = Mock()
+        config_loader.load_enabled_servers.return_value = (
+            config["servers"]
+        )
+
+        try:
+            await self.mcp_manager.connect_configured_servers(
+                config_loader
+            )
+
+            result = await self.executor.execute_step(
+                {
+                    "action": "http_test_server.add_numbers",
+                    "arguments": {
+                        "a": 10,
+                        "b": 20
+                    }
+                },
+                self.agent
+            )
+
+            self.assertTrue(result["success"])
+            self.assertEqual(
+                result["action"],
+                "http_test_server.add_numbers"
+            )
+            self.assertEqual(result["result"], "30")
+            self.assertEqual(result["source"], "mcp")
+
+        finally:
+            await self.close_server()
+
 
 
 if __name__ == "__main__":
