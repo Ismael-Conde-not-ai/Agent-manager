@@ -3,6 +3,12 @@ from typing import Any
 
 from integrations.argument_validator import MCPArgumentValidator, MCPToolExecutionError
 from integrations.manager import MCPManager
+from core.exceptions import (
+    MCPCommunicationError,
+    ToolExecutionError,
+    ValidationError,
+)
+from core.contracts import ErrorCategory, ErrorInfo
 from tools.registry import ToolRegistry
 
 
@@ -40,17 +46,26 @@ class ToolExecutionService:
         tool = self.tool_registry.get_tool(tool_name)
 
         if tool is None:
-            raise ValueError(
-                f"Tool '{tool_name}' is not registered."
+            raise ValidationError(
+                f"Tool '{tool_name}' is not registered.",
+                code="unknown_tool",
             )
 
         tool_type = tool.get("type")
 
         if tool_type == "local":
-            return self.tool_registry.execute(
-                tool_name,
-                agent,
-            )
+            try:
+                return self.tool_registry.execute(
+                    tool_name,
+                    agent,
+                )
+            except Exception as error:
+                raise ToolExecutionError(
+                    f"Tool '{tool_name}' failed.",
+                    code="local_tool_failed",
+                    details={"tool_name": tool_name},
+                    cause=error,
+                ) from error
 
         if tool_type == "mcp":
             tool_arguments = {} if arguments is None else arguments
@@ -65,27 +80,39 @@ class ToolExecutionService:
                     tool_name=tool["tool_name"],
                     arguments=tool_arguments,
                 )
+            except MCPCommunicationError:
+                raise
             except Exception as error:
                 raise MCPToolExecutionError(
-                    f"Failed to execute MCP tool '{tool_name}': {error}"
+                    f"Failed to execute MCP tool '{tool_name}'.",
+                    code="mcp_call_failed",
+                    details={"tool_name": tool_name},
+                    cause=error,
                 ) from error
 
             return self._normalize_mcp_result(result)
 
-        raise ValueError(
-            f"Unsupported tool type: {tool_type}"
+        raise ValidationError(
+            f"Unsupported tool type: {tool_type}",
+            code="unsupported_tool_type",
         )
 
     @staticmethod
     def _normalize_mcp_result(result):
         if result.is_error:
+            message = "; ".join(
+                getattr(item, "text", str(item))
+                for item in result.content
+            )
             return {
                 "success": False,
-                "result": [
-                    getattr(item, "text", str(item))
-                    for item in result.content
-                ],
+                "result": [message] if message else [],
                 "source": "mcp",
+                "error": ErrorInfo(
+                    code="mcp_tool_error",
+                    message=message or "MCP tool returned an error.",
+                    category=ErrorCategory.TOOL,
+                ).model_dump(),
             }
 
         structured_content = getattr(

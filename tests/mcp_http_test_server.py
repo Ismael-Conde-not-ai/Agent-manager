@@ -1,4 +1,5 @@
 
+import argparse
 from mcp.server.mcpserver import MCPServer
 
 server = MCPServer(name="agent-manager-http-test-server")
@@ -17,9 +18,13 @@ def greet(name: str) -> str:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=int, default=8080)
+    args = parser.parse_args()
+
     server.run(
         "streamable-http",
         host="127.0.0.1",
-        port=8080,
+        port=args.port,
         streamable_http_path="/mcp",
     )

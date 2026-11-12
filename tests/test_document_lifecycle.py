@@ -1,9 +1,9 @@
 from knowledge.knowledge_base import KnowledgeBase
 
-knowledge = KnowledgeBase()
+
+def main():
+    print(KnowledgeBase().update_document("planning.txt"))
 
 
-
-success = knowledge.update_document("planning.txt")
-
-print(success)  
+if __name__ == "__main__":
+    main()

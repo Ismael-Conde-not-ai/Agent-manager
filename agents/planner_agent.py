@@ -1,6 +1,8 @@
 import json
 
 from api.api_client import geminiAI  #, geminiEmbed, ollamaAI, ollamaEmbed
+from core.contracts import Plan
+from core.exceptions import PlanningError
 from memory.memory_context_builder import MemoryContextBuilder
 from memory.memory_manager import MemoryManager
 
@@ -9,8 +11,16 @@ class PlannerAgent:
     """
     Creates plans using the goal, research, and relevant past experiences.
     """
-    def __init__(self, name="PlannerAgent", memory_manager=None):
+    def __init__(
+        self,
+        name="PlannerAgent",
+        memory_manager=None,
+        min_steps=2,
+        max_steps=5,
+    ):
         self.name = name
+        self.min_steps = min_steps
+        self.max_steps = max_steps
         self.memory_manager = (memory_manager if memory_manager is not None else MemoryManager())
         self.memory_context_builder = MemoryContextBuilder(self.memory_manager)
 
@@ -69,8 +79,15 @@ class PlannerAgent:
             }}
         ]
         """
-        response = geminiAI(prompt).strip()
-        return response
+        try:
+            response = geminiAI(prompt).strip()
+        except Exception as error:
+            raise PlanningError(
+                "Plan generation failed.",
+                code="plan_generation_failed",
+                cause=error,
+            ) from error
+        return self.parse_plan(response)
 
     
     def replan(self, goal, previous_plan, execution_results, research=None):
@@ -128,22 +145,33 @@ class PlannerAgent:
         ]
         """
 
-        response = geminiAI(prompt).strip()
-        return response
+        try:
+            response = geminiAI(prompt).strip()
+        except Exception as error:
+            raise PlanningError(
+                "Plan revision failed.",
+                code="plan_revision_failed",
+                cause=error,
+            ) from error
+        return self.parse_plan(response)
 
 
     def parse_plan(self, plan_text):
         """
         Parse the plan text into a structured format.
         """
+        if isinstance(plan_text, Plan):
+            return plan_text
+        if isinstance(plan_text, list):
+            return Plan.from_legacy(plan_text)
+        if not isinstance(plan_text, str):
+            return None
         try:
             plan = json.loads(plan_text)
-            if not isinstance(plan, list):
-                return []
-            return plan
-        except json.JSONDecodeError as e:
-            print("Plan parsing failed:", e)
-            return []
+        except json.JSONDecodeError as error:
+            print("Plan parsing failed:", error)
+            return None
+        return Plan.from_legacy(plan)
 
     
     def validate_plan(self, plan):
@@ -160,44 +188,47 @@ class PlannerAgent:
             "rest",
         }
 
+        if isinstance(plan, Plan):
+            plan = [step.model_dump() for step in plan]
+
         if not isinstance(plan, list):
             return False, "Plan must be a list."
 
-        if not 2 <= len(plan) <= 5:
-            return False, "Plan must contain between 2 and 5 steps."
+        if len(plan) < self.min_steps:
+            return False, (
+                f"Plan must contain at least {self.min_steps} steps."
+            )
+
+        if self.max_steps is not None and len(plan) > self.max_steps:
+            return False, (
+                f"Plan must contain no more than {self.max_steps} steps."
+            )
 
         required_fields = {"step", "action", "description"}
-
         for index, item in enumerate(plan, start=1):
             if not isinstance(item, dict):
                 return False, f"Step {index} must be an object."
-
-            if not required_fields.issubset(item.keys()):
+            if not required_fields.issubset(item):
                 return False, f"Step {index} is missing required fields."
-
-            step_number = item["step"]
-
-            if (
-                not isinstance(step_number, int)
-                or isinstance(step_number, bool)
-                or step_number != index
-            ):
+            if item["step"] != index:
                 return False, (
                     f"Step number at position {index} must be {index}."
                 )
-
-            action = item["action"]
-
-            if not isinstance(action, str) or action not in allowed_actions:
-                return False, (
-                    f"Step {index} contains an unsupported action."
-                )
-
-            description = item["description"]
-
-            if not isinstance(description, str) or not description.strip():
+            if not isinstance(item["description"], str) or not item[
+                "description"
+            ].strip():
                 return False, (
                     f"Step {index} must have a non-empty description."
+                )
+
+        parsed_plan = Plan.from_legacy(plan)
+        if parsed_plan is None:
+            return False, "Plan structure is invalid."
+
+        for index, item in enumerate(parsed_plan, start=1):
+            if item.action not in allowed_actions:
+                return False, (
+                    f"Step {index} contains an unsupported action."
                 )
 
         return True, None

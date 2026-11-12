@@ -1,36 +1,24 @@
+from core.contracts import (
+    ErrorCategory,
+    ErrorInfo,
+    ExecutionResult,
+    Plan,
+    PlanStep,
+    StepExecutionResult,
+    ToolResult,
+)
 from core.logger import logger
+from core.exceptions import AgentError, ToolExecutionError
 
 
 class ExecutorAgent:
 
     def __init__(
         self,
-        tool_execution_service=None,
+        tool_execution_service,
         name="ExecutorAgent",
     ):
         self.name = name
-        if tool_execution_service is None:
-            from integrations.execution_service import ToolExecutionService
-            from integrations.manager import MCPManager
-            from tools.recharge import recharge
-            from tools.registry import ToolRegistry
-            from tools.rest import rest
-            from tools.search_knowledge import search_knowledge
-            from tools.work import work
-
-            registry = ToolRegistry()
-            registry.register("work", work)
-            registry.register("recharge", recharge)
-            registry.register("rest", rest)
-            registry.register("search_knowledge", search_knowledge)
-
-            mcp_manager = MCPManager(tool_registry=registry)
-
-            tool_execution_service = ToolExecutionService(
-                tool_registry=registry,
-                mcp_manager=mcp_manager,
-            )
-
         self.tool_execution_service = tool_execution_service
         self.results = []
 
@@ -39,15 +27,27 @@ class ExecutorAgent:
         Executes one local or MCP tool and records its outcome.
         """
 
-        action = step.get("action")
-        arguments = step.get("arguments", {})
+        if isinstance(step, PlanStep):
+            step_model = step
+        else:
+            step_data = dict(step)
+            step_data.setdefault("step", 1)
+            step_data.setdefault("description", "Execute tool step")
+            step_model = PlanStep(**step_data)
+        action = step_model.action
+        arguments = step_model.arguments
 
         if not action:
-            return {
-                "success": False,
-                "action": action,
-                "error": "Missing tool action",
-            }
+            return ToolResult(
+                success=False,
+                action="unknown",
+                source="local",
+                error=ErrorInfo(
+                    code="missing_action",
+                    message="Missing tool action",
+                    category=ErrorCategory.VALIDATION,
+                ),
+            )
 
         try:
             result = await self.tool_execution_service.execute(
@@ -63,36 +63,66 @@ class ExecutorAgent:
             )
 
             if tool["type"] == "mcp":
-                execution_result = {
-                    "success": result["success"],
-                    "action": action,
-                    "result": result.get("result"),
-                    "source": "mcp",
-                }
-
-                if not result["success"]:
-                    execution_result["error"] = str(
-                        result.get("result", "MCP execution failed")
+                execution_result = ToolResult(
+                    success=result["success"],
+                    action=action,
+                    result=result.get("result"),
+                    source="mcp",
+                    error=(
+                        ErrorInfo.model_validate(result["error"])
+                        if result.get("error")
+                        else ErrorInfo(
+                            code="mcp_tool_error",
+                            message="MCP tool execution failed.",
+                            category=ErrorCategory.TOOL,
+                        )
                     )
+                    if not result["success"]
+                    else None,
+                )
 
             else:
-                execution_result = {
-                    "success": True,
-                    "action": action,
-                    "result": result,
-                    "source": "local",
-                }
+                execution_result = ToolResult(
+                    success=True,
+                    action=action,
+                    result=result,
+                    source="local",
+                )
 
-        except Exception as e:  # noqa: BLE001
-            logger.exception("Tool execution failed: %s", action)
+        except AgentError as error:
+            logger.exception(
+                "[EXECUTOR] category=%s code=%s action=%s",
+                error.category.value,
+                error.code,
+                action,
+            )
 
-            execution_result = {
-                "success": False,
-                "action": action,
-                "error": str(e),
-            }
+            execution_result = ToolResult(
+                success=False,
+                action=action,
+                source="local",
+                error=error.to_error_info(),
+            )
+        except Exception as error:  # noqa: BLE001
+            wrapped = ToolExecutionError(
+                f"Tool '{action}' failed.",
+                code="unexpected_tool_failure",
+                details={"tool_name": action},
+                cause=error,
+            )
+            logger.exception(
+                "[EXECUTOR] category=%s code=%s action=%s",
+                wrapped.category.value,
+                wrapped.code,
+                action,
+            )
 
-        self.results.append(execution_result)
+            execution_result = ToolResult(
+                success=False,
+                action=action,
+                source="local",
+                error=wrapped.to_error_info(),
+            )
 
         self._record_experience(agent, action, execution_result)
 
@@ -129,9 +159,11 @@ class ExecutorAgent:
                 experience["energy"] = agent.energy
 
             if not execution_result["success"]:
-                experience["error"] = execution_result.get(
-                    "error",
-                    "Unknown error",
+                error = execution_result.get("error")
+                experience["error"] = (
+                    error.get("message", "Unknown error")
+                    if isinstance(error, dict)
+                    else str(error or "Unknown error")
                 )
 
             memory_manager.record_experience(experience)
@@ -148,16 +180,40 @@ class ExecutorAgent:
 
         self.results = []
 
-        for step in plan:
-            result = await self.execute_step(step, agent)
+        plan_model = plan if isinstance(plan, Plan) else Plan.from_legacy(plan)
+        if plan_model is None:
+            return ExecutionResult(
+                success=False,
+                error=ErrorInfo(
+                    code="invalid_plan",
+                    message="Plan is invalid and cannot be executed.",
+                    category=ErrorCategory.VALIDATION,
+                ),
+            )
 
-            if not result["success"]:
+        for step in plan_model:
+            result = await self.execute_step(step, agent)
+            self.results.append(
+                StepExecutionResult(step=step, result=result)
+            )
+
+            if not result.success:
                 break
 
-        return {
-            "success": self.evaluate_results(),
-            "results": self.results,
-        }
+        return ExecutionResult(
+            success=self.evaluate_results(),
+            results=self.results,
+            error=(
+                next(
+                    (
+                        item.result.error
+                        for item in self.results
+                        if not item.result.success
+                    ),
+                    None,
+                )
+            ),
+        )
 
     def evaluate_results(self):
         """
@@ -168,6 +224,10 @@ class ExecutorAgent:
             return False
 
         return all(
-            result.get("success", False)
+            (
+                result.result.success
+                if isinstance(result, StepExecutionResult)
+                else result.get("success", False)
+            )
             for result in self.results
         )

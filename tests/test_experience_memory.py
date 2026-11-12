@@ -1,64 +1,31 @@
-"""from memory.memory_manager import MemoryManager
-
-memory = MemoryManager()
-
-print("=== RECORD EXPERIENCES ===")
-
-memory.record_experience({
-    "goal": "Research AI agent planning",
-    "action": "search_knowledge",
-    "success": True,
-    "result": "Relevant documents found"
-})
-
-memory.record_experience({
-    "goal": "Research AI agent planning",
-    "action": "execute_plan",
-    "success": False,
-    "result": "Tool unavailable"
-})
-
-memory.record_experience({
-    "goal": "Build a REST API",
-    "action": "work",
-    "success": True,
-    "result": "Endpoint created"
-})
-
-
-print("\n=== EXPERIENCE COUNT ===")
-
-print(
-    memory.experience.count()
-)
-
-
-print("\n=== SEARCH ===")
-
-results = memory.search_experiences(
-    "planning tool",
-    limit=5
-)
-
-for result in results:
-    print(result)"""
-
-"""from memory.memory_manager import MemoryManager
-
-memory = MemoryManager()
-
-for experience in memory.get_experiences():
-    print(experience)"""
+import tempfile
+from pathlib import Path
 
 from agents.planner_agent import PlannerAgent
 from core.manager import Manager
+from memory.experience_memory import ExperienceMemory
+from memory.memory_manager import MemoryManager
+from memory.persistent_memory import PersistentMemory
 
-manager = Manager()
-planner_agent = PlannerAgent(memory_manager=manager.memory_manager)  # Pass the memory manager to the planner agent
-print(
-    "¿Comparten memoria?",
-    planner_agent.memory_manager is manager.memory_manager
-)
 
-assert planner_agent.memory_manager is manager.memory_manager
-print("Memoria compartida correctamente.")
+def main():
+    with tempfile.TemporaryDirectory() as temp_dir:
+        memory = MemoryManager(
+            persistent=PersistentMemory(path=str(Path(temp_dir) / "persistent.json")),
+            experience=ExperienceMemory(path=str(Path(temp_dir) / "experiences.json")),
+        )
+        memory.record_experience({
+            "goal": "Research AI agent planning",
+            "action": "search_knowledge",
+            "success": True,
+            "result": "Relevant documents found",
+        })
+        print(memory.search_experiences("planning", limit=5))
+
+    manager = Manager()
+    planner_agent = PlannerAgent(memory_manager=manager.memory_manager)
+    print("¿Comparten memoria?", planner_agent.memory_manager is manager.memory_manager)
+
+
+if __name__ == "__main__":
+    main()

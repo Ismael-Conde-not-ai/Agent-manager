@@ -1,11 +1,18 @@
+import tempfile
+from pathlib import Path
+
 from memory.memory_manager import MemoryManager
+from memory.persistent_memory import PersistentMemory
 
-memory = MemoryManager()
 
-print(
-    memory.recall_persistently("last_goal")
-)
+def main():
+    with tempfile.TemporaryDirectory() as temp_dir:
+        memory = MemoryManager(
+            persistent=PersistentMemory(path=str(Path(temp_dir) / "memory.json"))
+        )
+        memory.remember_persistently("last_goal", "Build a modular AI agent")
+        print(memory.recall_persistently("last_goal"))
 
-print(
-    memory.recall_persistently("last_completed_week")
-)
+
+if __name__ == "__main__":
+    main()

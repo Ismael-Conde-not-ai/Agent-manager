@@ -11,6 +11,7 @@ from integrations.config_loader import MCPConfigLoader
 from integrations.execution_service import ToolExecutionService
 from integrations.manager import MCPManager
 from tools.registry import ToolRegistry
+from tests.mcp_http_server_fixture import running_http_server
 
 SERVER_PATH = Path(__file__).with_name("mcp_test_server.py")
 
@@ -182,24 +183,20 @@ class TestMCPEndToEnd(unittest.IsolatedAsyncioTestCase):
 
 
     async def test_executor_executes_real_http_mcp_tool(self):
-        #from integrations.config_loader import MCPConfigLoader
+        async with running_http_server() as url:
+            await self._test_executor_executes_real_http_mcp_tool(url)
 
-        config = {
-            "servers": [
-                {
-                    "name": "http_test_server",
-                    "transport": {
-                        "type": "streamable-http",
-                        "url": "http://127.0.0.1:8080/mcp"
-                    },
-                    "enabled": True
-                }
-            ]
-        }
-
+    async def _test_executor_executes_real_http_mcp_tool(self, url):
         config_loader = Mock()
         config_loader.load_enabled_servers.return_value = (
-            config["servers"]
+            [{
+                "name": "http_test_server",
+                "transport": {
+                    "type": "streamable-http",
+                    "url": url,
+                },
+                "enabled": True,
+            }]
         )
 
         try:

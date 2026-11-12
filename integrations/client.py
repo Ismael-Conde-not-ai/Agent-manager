@@ -4,6 +4,7 @@ from typing import Any
 
 from mcp import ClientSession
 
+from core.exceptions import MCPCommunicationError, ValidationError
 from integrations.transports.base import MCPTransport
 from integrations.transports.stdio_transport import StdioTransport
 
@@ -17,7 +18,7 @@ class MCPClient:
         transport: MCPTransport | None = None,
     ):
         if not server_name or not server_name.strip():
-            raise ValueError("Server name cannot be empty.")
+            raise ValidationError("Server name cannot be empty.")
 
         self.server_name = server_name
         self.transport = transport
@@ -34,7 +35,7 @@ class MCPClient:
         transport: MCPTransport | None = None,
     ) -> None:
         if self._connected:
-            raise RuntimeError(
+            raise MCPCommunicationError(
                 f"Server '{self.server_name}' is already connected."
             )
 
@@ -50,12 +51,12 @@ class MCPClient:
             )
 
         if selected_transport is None:
-            raise ValueError(
+            raise ValidationError(
                 "An MCP transport or STDIO command must be provided."
             )
 
         if not callable(getattr(selected_transport, "open", None)):
-            raise TypeError("Invalid MCP transport.")
+            raise ValidationError("Invalid MCP transport.")
 
         self.transport = selected_transport
 
@@ -73,12 +74,23 @@ class MCPClient:
             await self.session.initialize()
             self._connected = True
 
-        except Exception:
+        except MCPCommunicationError:
             await self.exit_stack.aclose()
             self.exit_stack = AsyncExitStack()
             self.session = None
             self._connected = False
             raise
+        except Exception as error:
+            await self.exit_stack.aclose()
+            self.exit_stack = AsyncExitStack()
+            self.session = None
+            self._connected = False
+            raise MCPCommunicationError(
+                f"Failed to connect to MCP server '{self.server_name}'.",
+                code="mcp_initialization_failed",
+                details={"server_name": self.server_name},
+                cause=error,
+            ) from error
 
     async def list_tools(self) -> list[dict[str, Any]]:
         self._ensure_connected()
@@ -102,7 +114,7 @@ class MCPClient:
         self._ensure_connected()
 
         if not tool_name or not tool_name.strip():
-            raise ValueError("Tool name cannot be empty.")
+            raise ValidationError("Tool name cannot be empty.")
 
         return await self.session.call_tool(
             tool_name,
@@ -111,7 +123,7 @@ class MCPClient:
 
     def _ensure_connected(self) -> None:
         if not self._connected or self.session is None:
-            raise RuntimeError(
+            raise MCPCommunicationError(
                 f"Server '{self.server_name}' is not connected."
             )
 

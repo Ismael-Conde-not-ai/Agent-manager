@@ -1,44 +1,19 @@
+import tempfile
+from pathlib import Path
+
 from memory.memory_manager import MemoryManager
-
-memory = MemoryManager()
-
-print("=== SAVE TASK ===")
-
-memory.remember_persistently(
-    "last_goal",
-    "Build a modular AI agent"
-)
-
-memory.remember_persistently(
-    "last_completed_week",
-    "Week 11 Day 3"
-)
+from memory.persistent_memory import PersistentMemory
 
 
-print("\n=== RETRIEVE TASK ===")
-
-goal = memory.recall_persistently(
-    "last_goal"
-)
-
-print("Last goal:", goal)
-
-
-print("\n=== CHECK MEMORY ===")
-
-print(
-    "Contains goal:",
-    memory.persistent.contains("last_goal")
-)
-
-print(
-    "Memory count:",
-    memory.persistent_memory_count()
-)
+def main():
+    with tempfile.TemporaryDirectory() as temp_dir:
+        memory = MemoryManager(
+            persistent=PersistentMemory(path=str(Path(temp_dir) / "memory.json"))
+        )
+        memory.remember_persistently("last_goal", "Build a modular AI agent")
+        print("Last goal:", memory.recall_persistently("last_goal"))
+        print(memory.get_persistent_memories())
 
 
-print("\n=== ALL PERSISTENT MEMORIES ===")
-
-print(
-    memory.get_persistent_memories()
-)
+if __name__ == "__main__":
+    main()

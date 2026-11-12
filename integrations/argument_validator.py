@@ -1,16 +1,19 @@
 from jsonschema import Draft202012Validator
-from jsonschema.exceptions import SchemaError, ValidationError  # noqa: F401
+from jsonschema.exceptions import SchemaError
 
 
-class MCPArgumentValidationError(ValueError):
+from core.exceptions import MCPCommunicationError, ValidationError
+
+
+class MCPArgumentValidationError(ValidationError):
     """Los argumentos enviados no cumplen el esquema de la herramienta MCP."""
 
 
-class MCPInputSchemaError(RuntimeError):
+class MCPInputSchemaError(ValidationError):
     """El esquema proporcionado por el servidor MCP es inválido."""
 
 
-class MCPToolExecutionError(RuntimeError):
+class MCPToolExecutionError(MCPCommunicationError):
     """La herramienta MCP no pudo ejecutarse correctamente."""
 
 class MCPArgumentValidator:

@@ -3,6 +3,10 @@ from typing import Any  # noqa: F401
 
 from integrations.client import MCPClient
 from integrations.transport_factory import MCPTransportFactory
+from core.exceptions import (
+    MCPCommunicationError,
+    ValidationError,
+)
 
 
 class MCPManager:
@@ -20,7 +24,7 @@ class MCPManager:
         transport=None,
     ):
         if server_name in self.clients:
-            raise ValueError(
+            raise ValidationError(
                 f"Server '{server_name}' is already connected"
             )
 
@@ -43,13 +47,25 @@ class MCPManager:
             self._register_tools(server_name, tools)
             return tools
 
-        except Exception:
+        except MCPCommunicationError:
             try:
                 await client.close()
             finally:
                 self.clients.pop(server_name, None)
                 self._unregister_tools(server_name)
             raise
+        except Exception as error:
+            try:
+                await client.close()
+            finally:
+                self.clients.pop(server_name, None)
+                self._unregister_tools(server_name)
+            raise MCPCommunicationError(
+                f"Discovery failed for MCP server '{server_name}': {error}",
+                code="mcp_discovery_failed",
+                details={"server_name": server_name},
+                cause=error,
+            ) from error
 
     
     async def connect_configured_servers(self, config_loader):
@@ -139,6 +155,15 @@ class MCPManager:
 
         try:
             await client.close()
+        except MCPCommunicationError:
+            raise
+        except Exception as error:
+            raise MCPCommunicationError(
+                f"Failed to disconnect MCP server '{server_name}'.",
+                code="mcp_disconnect_failed",
+                details={"server_name": server_name},
+                cause=error,
+            ) from error
         finally:
             self.clients.pop(server_name, None)
             self._unregister_tools(server_name)
@@ -150,6 +175,13 @@ class MCPManager:
             try:
                 await client.close()
             except Exception as error:  # noqa: BLE001
+                if not isinstance(error, MCPCommunicationError):
+                    error = MCPCommunicationError(
+                        f"Failed to close MCP server '{server_name}'.",
+                        code="mcp_close_failed",
+                        details={"server_name": server_name},
+                        cause=error,
+                    )
                 errors.append(error)
             finally:
                 self.clients.pop(server_name, None)
@@ -165,7 +197,7 @@ class MCPManager:
         client = self.clients.get(server_name)
 
         if client is None:
-            raise ValueError(
+            raise MCPCommunicationError(
                 f"Server '{server_name}' is not connected"
             )
 

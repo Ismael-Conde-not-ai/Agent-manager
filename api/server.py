@@ -1,37 +1,29 @@
 from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 
 from agents.agent import AIagent
-from agents.evaluator_agent import EvaluatorAgent
-from agents.executor_agent import ExecutorAgent
-from agents.planner_agent import PlannerAgent
-from agents.research_agent import ResearchAgent
 from core.config_loader import load_agent_config
-from core.manager import Manager
-from core.orchestrator import Orchestrator
+from core.composition import create_application
 from integrations.argument_validator import (
     MCPArgumentValidationError,
     MCPToolExecutionError,
 )
 from integrations.config_loader import MCPConfigLoader
-from memory.memory_context_builder import MemoryContextBuilder
-
-manager = Manager()
-orchestrator = Orchestrator(manager)
+from core.exceptions import AgentError, PlanningError, ValidationError
+from core.logger import logger
+application = create_application()
+manager = application.manager
+orchestrator = application.orchestrator
 
 agent = None
 
-research_agent = ResearchAgent()
-planner_agent = PlannerAgent( memory_manager=manager.memory_manager)  # Pass the memory manager to the planner agent
-executor_agent = ExecutorAgent(tool_execution_service=manager.tool_execution_service)  # Pass the tool execution service to the executor agent
-evaluator_agent = EvaluatorAgent()
-
-manager.add_agent(research_agent)  # Add the research agent to the manager
-manager.add_agent(planner_agent)  # Add the planner agent to the manager
-manager.add_agent(executor_agent) # Add the executor agent to the manager
-manager.add_agent(evaluator_agent) # Add the evaluator agent to the manager
+research_agent = application.research_agent
+planner_agent = application.planner_agent
+executor_agent = application.executor_agent
+evaluator_agent = application.evaluator_agent
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -55,6 +47,49 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+
+def _error_status(error: AgentError) -> int:
+    if isinstance(error, ValidationError):
+        return 422
+    if error.category.value == "planning":
+        return 422
+    if error.category.value in {
+        "execution",
+        "tool",
+        "mcp_communication",
+        "evaluation",
+        "research",
+    }:
+        return 502
+    return 500
+
+
+@app.exception_handler(AgentError)
+async def handle_agent_error(request: Request, error: AgentError):
+    logger.error(
+        "[API] path=%s category=%s code=%s message=%s",
+        request.url.path,
+        error.category.value,
+        error.code,
+        str(error),
+        exc_info=error,
+    )
+    message = (
+        str(error)
+        if error.category.value != "internal"
+        else "Internal server error."
+    )
+    return JSONResponse(
+        status_code=_error_status(error),
+        content={
+            "error": {
+                "code": error.code,
+                "category": error.category.value,
+                "message": message,
+            }
+        },
+    )
+
 @app.get("/")
 def read_root():
     return {"message": "AI Agent API is running"}
@@ -73,22 +108,27 @@ def create_agent():
         name=config["name"],
         goal=config["goal"],
         initial_energy=config["initial_energy"],
-        initial_status=config["initial_status"]
+        initial_status=config["initial_status"],
+        knowledge_base=application.knowledge_base,
+        memory_manager=application.memory_manager,
+        tool_registry=application.tool_registry,
+        tool_execution_service=application.tool_execution_service,
+        planner_agent=application.planner_agent,
+        executor_agent=application.executor_agent,
+        orchestrator=application.orchestrator,
     )
-    agent.memory_manager = manager.memory_manager  # Assign the shared memory manager to the agent
-    agent.memory_context_builder = MemoryContextBuilder(agent.memory_manager)  # Initialize the memory context builder for the agent
     
     manager.add_agent(agent)
 
     return {"message":"Agent created from config"}
 
 @app.post("/agent/step")
-def run_agent_step():
+async def run_agent_step():
 
     if not agent:
-        return{"error":"Agent not created"}
+        raise HTTPException(status_code=404, detail="Agent not created")
     
-    agent.autonomousStep()
+    await agent.autonomous_step()
 
     return{
         "energy":agent.energy,
@@ -100,7 +140,7 @@ def run_agent_step():
 def agent_status():
 
     if not agent:
-        return {"error":"Agent not created"}
+        raise HTTPException(status_code=404, detail="Agent not created")
     
     return {
         "name":agent.name,
@@ -122,14 +162,17 @@ def system_health():
 def system_metrics ():
     '''Observability of agent metrics'''
     if not agent:
-        return{"error":"Agent not initialized"}
+        raise HTTPException(
+            status_code=404,
+            detail="Agent not initialized",
+        )
     
     return{
         "agent_name":agent.name,
         "energy": agent.energy,
         "status":agent.status,
         "memory_entries":len(agent.long_term_memory),
-        "remaining_plan_steps": len(agent.plan)
+        "remaining_plan_steps": len(agent.plan) if agent.plan else 0
     }
 
 @app.get("/system/logs")
@@ -142,7 +185,10 @@ def get_logs():
         return {"logs":logs[-20:]}
     
     except FileNotFoundError:
-        return {"error":"Log file not found"}
+        raise HTTPException(
+            status_code=404,
+            detail="Log file not found",
+        ) from None
 
 @app.post("/research")
 def research(query: str):
@@ -160,23 +206,43 @@ def create_plan(goal: str):
     '''Planner agent creates a plan based on a given goal'''
     plan_text = planner_agent.create_plan(goal)
     plan = planner_agent.parse_plan(plan_text)
+    if plan is None:
+        raise PlanningError(
+            "Generated plan could not be parsed.",
+            code="invalid_plan",
+        )
 
     return{
         "agent": planner_agent.name,
         "goal": goal,
-        "plan": plan
+        "plan": (
+            [step.model_dump() for step in plan]
+            if plan is not None
+            else None
+        )
     }
 
 @app.post("/workflow/full")
 async def full_workflow(goal: str):
     '''Conducts research, creates a plan, and executes it.'''
     if not agent:
-        return {"error": "No main agent created"}
-    try:
-        result = await orchestrator.run(goal, agent)
-        return result
-    except ValueError as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=409, detail="No main agent created")
+    result = await orchestrator.run(goal, agent)
+    if not result.success:
+        status_code = 502
+        if result.error is not None:
+            status_code = _error_status(
+                AgentError(
+                    result.error.message,
+                    code=result.error.code,
+                    category=result.error.category,
+                )
+            )
+        return JSONResponse(
+            status_code=status_code,
+            content=result.to_legacy_dict(),
+        )
+    return result.to_legacy_dict()
 
 @app.get("/agents")
 def list_agents():
@@ -197,7 +263,7 @@ def orchestrator_status():
 def knowledge_search(query: str):
     '''Searches the knowledge base for relevant information based on a query'''
     if not agent:
-        return {"error": "No main agent created"}
+        raise HTTPException(status_code=409, detail="No main agent created")
     
     results = agent.knowledge.search(query, limit=3)
     return {

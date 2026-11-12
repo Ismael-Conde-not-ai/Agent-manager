@@ -1,6 +1,12 @@
 import json
 
 from api.api_client import geminiAI  #, geminiEmbed, ollamaAI, ollamaEmbed
+from core.contracts import (
+    ErrorCategory,
+    ErrorInfo,
+    EvaluationResult,
+)
+from core.exceptions import EvaluationError
 
 
 class EvaluatorAgent:
@@ -43,7 +49,14 @@ class EvaluatorAgent:
         }}
         """
         try:
-            result = geminiAI(prompt).strip()
+            try:
+                result = geminiAI(prompt).strip()
+            except Exception as error:
+                raise EvaluationError(
+                    "Evaluation model execution failed.",
+                    code="evaluation_model_failed",
+                    cause=error,
+                ) from error
 
             # Remove markdown code fences if the model adds them.
             if result.startswith("```"):
@@ -61,15 +74,27 @@ class EvaluatorAgent:
             if not isinstance(data.get("evaluation"), str):
                 raise ValueError("'evaluation' must be a string")
 
-            return {
-                "success": data["success"],
-                "evaluation": data["evaluation"]
-            }
+            evidence = data.get("evidence", [])
+            if not isinstance(evidence, list) or not all(
+                isinstance(item, str) for item in evidence
+            ):
+                raise ValueError("'evidence' must be a list of strings")
+
+            return EvaluationResult(
+                success=data["success"],
+                evaluation=data["evaluation"],
+                evidence=evidence,
+            )
         except (json.JSONDecodeError, ValueError, IndexError) as error:
-            return {
-                "success": False,
-                "evaluation": (
+            return EvaluationResult(
+                success=False,
+                evaluation=(
                     "Error could not be parsed reliably. "
                     f"Reason: {error}"
-                )
-            }
+                ),
+                error=ErrorInfo(
+                    code="invalid_evaluation",
+                    message=str(error),
+                    category=ErrorCategory.EVALUATION,
+                ),
+            )
